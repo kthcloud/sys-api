@@ -7,8 +7,6 @@ metadata:
   labels:
     app.kubernetes.io/name: api
 spec:
-  strategy:
-    type: RollingUpdate
   replicas: 1
   selector:
     matchLabels:
