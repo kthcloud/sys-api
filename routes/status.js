@@ -1,26 +1,9 @@
 import express from 'express'
-import * as fs from 'fs'
 import fetch from 'node-fetch';
 import cors from 'cors';
+import { hosts } from '../common.js'
 
 const routes = express.Router()
-
-function loadHosts() {
-  const path = process.env.LANDING_HOSTS_PATH
-
-  let hosts = []
-
-  if (path) {
-    hosts = JSON.parse(fs.readFileSync(process.env.LANDING_HOSTS_PATH))
-  }
-
-  console.log('Using hosts: ');
-  console.log(hosts);
-
-  return hosts
-}
-
-const hosts = loadHosts()
 
 function getLocalStatus(ip, port) {
   return fetch(`http://${ip}:${port}/status`,)
