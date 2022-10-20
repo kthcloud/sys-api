@@ -59,7 +59,7 @@ async function getCapacities() {
                     used: convertToGB(memoryCapacity.capacityused),
                     total: convertToGB(memoryCapacity.capacitytotal)
                 },
-                cpu: {
+                cpuCores: {
                     used: cpuCapacity.capacityused,
                     total: cpuCapacity.capacitytotal
                 }
