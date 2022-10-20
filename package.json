@@ -1,0 +1,22 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start-dev": "set LANDING_HOSTS_PATH=hosts-dev.json&& node app.js",
+    "start": "set LANDING_HOSTS_PATH=hosts.json&& node app.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.1",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "csclient": "^0.6.4",
+    "express": "^4.18.2",
+    "hmacsha1": "^1.0.0",
+    "node-fetch": "^3.2.10",
+    "qs": "^6.11.0",
+    "url": "^0.11.0"
+  }
+}

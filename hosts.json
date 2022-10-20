@@ -1,0 +1,52 @@
+[
+    {
+        "name": "se-flem-001.kthcloud.com",
+        "ip": "172.31.0.11",
+        "port": 8081
+    },
+    {
+        "name": "se-flem-002.kthcloud.com",
+        "ip": "172.31.0.12",
+        "port": 8081
+    },
+    {
+        "name": "se-flem-003.kthcloud.com",
+        "ip": "172.31.0.13",
+        "port": 8081
+    },
+    {
+        "name": "se-flem-004.kthcloud.com",
+        "ip": "172.31.0.14",
+        "port": 8081
+    },
+    {
+        "name": "se-flem-005.kthcloud.com",
+        "ip": "172.31.0.15",
+        "port": 8081
+    },
+    {
+        "name": "se-flem-006.kthcloud.com",
+        "ip": "172.31.0.16",
+        "port": 8081
+    },
+    {
+        "name": "se-flem-007.kthcloud.com",
+        "ip": "172.31.0.17",
+        "port": 8081
+    },
+    {
+        "name": "se-flem-008.kthcloud.com",
+        "ip": "172.31.0.18",
+        "port": 8081
+    },
+    {
+        "name": "se-flem-009.kthcloud.com",
+        "ip": "172.31.0.19",
+        "port": 8081
+    },
+    {
+        "name": "se-flem-010.kthcloud.com",
+        "ip": "172.31.0.20",
+        "port": 8081
+    }
+]
