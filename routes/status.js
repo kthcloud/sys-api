@@ -12,22 +12,32 @@ function getLocalStatus(ip, port) {
 
 routes.get('/status', cors(), async (req, res) => {
   // Fetch data from every host
-  const all = hosts.reduce((acc, elem) => {
-    acc.push(
-      getLocalStatus(elem.ip, elem.port)
-    )
+  const collectedHost = hosts.reduce((acc, elem) => {
+    acc.push(getLocalStatus(elem.ip, elem.port))
     return acc
   }, [])
 
   // Await result and add metadata
-  for (let i = 0; i < all.length; i++) {
-    all[i] = await all[i]
+  for (let i = 0; i < collectedHost.length; i++) {
+    collectedHost[i] = await collectedHost[i]
 
     // Add Metadata, add more fields if necessary
-    all[i].name = hosts[i].name
+    collectedHost[i].name = hosts[i].name
   }
 
-  res.status(200).json(all)
+  const status = {
+    average: {
+      cpu: {
+        load: collectedHost.reduce((acc, elem) => {
+          acc += elem.cpu.load.main
+          return acc
+        }, 0.0) / collectedHost.length
+      }
+    },
+    hosts: collectedHost
+  }
+
+  res.status(200).json(status)
 })
 
 

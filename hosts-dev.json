@@ -3,5 +3,10 @@
         "name": "localhost",
         "ip": "localhost",
         "port": 8081
+    },
+    {
+        "name": "localhost",
+        "ip": "localhost",
+        "port": 8081
     }
 ]
