@@ -8,6 +8,9 @@ const routes = express.Router()
 function getLocalStatus(ip, port) {
   return fetch(`http://${ip}:${port}/status`,)
     .then(res => res.json())
+    .catch(err => {
+      console.error(`Failed to fetch hosts\' status. Details: ${err}`);
+    })
 }
 
 routes.get('/status', cors(), async (req, res) => {

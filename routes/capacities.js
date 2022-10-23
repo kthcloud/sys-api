@@ -11,10 +11,13 @@ function convertToGB(bytes) {
     return Math.round(bytes / 1073741824);
 }
 
-function getLocalCapacity(ip, port) {
+async function getLocalCapacity(ip, port) {
     return fetch(`http://${ip}:${port}/capacities`,)
         .then(res => res.json())
-        .then(capacities => capacities.gpu.count)
+        .catch(err => {
+            console.error(`Failed to fetch hosts\' capacities. Details: ${err}`);
+            return undefined
+        })
 }
 
 async function getCloudstackCapacities() {
@@ -46,8 +49,13 @@ async function getCloudstackCapacities() {
 
 async function getGpuCapacity() {
     // Fetch data from every host
-    const gpuCountPromises = hosts.reduce((acc, elem) => acc + getLocalCapacity(elem.ip, elem.port), 0)
-    const gpuCount = Promise.all(gpuCountPromises)
+    const capPromises = hosts.map(host => getLocalCapacity(host.ip, host.port))
+
+    // Then wait for all of it
+    let capacitiesPerHost = await Promise.all(capPromises)
+    capacitiesPerHost = capacitiesPerHost.filter(host => host)
+
+    const gpuCount = capacitiesPerHost.reduce((acc, capacites) => acc + capacites.gpu.count, 0)
 
     return {
         count: gpuCount
@@ -55,11 +63,8 @@ async function getGpuCapacity() {
 }
 
 routes.get('/capacities', cors(), async (req, res) => {
-
-
     let cloudStackCapacities = getCloudstackCapacities()
     let gpuCapacity = getGpuCapacity()
-
 
     cloudStackCapacities = await cloudStackCapacities
     gpuCapacity = await gpuCapacity
