@@ -1,0 +1,6 @@
+{
+    "realm": "cloud",
+    "auth-server-url": "https://iam.kthcloud.com",
+    "resource": "landing",
+    "bearer-only": true
+  }

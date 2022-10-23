@@ -3,6 +3,7 @@ import cors from 'cors';
 import { db } from '../common.js';
 import { body, param, validationResult } from 'express-validator';
 import { v4 as uuid } from 'uuid';
+import { keycloak } from '../security.js';
 
 const routes = express.Router()
 
@@ -21,6 +22,7 @@ routes.get(
 
 routes.post(
     '/news',
+    keycloak.protect(),
     body('title').isString().isLength({ min: 1, max: 500 }),
     body('description').isString().isLength({ max: 5000 }),
     body('image').isString().isLength({ min: 1 }),
@@ -49,6 +51,7 @@ routes.post(
 
 routes.delete(
     '/news/:id',
+    keycloak.protect(),
     param('id').isUUID(4),
     cors(),
     async (req, res) => {
@@ -60,7 +63,7 @@ routes.delete(
         const deleteQuery = { id: req.params.id }
         newsCollection
             .deleteOne(deleteQuery)
-            .then(res.status(204))
+            .then(res.sendStatus(204))
             .catch(err => { res.status(500).json({ msg: `Failed to delete item in database. Details: ${err}` }) })
     })
 

@@ -9,6 +9,7 @@ else {
 
 const env = {
     hostsPath: process.env.LANDING_HOSTS_PATH,
+    sessionSecret: process.env.LANDING_SESSION_SECRET,
     cloudstack: {
         api: {
             url: process.env.LANDING_CS_BASE_API_URL,

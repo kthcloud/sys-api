@@ -6,6 +6,7 @@ import k8sClient from 'kubernetes-client'
 import Request from 'kubernetes-client/backends/request/index.js'
 import mongoDb from 'mongodb'
 const { MongoClient } = mongoDb
+import session from 'express-session';
 
 import env from './environment.js'
 
@@ -118,4 +119,6 @@ const k8sClients = {
 
 const db = await __connectDb(env.db.url, env.db.name, env.db.username, env.db.password)
 
-export { createCloudstackUrl, hosts, k8sClients, db }
+const memoryStore = new session.MemoryStore();
+
+export { createCloudstackUrl, hosts, k8sClients, db, memoryStore }
