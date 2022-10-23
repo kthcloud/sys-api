@@ -39,7 +39,7 @@ async function getCloudstackCapacities() {
                     used: convertToGB(memoryCapacity.capacityused),
                     total: convertToGB(memoryCapacity.capacitytotal)
                 },
-                cpuCores: {
+                cpuCore: {
                     used: cpuCapacity.capacityused,
                     total: cpuCapacity.capacitytotal
                 }
@@ -58,7 +58,7 @@ async function getGpuCapacity() {
     const gpuCount = capacitiesPerHost.reduce((acc, capacites) => acc + capacites.gpu.count, 0)
 
     return {
-        count: gpuCount
+        total: gpuCount
     }
 }
 
@@ -70,7 +70,7 @@ routes.get('/capacities', cors(), async (req, res) => {
     gpuCapacity = await gpuCapacity
 
     const result = {
-        cpu: cloudStackCapacities.cpu,
+        cpuCore: cloudStackCapacities.cpuCore,
         ram: cloudStackCapacities.ram,
         gpu: gpuCapacity
     }
