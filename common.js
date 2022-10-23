@@ -92,7 +92,7 @@ function __createClient(kubeconfig) {
 async function __connectDb(baseUrl, dbName, username, password) {
 
     const noCred = !username && !password
-    const url = noCred ? `mongodb://${baseUrl}` : `mongodb://${username}:${password}@${baseUrl}`
+    const url = noCred ? `mongodb://${baseUrl}` : `mongodb+srv://${username}:${password}@${baseUrl}`
 
     const client = new MongoClient(url)
 
