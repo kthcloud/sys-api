@@ -70,7 +70,7 @@ routes.get('/capacities', cors(), async (req, res) => {
         gpu: gpuCapacity
     }
 
-    res.status(200).json(cloudStackCapacities)
+    res.status(200).json(result)
 })
 
 export default routes
