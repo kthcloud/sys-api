@@ -1,54 +1,67 @@
 import express from 'express'
 import cors from 'cors';
+import { db } from '../common.js';
+import { body, param, validationResult } from 'express-validator';
+import { v4 as uuid } from 'uuid';
 
 const routes = express.Router()
 
-routes.get('/news', cors(), async (req, res) => {
-    // id: faker.datatype.uuid(),
-    // title: faker.name.jobTitle(),
-    // description: faker.name.jobTitle(),
-    // image: `/static/mock-images/covers/cover_${index + 1}.jpg`,
-    // postedAt: faker.date.recent(),
+const newsCollection = db.collection('news')
 
-    let news = [
-        {
-            id: "87ea469b-098f-4945-b62d-cf348eac2e9f",
-            title: "Lead Response Consultant but from the server ",
-            description: "Product Branding Designer",
-            image: "/static/mock-images/covers/cover_1.jpg",
-            postedAt: "2022-10-17T11:50:02.762Z"
-        },
-        {
-            id: "3551d8b6-9dcb-4089-af96-4a57acfbf9ae",
-            title: "Legacy Functionality Producer",
-            description: "Dynamic Solutions Facilitator",
-            image: "/static/mock-images/covers/cover_2.jpg",
-            postedAt: "2022-10-17T07:52:00.428Z"
-        },
-        {
-            id: "a919f152-0981-4b5f-827e-277fadd7d0c7",
-            title: "Product Program Consultant",
-            description: "Investor Communications Planner",
-            image: "/static/mock-images/covers/cover_3.jpg",
-            postedAt: "2022-10-17T19:06:52.245Z"
-        },
-        {
-            id: "3af3aa44-e213-4c3c-a589-e922abafe471",
-            title: "Lead Configuration Planner",
-            description: "International Optimization Director",
-            image: "/static/mock-images/covers/cover_4.jpg",
-            postedAt: "2022-10-17T18:52:43.629Z"
-        },
-        {
-            id: "2878be35-2a7e-47c2-a385-bbe8ae30fa88",
-            title: "Principal Creative Engineer",
-            description: "International Interactions Architect",
-            image: "/static/mock-images/covers/cover_5.jpg",
-            postedAt: "2022-10-17T14:00:51.999Z"
+routes.get(
+    '/news',
+    cors(),
+    async (_req, res) => {
+        newsCollection
+            .find({}, { projection: { _id: 0 } })
+            .toArray()
+            .then(news => res.status(200).json(news))
+            .catch(err => { res.status(500).json({ msg: `Failed to get news from database. Details: ${err}` }) })
+    })
+
+routes.post(
+    '/news',
+    body('title').isString().isLength({ min: 1, max: 500 }),
+    body('description').isString().isLength({ max: 5000 }),
+    body('image').isString().isLength({ min: 1 }),
+    cors(),
+    async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
         }
-    ]
 
-    res.status(200).json(news)
-})
+        const body = req.body
+
+        const newsPiece = {
+            id: uuid(),
+            title: body.title,
+            description: body.description,
+            image: body.image,
+            postedAt: new Date(new Date().toUTCString())
+        }
+
+        newsCollection
+            .insertOne(newsPiece)
+            .then(res.status(201).json(newsPiece))
+            .catch(err => { res.status(500).json({ msg: `Failed to insert item in database. Details: ${err}` }) })
+    })
+
+routes.delete(
+    '/news/:id',
+    param('id').isUUID(4),
+    cors(),
+    async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        const deleteQuery = { id: req.params.id }
+        newsCollection
+            .deleteOne(deleteQuery)
+            .then(res.status(204))
+            .catch(err => { res.status(500).json({ msg: `Failed to delete item in database. Details: ${err}` }) })
+    })
 
 export default routes

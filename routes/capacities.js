@@ -1,7 +1,7 @@
 import express from 'express'
 import cors from 'cors';
 import fetch from 'node-fetch'
-import { createCsUrl} from '../common.js'
+import { createCloudstackUrl } from '../common.js'
 import env from '../environment.js'
 
 
@@ -14,7 +14,7 @@ function convertToGB(bytes) {
 async function getCapacities() {
     const command = 'listCapacity'
 
-    const url = createCsUrl(env.csBaseApiUrl, command, env.csApiKey, env.csApiSecret)
+    const url = createCloudstackUrl(env.cloudstack.api.url, command, env.cloudstack.api.key, env.cloudstack.api.secret)
 
     return fetch(url)
         .then(res => res.json())

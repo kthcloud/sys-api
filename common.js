@@ -4,10 +4,12 @@ import url from 'url'
 import * as fs from 'fs'
 import k8sClient from 'kubernetes-client'
 import Request from 'kubernetes-client/backends/request/index.js'
+import mongoDb from 'mongodb'
+const { MongoClient } = mongoDb
 
 import env from './environment.js'
 
-function createCsUrl(baseUrl, command, apiKey, secretKey) {
+function createCloudstackUrl(baseUrl, command, apiKey, secretKey) {
     let queryDict = {
         'apiKey': apiKey,
         'command': command,
@@ -87,6 +89,19 @@ function __createClient(kubeconfig) {
     return new k8sClient.Client({ backend, version: '1.13' })
 }
 
+async function __connectDb(baseUrl, dbName, username, password) {
+
+    const noCred = !username && !password
+    const url = noCred ? `mongodb://${baseUrl}` : `mongodb://${username}:${password}@${baseUrl}`
+
+    const client = new MongoClient(url)
+
+    return client
+        .connect()
+        .then(connectedClient => connectedClient.db(dbName))
+        .catch(err => console.error(`Failed to connect to database. Details: ${err}`))
+}
+
 const hosts = __loadHosts()
 
 const k8sConfigs = {
@@ -101,4 +116,6 @@ const k8sClients = {
     dev: __createClient(k8sConfigs.dev)
 }
 
-export { createCsUrl, hosts, k8sClients }
+const db = await __connectDb(env.db.url, env.db.name, env.db.username, env.db.password)
+
+export { createCloudstackUrl, hosts, k8sClients, db }

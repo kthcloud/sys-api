@@ -9,9 +9,13 @@ else {
 
 const env = {
     hostsPath: process.env.LANDING_HOSTS_PATH,
-    csBaseApiUrl: process.env.LANDING_CS_BASE_API_URL,
-    csApiKey: process.env.LANDING_CS_API_KEY,
-    csApiSecret: process.env.LANDING_CS_API_SECRET,
+    cloudstack: {
+        api: {
+            url: process.env.LANDING_CS_BASE_API_URL,
+            key: process.env.LANDING_CS_API_KEY,
+            secret: process.env.LANDING_CS_API_SECRET
+        }
+    },
     k8s: {
         sys: {
             url: process.env.LANDING_K8S_SYS_URL,
@@ -32,6 +36,12 @@ const env = {
             certData: process.env.LANDING_K8S_DEV_CERT_DATA,
             secret: process.env.LANDING_K8S_DEV_SECRET,
         }
+    },
+    db: {
+        url: process.env.LANDING_DB_URL,
+        name: process.env.LANDING_DB_NAME,
+        username: process.env.LANDING_DB_USERNAME,
+        password: process.env.LANDING_DB_PASSWORD
     }
 }
 
