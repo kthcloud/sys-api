@@ -25,7 +25,7 @@ routes.post(
     keycloak.protect(),
     body('title').isString().isLength({ min: 1, max: 500 }),
     body('description').isString().isLength({ max: 5000 }),
-    body('image').isString().isLength({ min: 1 }),
+    body('image'),
     cors(),
     async (req, res) => {
         const errors = validationResult(req);
@@ -39,13 +39,13 @@ routes.post(
             id: uuid(),
             title: body.title,
             description: body.description,
-            image: body.image,
+            image: req.files ? req.files.image.data : null,
             postedAt: new Date(new Date().toUTCString())
         }
 
         newsCollection
             .insertOne(newsPiece)
-            .then(res.status(201).json(newsPiece))
+            .then(res.status(201).json({ id: newsPiece.id }))
             .catch(err => { res.status(500).json({ msg: `Failed to insert item in database. Details: ${err}` }) })
     })
 

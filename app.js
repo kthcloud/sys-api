@@ -2,6 +2,7 @@ import env from './environment.js'
 
 import express from 'express';
 import session from 'express-session';
+import fileupload from 'express-fileupload';
 import bodyParser from 'body-parser';
 
 import status from './routes/status.js';
@@ -21,6 +22,7 @@ app.use(session({
     saveUninitialized: true,
     store: memoryStore
 }))
+app.use(fileupload());
 app.use(keycloak.middleware({ logout: '/'}))
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
