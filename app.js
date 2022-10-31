@@ -10,9 +10,11 @@ import news from './routes/news.js';
 import stats from './routes/stats.js'
 import { memoryStore } from './common.js'
 import { keycloak } from './security.js';
+import cors from 'cors'
 
 const app = express();
 
+app.use(cors())
 app.use(session({
     secret: env.sessionSecret,
     resave: false,
