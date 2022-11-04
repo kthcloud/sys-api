@@ -45,7 +45,7 @@ routes.post(
 
         newsCollection
             .insertOne(newsPiece)
-            .then(res.status(201).json({ id: newsPiece.id }))
+            .then(res.status(201).json({ id: newsPiece.id, postedAt: newsPiece.postedAt }))
             .catch(err => { res.status(500).json({ msg: `Failed to insert item in database. Details: ${err}` }) })
     })
 
