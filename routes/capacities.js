@@ -4,6 +4,7 @@ import fetch from 'node-fetch'
 import { createCloudstackUrl } from '../common.js'
 import env from '../environment.js'
 import { hosts } from '../common.js';
+import { clearInvalid } from '../lib/utils.js';
 
 const routes = express.Router()
 
@@ -52,8 +53,7 @@ async function getGpuCapacity() {
     const capPromises = hosts.map(host => getLocalCapacity(host.ip, host.port))
 
     // Then wait for all of it
-    let capacitiesPerHost = await Promise.all(capPromises)
-    capacitiesPerHost = capacitiesPerHost.filter(host => host)
+    const capacitiesPerHost = clearInvalid(await Promise.all(capPromises))
 
     const gpuCount = capacitiesPerHost.reduce((acc, capacites) => acc + capacites.gpu.count, 0)
 

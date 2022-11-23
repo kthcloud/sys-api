@@ -1,47 +1,47 @@
-import express from 'express'
-import fetch from 'node-fetch';
-import cors from 'cors';
-import { hosts } from '../common.js'
+import express from "express";
+import fetch from "node-fetch";
+import cors from "cors";
+import { hosts } from "../common.js";
+import { clearInvalid } from "../lib/utils.js";
 
-const routes = express.Router()
+const routes = express.Router();
 
 function getLocalStatus(ip, port) {
-  return fetch(`http://${ip}:${port}/status`,)
-    .then(res => res.json())
-    .catch(err => {
+  return fetch(`http://${ip}:${port}/status`)
+    .then((res) => res.json())
+    .catch((err) => {
       console.error(`Failed to fetch hosts\' status. Details: ${err}`);
-    })
+    });
 }
 
-routes.get('/status', cors(), async (req, res) => {
+routes.get("/status", cors(), async (req, res) => {
   // Fetch data from every host
-  const collectedHost = hosts.reduce((acc, elem) => {
-    acc.push(getLocalStatus(elem.ip, elem.port))
-    return acc
-  }, [])
+  const statusPromises = hosts.map((host) =>
+    getLocalStatus(host.ip, host.port)
+  );
 
-  // Await result and add metadata
-  for (let i = 0; i < collectedHost.length; i++) {
-    collectedHost[i] = await collectedHost[i]
+  // Then wait for all of it
+  const statusesPerHost = clearInvalid(await Promise.all(statusPromises));
 
+  for (let i = 0; i < statusesPerHost.length; i++) {
     // Add Metadata, add more fields if necessary
-    collectedHost[i].name = hosts[i].name
+    statusesPerHost[i].name = hosts[i].name;
   }
 
   const status = {
     average: {
       cpu: {
-        load: collectedHost.reduce((acc, elem) => {
-          acc += elem.cpu.load.main
-          return acc
-        }, 0.0) / collectedHost.length
-      }
+        load:
+          statusesPerHost.reduce((acc, elem) => {
+            acc += elem.cpu.load.main;
+            return acc;
+          }, 0.0) / statusesPerHost.length,
+      },
     },
-    hosts: collectedHost
-  }
+    hosts: statusesPerHost,
+  };
 
-  res.status(200).json(status)
-})
+  res.status(200).json(status);
+});
 
-
-export default routes
+export default routes;
