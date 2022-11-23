@@ -23,11 +23,13 @@ routes.get("/status", cors(), async (req, res) => {
   let statusesPerHost = await Promise.all(statusPromises);
 
   for (let i = 0; i < statusesPerHost.length; i++) {
-    // Add Metadata, add more fields if necessary
-    statusesPerHost[i].name = hosts[i].name;
+    if (statusesPerHost[i]) {
+      // Add Metadata, add more fields if necessary
+      statusesPerHost[i].name = hosts[i].name;
+    }
   }
 
-  statusesPerHost = clearInvalid(statusesPerHost)
+  statusesPerHost = clearInvalid(statusesPerHost);
 
   const status = {
     average: {
