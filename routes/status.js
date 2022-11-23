@@ -20,12 +20,14 @@ routes.get("/status", cors(), async (req, res) => {
     getLocalStatus(host.ip, host.port)
   );
 
+  let statusesPerHost = await Promise.all(statusPromises);
+
   for (let i = 0; i < statusesPerHost.length; i++) {
     // Add Metadata, add more fields if necessary
     statusesPerHost[i].name = hosts[i].name;
   }
 
-  const statusesPerHost = clearInvalid(await Promise.all(statusPromises));
+  statusesPerHost = clearInvalid(statusesPerHost)
 
   const status = {
     average: {
