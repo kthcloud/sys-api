@@ -137,7 +137,10 @@ async function __getAvailableK8sClients () {
   if (__internalk8sClients.sys) {
     const result = await __internalk8sClients.sys.api.v1.namespaces.get()
       .then(_ => true)
-      .catch(_ => false)
+      .catch(err => {
+        console.error(`sys cluster not available: ${err}`)
+        return false
+      })
 
     if (result) {
       clients.push(__internalk8sClients.sys)
@@ -149,6 +152,7 @@ async function __getAvailableK8sClients () {
     const result = await __internalk8sClients.prod.api.v1.namespaces.get()
       .then(_ => true)
       .catch(err => {
+        console.error(`prod cluster not available: ${err}`)
         return false
       })
 
@@ -161,7 +165,10 @@ async function __getAvailableK8sClients () {
   if (__internalk8sClients.dev) {
     const result = await __internalk8sClients.dev.api.v1.namespaces.get()
       .then(_ => true)
-      .catch(_ => false)
+      .catch(err => {
+        console.error(`dev cluster not available: ${err}`)
+        return false
+      })
 
     if (result) {
       clients.push(__internalk8sClients.dev)
