@@ -10,7 +10,7 @@ function getLocalStatus(ip, port) {
   return fetch(`http://${ip}:${port}/status`)
     .then((res) => res.json())
     .catch((err) => {
-      console.error(`Failed to fetch hosts\' status. Details: ${err}`);
+      console.error(`failed to fetch hosts\' status. Details: ${err}`);
     });
 }
 

@@ -48,7 +48,7 @@ function __loadHosts () {
     hosts = JSON.parse(fs.readFileSync(process.env.LANDING_HOSTS_PATH))
   }
 
-  console.log('Using hosts: ')
+  console.log('using hosts: ')
   console.log(hosts)
 
   return hosts
@@ -104,11 +104,11 @@ async function __connectDb (connectionString, dbName) {
   return client
     .connect()
     .then(connectedClient => {
-      console.log(`Sucessfully connected to database`)
+      console.log(`sucessfully connected to database`)
       return connectedClient.db(dbName)
     })
     .catch(err => {
-      console.error(`Failed to connect to database. Details: ${err}`)
+      console.error(`failed to connect to database. Details: ${err}`)
       return null
     })
 }
@@ -132,6 +132,7 @@ const __internalk8sClients = {
 
 async function __getAvailableK8sClients () {
   const clients = []
+  const clientNames = []
 
   if (__internalk8sClients.sys) {
     const result = await __internalk8sClients.sys.api.v1.namespaces.get()
@@ -140,16 +141,20 @@ async function __getAvailableK8sClients () {
 
     if (result) {
       clients.push(__internalk8sClients.sys)
+      clientNames.push('sys')
     }
   }
 
   if (__internalk8sClients.prod) {
     const result = await __internalk8sClients.prod.api.v1.namespaces.get()
       .then(_ => true)
-      .catch(_ => false)
+      .catch(err => {
+        return false
+      })
 
     if (result) {
       clients.push(__internalk8sClients.prod)
+      clientNames.push('prod')
     }
   }
 
@@ -160,8 +165,12 @@ async function __getAvailableK8sClients () {
 
     if (result) {
       clients.push(__internalk8sClients.dev)
+      clientNames.push('dev')
     }
   }
+
+  console.log(
+    `found ${clients.length} available kubernetes APIs (${clientNames.toString()})`)
 
   return clients
 }

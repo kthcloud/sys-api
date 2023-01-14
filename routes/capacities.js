@@ -16,7 +16,7 @@ async function getLocalCapacity(ip, port) {
     return fetch(`http://${ip}:${port}/capacities`,)
         .then(res => res.json())
         .catch(err => {
-            console.error(`Failed to fetch hosts\' capacities. Details: ${err}`);
+            console.error(`failed to fetch hosts\' capacities. Details: ${err}`);
             return undefined
         })
 }
