@@ -1,15 +1,11 @@
 import express from 'express'
-import cors from 'cors';
-import fetch from 'node-fetch'
-import env from '../environment.js'
-import { k8sClients } from '../common.js';
+import cors from 'cors'
+import { k8sClients } from '../common.js'
 
 const routes = express.Router()
 
 async function getTotalPodCount() {
-    const clients = [k8sClients.sys, k8sClients.prod, k8sClients.dev]
-
-    const podsPromises = clients.map(client => client.api.v1.pods.get())
+    const podsPromises = k8sClients.map(client => client.api.v1.pods.get())
 
     const pods = await Promise.all(podsPromises)
     const podCount = pods.map(podList => podList.body.items.length)
