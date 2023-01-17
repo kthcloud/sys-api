@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: api
-          image: registry.kthcloud.com/system/landing-api
+          image: registry.cloud.cbh.kth.se/system/landing-api
           envFrom:
             - configMapRef:
                 name: landing-api-config
