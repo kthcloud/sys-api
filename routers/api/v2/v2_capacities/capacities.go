@@ -14,11 +14,11 @@ func Get(c *gin.Context) {
 	csCapacites, err := capacites_service.GetCsCapacites()
 	if err != nil {
 		csCapacites = &capacities.CsCapacities{
-			RAM: capacities.RAM{
+			RAM: capacities.RamCapacities{
 				Used:  0,
 				Total: 0,
 			},
-			CpuCore: capacities.CpuCore{
+			CpuCore: capacities.CpuCoreCapacities{
 				Used:  0,
 				Total: 0,
 			},
@@ -28,23 +28,21 @@ func Get(c *gin.Context) {
 	gpuCapacites, err := capacites_service.GetGpuCapacities()
 	if err != nil {
 		gpuCapacites = &capacities.GpuCapacities{
-			GPU: capacities.GPU{
-				Total: 0,
-			},
+			Total: 0,
 		}
 	}
 
 	collected := dto.Capacities{
-		RAM: dto.RAM{
+		RAM: dto.RamCapacities{
 			Used:  csCapacites.RAM.Used,
 			Total: csCapacites.RAM.Total,
 		},
-		CpuCore: dto.CpuCore{
+		CpuCore: dto.CpuCoreCapacities{
 			Used:  csCapacites.CpuCore.Used,
 			Total: csCapacites.CpuCore.Total,
 		},
-		GPU: dto.GPU{
-			Total: gpuCapacites.GPU.Total,
+		GPU: dto.GpuCapacities{
+			Total: gpuCapacites.Total,
 		},
 	}
 

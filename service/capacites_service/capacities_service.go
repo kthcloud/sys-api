@@ -34,8 +34,8 @@ func GetCsCapacites() (*capacitiesModels.CsCapacities, error) {
 		return nil, makeError(err)
 	}
 
-	var cpuCore capacitiesModels.CpuCore
-	var ram capacitiesModels.RAM
+	var cpuCore capacitiesModels.CpuCoreCapacities
+	var ram capacitiesModels.RamCapacities
 
 	for _, capacity := range csResponse.Capacity {
 		if capacity.Name == "CPU_CORE" {
@@ -57,7 +57,7 @@ func GetCsCapacites() (*capacitiesModels.CsCapacities, error) {
 
 func GetGpuCapacities() (*capacitiesModels.GpuCapacities, error) {
 
-	outputs := make([]*dto.Capacity, len(conf.Hosts))
+	outputs := make([]*dto.HostCapacites, len(conf.Hosts))
 
 	wg := sync.WaitGroup{}
 
@@ -76,7 +76,7 @@ func GetGpuCapacities() (*capacitiesModels.GpuCapacities, error) {
 				return
 			}
 
-			var gpuCapacity dto.Capacity
+			var gpuCapacity dto.HostCapacites
 			err = requestutils.ParseBody(response.Body, &gpuCapacity)
 			if err != nil {
 				log.Println(makeError(err))
@@ -96,7 +96,7 @@ func GetGpuCapacities() (*capacitiesModels.GpuCapacities, error) {
 
 	for _, output := range outputs {
 		if output != nil {
-			result.GPU.Total += output.GpuCapacity.Count
+			result.Total += output.GPU.Count
 		}
 	}
 

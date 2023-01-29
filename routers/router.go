@@ -6,6 +6,7 @@ import (
 	"landing-api/pkg/app"
 	"landing-api/pkg/auth"
 	"landing-api/routers/api/v2/v2_capacities"
+	"landing-api/routers/api/v2/v2_stats"
 )
 
 func NewRouter() *gin.Engine {
@@ -42,7 +43,7 @@ func setupNewsRoutes(base *gin.RouterGroup) {
 }
 
 func setupStatsRoutes(base *gin.RouterGroup) {
-	//base.GET("/stats", v2_stats.Get)
+	base.GET("/stats", v2_stats.Get)
 }
 
 func setupStatusRoutes(base *gin.RouterGroup) {

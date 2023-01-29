@@ -1,16 +1,16 @@
 package capacities
 
-type RAM struct {
+type RamCapacities struct {
 	Used  int `json:"used"`
 	Total int `json:"total"`
 }
 
-type CpuCore struct {
+type CpuCoreCapacities struct {
 	Used  int `json:"used"`
 	Total int `json:"total"`
 }
 
 type CsCapacities struct {
-	RAM     RAM     `json:"ram"`
-	CpuCore CpuCore `json:"cpuCore"`
+	RAM     RamCapacities     `json:"ram"`
+	CpuCore CpuCoreCapacities `json:"cpuCore"`
 }

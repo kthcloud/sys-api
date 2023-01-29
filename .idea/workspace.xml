@@ -5,14 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ab0b9de4-f4f9-478b-a014-e2106a8cb43b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/hosts.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/dto/capacity.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/conf/conf.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/conf/hosts.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils/requestutils/utils.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/dto/host_stats.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/dto/stats.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/stats/k8s_stats.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/service/stats_service/stats_service.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/capacities/cs_capacities.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/capacities/cs_capacities.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/capacities/gpu_capacities.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/capacities/gpu_capacities.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/dto/capacities.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/dto/capacities.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/dto/capacity.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/dto/host_capacities.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/conf/conf.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/conf/conf.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pkg/conf/environment.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/conf/environment.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routers/api/v2/v2_capacities/capacities.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers/api/v2/v2_capacities/capacities.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routers/api/v2/v2_stats/stats.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers/api/v2/v2_stats/stats.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/service/capacites_service/capacities_service.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/capacites_service/capacities_service.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -60,7 +67,8 @@
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm"
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.lookFeel"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -109,5 +117,16 @@
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/service/stats_service/stats_service.go</url>
+          <line>20</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

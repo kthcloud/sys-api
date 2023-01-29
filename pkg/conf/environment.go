@@ -1,5 +1,7 @@
 package conf
 
+import "k8s.io/client-go/kubernetes"
+
 type Environment struct {
 	Port int `env:"DEPLOY_PORT,default=8080"`
 
@@ -12,9 +14,12 @@ type Environment struct {
 	}
 
 	K8s struct {
-		Sys  string `env:"LANDING_K8S_SYS_CONFIG"`
-		Prod string `env:"LANDING_K8S_PROD_CONFIG"`
-		Dev  string `env:"LANDING_K8S_DEV_CONFIG"`
+		Configs struct {
+			Sys  string `env:"LANDING_K8S_SYS_CONFIG"`
+			Prod string `env:"LANDING_K8S_PROD_CONFIG"`
+			Dev  string `env:"LANDING_K8S_DEV_CONFIG"`
+		}
+		Clients map[string]*kubernetes.Clientset
 	}
 
 	CS struct {
