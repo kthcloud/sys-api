@@ -1,6 +1,0 @@
-{
-    "realm": "cloud",
-    "auth-server-url": "https://iam.cloud.cbh.kth.se",
-    "resource": "landing",
-    "bearer-only": true
-  }

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="ALL" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="ab0b9de4-f4f9-478b-a014-e2106a8cb43b" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/landing-api-v2.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/capacities/cs_capacities.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/capacities/gpu_capacities.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/dto/capacities.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/models.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/app/auth.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/app/client_context.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/app/context.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/app/request.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/app/response.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/auth/cert.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/auth/gin_keycloak.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/auth/grant_checks.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/auth/keycloak_token.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/auth/restricted_access_builder.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/conf/environment.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/status_codes/code.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/status_codes/msg.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/validator/errors.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/validator/helper.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/validator/regex_patterns.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/validator/roller.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/validator/rules.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/validator/type.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/validator/utils.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/validator/validator.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/routers/api/v2/v2_capacities/capacities.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/routers/api/v2/v2_news/news.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/routers/api/v2/v2_stats/stats.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/routers/api/v2/v2_status/status.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/routers/router.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/service/capacites_service/capacities_service.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dbnavigator.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/landing-api.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/environment.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hosts-dev.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hosts.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/keycloak.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/utils.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/manifests/deployment.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/manifests/namespace.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/manifests/service.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mock/news.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/capacities.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/news.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/stats.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/status.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/security.js" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go File" />
+      </list>
+    </option>
+  </component>
+  <component name="GOROOT" url="file://$PROJECT_DIR$/../../../Program Files/Go" />
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2L09GBF18dqy1gkkzUVmwJO6ONb" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="false" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "DefaultGoTemplateProperty": "Go File",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
+    "RunOnceActivity.go.watchers.conflict.with.on.save.actions.check.performed": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "go.import.settings.migrated": "true",
+    "go.sdk.automatically.set": "true",
+    "last_opened_file_path": "C:/repos/work/landing-api-v2/pkg",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\repos\work\landing-api-v2\pkg" />
+      <recent name="C:\repos\work\landing-api-v2\routers" />
+      <recent name="C:\repos\work\landing-api-v2\models" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\repos\work\landing-api-v2\routers\api\v2" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="run" type="GoApplicationRunConfiguration" factoryName="Go Application">
+      <module name="landing-api-v2" />
+      <working_directory value="$PROJECT_DIR$" />
+      <envs>
+        <env name="LANDING_ENV_FILE" value="C:\repos\work\admin\secrets\landing\v2\kthcloud.env" />
+      </envs>
+      <kind value="PACKAGE" />
+      <package value="landing-api" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+  <component name="VgoProject">
+    <settings-migrated>true</settings-migrated>
+  </component>
+</project>
