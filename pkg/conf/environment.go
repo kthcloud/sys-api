@@ -1,13 +1,5 @@
 package conf
 
-import (
-	"fmt"
-	env "github.com/Netflix/go-env"
-	"github.com/joho/godotenv"
-	"log"
-	"os"
-)
-
 type Environment struct {
 	Port int `env:"DEPLOY_PORT,default=8080"`
 
@@ -38,23 +30,3 @@ type Environment struct {
 }
 
 var Env Environment
-
-func Setup() {
-	makeError := func(err error) error {
-		return fmt.Errorf("failed to setup environment. details: %s", err)
-	}
-
-	deployEnv, found := os.LookupEnv("LANDING_ENV_FILE")
-	if found {
-		log.Println("using env-file:", deployEnv)
-		err := godotenv.Load(deployEnv)
-		if err != nil {
-			log.Fatalln(makeError(err))
-		}
-	}
-
-	_, err := env.UnmarshalFromEnviron(&Env)
-	if err != nil {
-		log.Fatalln(makeError(err))
-	}
-}

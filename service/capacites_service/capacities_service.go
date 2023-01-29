@@ -3,8 +3,12 @@ package capacites_service
 import (
 	"fmt"
 	capacitiesModels "landing-api/models/capacities"
+	"landing-api/models/dto"
 	"landing-api/pkg/conf"
+	"landing-api/utils/requestutils"
+	"log"
 	"math"
+	"sync"
 
 	"github.com/apache/cloudstack-go/v2/cloudstack"
 )
@@ -52,7 +56,51 @@ func GetCsCapacites() (*capacitiesModels.CsCapacities, error) {
 }
 
 func GetGpuCapacities() (*capacitiesModels.GpuCapacities, error) {
-	return &capacitiesModels.GpuCapacities{}, nil
+
+	outputs := make([]*dto.Capacity, len(conf.Hosts))
+
+	wg := sync.WaitGroup{}
+
+	for idx, host := range conf.Hosts {
+		wg.Add(1)
+		go func(idx int, host conf.Host) {
+			makeError := func(err error) error {
+				return fmt.Errorf("failed to get gpu capacitity for host %s. details: %s", host.IP.String(), err)
+			}
+
+			url := fmt.Sprintf("%s/capacities", host.ApiURL())
+			response, err := requestutils.DoRequest("GET", url, nil, nil)
+			if err != nil {
+				log.Println(makeError(err))
+				wg.Done()
+				return
+			}
+
+			var gpuCapacity dto.Capacity
+			err = requestutils.ParseBody(response.Body, &gpuCapacity)
+			if err != nil {
+				log.Println(makeError(err))
+				wg.Done()
+				return
+			}
+
+			outputs[idx] = &gpuCapacity
+
+			wg.Done()
+		}(idx, host)
+	}
+
+	wg.Wait()
+
+	var result capacitiesModels.GpuCapacities
+
+	for _, output := range outputs {
+		if output != nil {
+			result.GPU.Total += output.GpuCapacity.Count
+		}
+	}
+
+	return &result, nil
 }
 
 func convertToGB(bytes int64) int {
