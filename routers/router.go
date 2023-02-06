@@ -3,9 +3,8 @@ package routers
 import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"landing-api/pkg/app"
-	"landing-api/pkg/auth"
 	"landing-api/routers/api/v2/v2_capacities"
+	"landing-api/routers/api/v2/v2_news"
 	"landing-api/routers/api/v2/v2_stats"
 	"landing-api/routers/api/v2/v2_status"
 )
@@ -21,7 +20,6 @@ func NewRouter() *gin.Engine {
 	router.Use(gin.Recovery())
 
 	apiv2 := router.Group("/v2")
-	apiv2.Use(auth.New(auth.Check(), app.GetKeyCloakConfig()))
 
 	setupCapacitiesRoutes(apiv2)
 	setupNewsRoutes(apiv2)
@@ -36,11 +34,10 @@ func setupCapacitiesRoutes(base *gin.RouterGroup) {
 }
 
 func setupNewsRoutes(base *gin.RouterGroup) {
-	//base.GET("/news_service", v2_news.GetMany)
-	//
-	//base.GET("/news_service/:newsId", v2_news.Get)
-	//base.POST("/news_service", v2_news.Create)
-	//base.DELETE("/news_service/:newsId", v2_news.Delete)
+	base.GET("/news", v2_news.GetAll)
+	base.GET("/news/:id", v2_news.Get)
+	base.POST("/news", v2_news.Create)
+	//base.DELETE("/news/:id", v2_news.Delete)
 }
 
 func setupStatsRoutes(base *gin.RouterGroup) {

@@ -35,12 +35,12 @@ func Setup() {
 
 	log.Println("successfully connected to database")
 
-	NewsCollection = client.Database(conf.Env.DB.Name).Collection("vms")
+	NewsCollection = client.Database(conf.Env.DB.Name).Collection("news")
 	if err != nil {
 		log.Fatalln(makeError(err))
 	}
 
-	log.Println("found collection news_service")
+	log.Println("found collection news")
 }
 
 func Shutdown() {
