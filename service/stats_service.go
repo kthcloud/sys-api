@@ -1,4 +1,4 @@
-package stats_service
+package service
 
 import (
 	"context"

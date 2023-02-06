@@ -11,8 +11,8 @@ type Host struct {
 	Port int    `json:"port"`
 }
 
-func (host *Host) ApiURL() string {
-	return fmt.Sprintf("http://%s:%d", host.IP.String(), host.Port)
+func (host *Host) ApiURL(route string) string {
+	return fmt.Sprintf("http://%s:%d%s", host.IP.String(), host.Port, route)
 }
 
 var Hosts []Host

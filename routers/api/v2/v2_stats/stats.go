@@ -5,13 +5,13 @@ import (
 	"landing-api/models/dto"
 	"landing-api/models/stats"
 	"landing-api/pkg/app"
-	"landing-api/service/stats_service"
+	"landing-api/service"
 )
 
 func Get(c *gin.Context) {
 	context := app.NewContext(c)
 
-	k8sStats, err := stats_service.GetK8sStats()
+	k8sStats, err := service.GetK8sStats()
 	if err != nil {
 		k8sStats = &stats.K8sStats{
 			PodCount: 0,

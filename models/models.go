@@ -40,7 +40,7 @@ func Setup() {
 		log.Fatalln(makeError(err))
 	}
 
-	log.Println("found collection news")
+	log.Println("found collection news_service")
 }
 
 func Shutdown() {

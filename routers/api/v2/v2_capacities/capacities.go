@@ -5,13 +5,13 @@ import (
 	"landing-api/models/capacities"
 	"landing-api/models/dto"
 	"landing-api/pkg/app"
-	"landing-api/service/capacites_service"
+	"landing-api/service"
 )
 
 func Get(c *gin.Context) {
 	context := app.NewContext(c)
 
-	csCapacites, err := capacites_service.GetCsCapacites()
+	csCapacites, err := service.GetCsCapacites()
 	if err != nil {
 		csCapacites = &capacities.CsCapacities{
 			RAM: capacities.RamCapacities{
@@ -25,7 +25,7 @@ func Get(c *gin.Context) {
 		}
 	}
 
-	gpuCapacites, err := capacites_service.GetGpuCapacities()
+	gpuCapacites, err := service.GetGpuCapacities()
 	if err != nil {
 		gpuCapacites = &capacities.GpuCapacities{
 			Total: 0,

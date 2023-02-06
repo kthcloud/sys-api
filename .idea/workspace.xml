@@ -5,22 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ab0b9de4-f4f9-478b-a014-e2106a8cb43b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/models/dto/host_stats.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/dto/stats.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/stats/k8s_stats.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service/stats_service/stats_service.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/dto/host_status.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/service/news_service.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/service/status_service.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/capacities/cs_capacities.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/capacities/cs_capacities.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/capacities/gpu_capacities.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/capacities/gpu_capacities.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/dto/capacities.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/dto/capacities.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/dto/capacity.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/dto/host_capacities.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/conf/conf.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/conf/conf.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/conf/environment.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/conf/environment.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/models.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/models.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/conf/hosts.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/conf/hosts.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routers/api/v2/v2_capacities/capacities.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers/api/v2/v2_capacities/capacities.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routers/api/v2/v2_stats/stats.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers/api/v2/v2_stats/stats.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/capacites_service/capacities_service.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/capacites_service/capacities_service.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routers/api/v2/v2_status/status.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers/api/v2/v2_status/status.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routers/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers/router.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/capacites_service/capacities_service.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/capacities_service.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/stats_service/stats_service.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/stats_service.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,7 +31,10 @@
       </list>
     </option>
   </component>
-  <component name="GOROOT" url="file://$PROJECT_DIR$/../../../Program Files/Go" />
+  <component name="GOROOT" url="file://$USER_HOME$/sdk/go1.20" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -43,34 +43,35 @@
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectViewState">
-    <option name="autoscrollFromSource" value="false" />
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "DefaultGoTemplateProperty": "Go File",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.go.formatter.settings.were.checked": "true",
-    "RunOnceActivity.go.migrated.go.modules.settings": "true",
-    "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
-    "RunOnceActivity.go.watchers.conflict.with.on.save.actions.check.performed": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "go.import.settings.migrated": "true",
-    "go.sdk.automatically.set": "true",
-    "last_opened_file_path": "C:/repos/work/landing-api-v2",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.lookFeel"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;DefaultGoTemplateProperty&quot;: &quot;Go File&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.watchers.conflict.with.on.save.actions.check.performed&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;configurable..is.expanded&quot;: &quot;false&quot;,
+    &quot;configurable.GoLibrariesConfigurable.is.expanded&quot;: &quot;true&quot;,
+    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+    &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/emil/repos/work/landing-api&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\repos\work\landing-api-v2\utils" />
@@ -79,21 +80,39 @@
       <recent name="C:\repos\work\landing-api-v2\models" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/service" />
       <recent name="C:\repos\work\landing-api-v2\utils\requestutils" />
       <recent name="C:\repos\work\landing-api-v2\routers\api\v2" />
     </key>
   </component>
   <component name="RunManager">
+    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
+      <module name="landing-api-v2" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
     <configuration name="run" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="landing-api-v2" />
       <working_directory value="$PROJECT_DIR$" />
       <envs>
-        <env name="LANDING_ENV_FILE" value="C:\repos\work\admin\secrets\landing\v2\kthcloud.env" />
+        <env name="LANDING_ENV_FILE" value="$PROJECT_DIR$/../admin/secrets/landing/v2/kthcloud.env" />
       </envs>
       <kind value="PACKAGE" />
       <package value="landing-api" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="landing-api-v2" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="DIRECTORY" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
       <method v="2" />
     </configuration>
   </component>
@@ -122,9 +141,9 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/service/stats_service/stats_service.go</url>
-          <line>20</line>
-          <option name="timeStamp" value="3" />
+          <url>file://$PROJECT_DIR$/service/status_service.go</url>
+          <line>17</line>
+          <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -1,4 +1,4 @@
-package capacites_service
+package service
 
 import (
 	"fmt"
@@ -65,10 +65,10 @@ func GetGpuCapacities() (*capacitiesModels.GpuCapacities, error) {
 		wg.Add(1)
 		go func(idx int, host conf.Host) {
 			makeError := func(err error) error {
-				return fmt.Errorf("failed to get gpu capacitity for host %s. details: %s", host.IP.String(), err)
+				return fmt.Errorf("failed to get capacities for host %s. details: %s", host.IP.String(), err)
 			}
 
-			url := fmt.Sprintf("%s/capacities", host.ApiURL())
+			url := host.ApiURL("/capacities")
 			response, err := requestutils.DoRequest("GET", url, nil, nil)
 			if err != nil {
 				log.Println(makeError(err))
