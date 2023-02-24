@@ -25,4 +25,10 @@ type HostStatus struct {
 			TransmitRate int `json:"transmitRate,omitempty"`
 		} `json:"usage"`
 	} `json:"network"`
+
+	GPU *struct {
+		Temp []struct {
+			Main int `json:"main,omitempty"`
+		} `json:"temp,omitempty"`
+	} `json:"gpu,omitempty"`
 }
