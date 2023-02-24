@@ -31,7 +31,9 @@ func GetCsCapacites() (*capacitiesModels.CsCapacities, error) {
 	csResponse, err := csClient.SystemCapacity.ListCapacity(csParams)
 
 	if err != nil {
-		return nil, makeError(err)
+		err = makeError(err)
+		log.Println(err)
+		return nil, err
 	}
 
 	var cpuCore capacitiesModels.CpuCoreCapacities
@@ -39,8 +41,8 @@ func GetCsCapacites() (*capacitiesModels.CsCapacities, error) {
 
 	for _, capacity := range csResponse.Capacity {
 		if capacity.Name == "CPU_CORE" {
-			cpuCore.Used = convertToGB(capacity.Capacityused)
-			cpuCore.Total = convertToGB(capacity.Capacitytotal)
+			cpuCore.Used = int(capacity.Capacityused)
+			cpuCore.Total = int(capacity.Capacitytotal)
 		} else if capacity.Name == "MEMORY" {
 			ram.Used = convertToGB(capacity.Capacityused)
 			ram.Total = convertToGB(capacity.Capacitytotal)
