@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ab0b9de4-f4f9-478b-a014-e2106a8cb43b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/models/dto/host_status.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/dto/host_status.go" afterDir="false" />
-    </list>
+    <list default="true" id="ab0b9de4-f4f9-478b-a014-e2106a8cb43b" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

@@ -179,6 +179,6 @@ func CapacitiesWorker(ctx *app.Context) {
 			return
 		}
 
-		time.Sleep(1 * time.Second)
+		time.Sleep(60 * time.Second)
 	}
 }

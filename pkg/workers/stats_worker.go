@@ -88,6 +88,6 @@ func StatWorker() {
 			continue
 		}
 
-		time.Sleep(1 * time.Second)
+		time.Sleep(60 * time.Second)
 	}
 }
