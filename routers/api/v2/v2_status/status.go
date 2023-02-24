@@ -24,5 +24,5 @@ func Get(c *gin.Context) {
 		return
 	}
 
-	context.JSONResponse(200, hostsStatuses)
+	context.JSONResponse(200, status)
 }
