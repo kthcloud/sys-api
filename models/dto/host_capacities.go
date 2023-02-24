@@ -9,6 +9,7 @@ type HostRamCapacities struct {
 }
 
 type HostCapacities struct {
-	GPU HostGpuCapacities `json:"gpu"`
-	RAM HostRamCapacities `json:"ram"`
+	Name string            `json:"name"`
+	GPU  HostGpuCapacities `json:"gpu"`
+	RAM  HostRamCapacities `json:"ram"`
 }

@@ -57,7 +57,7 @@ func GetCsCapacites() (*capacitiesModels.CsCapacities, error) {
 	return parsedCapacities, nil
 }
 
-func GetGpuCapacities() (*capacitiesModels.GpuCapacities, error) {
+func GetHostCapacities() ([]dto.HostCapacities, error) {
 
 	outputs := make([]*dto.HostCapacities, len(conf.Hosts))
 
@@ -78,15 +78,17 @@ func GetGpuCapacities() (*capacitiesModels.GpuCapacities, error) {
 				return
 			}
 
-			var gpuCapacity dto.HostCapacities
-			err = requestutils.ParseBody(response.Body, &gpuCapacity)
+			var hostCapacities dto.HostCapacities
+			err = requestutils.ParseBody(response.Body, &hostCapacities)
 			if err != nil {
 				log.Println(makeError(err))
 				wg.Done()
 				return
 			}
 
-			outputs[idx] = &gpuCapacity
+			hostCapacities.Name = conf.Hosts[idx].Name
+
+			outputs[idx] = &hostCapacities
 
 			wg.Done()
 		}(idx, host)
@@ -94,15 +96,15 @@ func GetGpuCapacities() (*capacitiesModels.GpuCapacities, error) {
 
 	wg.Wait()
 
-	var result capacitiesModels.GpuCapacities
+	var result []dto.HostCapacities
 
 	for _, output := range outputs {
 		if output != nil {
-			result.Total += output.GPU.Count
+			result = append(result, *output)
 		}
 	}
 
-	return &result, nil
+	return result, nil
 }
 
 func convertToGB(bytes int64) int {

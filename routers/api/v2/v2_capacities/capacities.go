@@ -25,11 +25,15 @@ func Get(c *gin.Context) {
 		}
 	}
 
-	gpuCapacites, err := service.GetGpuCapacities()
+	gpuTotal := 0
+
+	hostCapacities, err := service.GetHostCapacities()
 	if err != nil {
-		gpuCapacites = &capacities.GpuCapacities{
-			Total: 0,
-		}
+		hostCapacities = make([]dto.HostCapacities, 0)
+	}
+
+	for _, host := range hostCapacities {
+		gpuTotal += host.GPU.Count
 	}
 
 	collected := dto.Capacities{
@@ -42,8 +46,9 @@ func Get(c *gin.Context) {
 			Total: csCapacites.CpuCore.Total,
 		},
 		GPU: dto.GpuCapacities{
-			Total: gpuCapacites.Total,
+			Total: gpuTotal,
 		},
+		Hosts: hostCapacities,
 	}
 
 	context.JSONResponse(200, collected)
