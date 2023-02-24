@@ -3,7 +3,7 @@ name: ci
 on:
   push:
     branches:
-      - 'main'
+      - 'v2'
 
 jobs:
   docker:
@@ -27,5 +27,5 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: registry.cloud.cbh.kth.se/system/landing-api:latest
+          tags: registry.cloud.cbh.kth.se/system/landing-api-v2:latest
 
