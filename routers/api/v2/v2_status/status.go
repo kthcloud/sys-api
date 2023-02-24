@@ -15,8 +15,12 @@ func Get(c *gin.Context) {
 		hostsStatuses = []dto.HostStatus{}
 	}
 
+	status := dto.Status{
+		Hosts: hostsStatuses,
+	}
+
 	if hostsStatuses == nil {
-		context.JSONResponse(200, make([]interface{}, 0))
+		context.JSONResponse(200, status)
 		return
 	}
 

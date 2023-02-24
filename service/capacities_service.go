@@ -59,7 +59,7 @@ func GetCsCapacites() (*capacitiesModels.CsCapacities, error) {
 
 func GetGpuCapacities() (*capacitiesModels.GpuCapacities, error) {
 
-	outputs := make([]*dto.HostCapacites, len(conf.Hosts))
+	outputs := make([]*dto.HostCapacities, len(conf.Hosts))
 
 	wg := sync.WaitGroup{}
 
@@ -78,7 +78,7 @@ func GetGpuCapacities() (*capacitiesModels.GpuCapacities, error) {
 				return
 			}
 
-			var gpuCapacity dto.HostCapacites
+			var gpuCapacity dto.HostCapacities
 			err = requestutils.ParseBody(response.Body, &gpuCapacity)
 			if err != nil {
 				log.Println(makeError(err))

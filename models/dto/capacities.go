@@ -18,4 +18,5 @@ type Capacities struct {
 	RAM     RamCapacities     `json:"ram"`
 	CpuCore CpuCoreCapacities `json:"cpuCore"`
 	GPU     GpuCapacities     `json:"gpu"`
+	Hosts   []HostCapacities  `json:"hosts"`
 }
