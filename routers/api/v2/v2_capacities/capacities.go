@@ -2,54 +2,38 @@ package v2_capacities
 
 import (
 	"github.com/gin-gonic/gin"
-	"landing-api/models/capacities"
-	"landing-api/models/dto"
 	"landing-api/pkg/app"
+	"landing-api/pkg/validator"
 	"landing-api/service"
+	"strconv"
 )
 
 func Get(c *gin.Context) {
 	context := app.NewContext(c)
 
-	csCapacites, err := service.GetCsCapacites()
+	rules := validator.MapData{
+		"n": []string{
+			"required",
+			"integer",
+		},
+	}
+
+	validationErrors := context.ValidateQueryParams(&rules)
+	if len(validationErrors) > 0 {
+		context.ResponseValidationError(validationErrors)
+		return
+	}
+
+	n, err := strconv.Atoi(context.GinContext.Query("n"))
 	if err != nil {
-		csCapacites = &capacities.CsCapacities{
-			RAM: capacities.RamCapacities{
-				Used:  0,
-				Total: 0,
-			},
-			CpuCore: capacities.CpuCoreCapacities{
-				Used:  0,
-				Total: 0,
-			},
-		}
+		context.JSONResponse(500, err)
 	}
 
-	gpuTotal := 0
-
-	hostCapacities, err := service.GetHostCapacities()
+	capacities, err := service.GetCapacities(n)
 	if err != nil {
-		hostCapacities = make([]dto.HostCapacities, 0)
+		context.JSONResponse(200, make([]interface{}, 0))
+		return
 	}
 
-	for _, host := range hostCapacities {
-		gpuTotal += host.GPU.Count
-	}
-
-	collected := dto.Capacities{
-		RAM: dto.RamCapacities{
-			Used:  csCapacites.RAM.Used,
-			Total: csCapacites.RAM.Total,
-		},
-		CpuCore: dto.CpuCoreCapacities{
-			Used:  csCapacites.CpuCore.Used,
-			Total: csCapacites.CpuCore.Total,
-		},
-		GPU: dto.GpuCapacities{
-			Total: gpuTotal,
-		},
-		Hosts: hostCapacities,
-	}
-
-	context.JSONResponse(200, collected)
+	context.JSONResponse(200, capacities)
 }

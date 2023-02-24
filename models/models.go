@@ -11,7 +11,9 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-var NewsCollection *mongo.Collection
+var StatsCollection *mongo.Collection
+var CapacitiesCollection *mongo.Collection
+var StatusCollection *mongo.Collection
 var client *mongo.Client
 
 func Setup() {
@@ -35,12 +37,23 @@ func Setup() {
 
 	log.Println("successfully connected to database")
 
-	NewsCollection = client.Database(conf.Env.DB.Name).Collection("news")
+	StatsCollection = client.Database(conf.Env.DB.Name).Collection("stats")
 	if err != nil {
 		log.Fatalln(makeError(err))
 	}
+	log.Println("found collection stats")
 
-	log.Println("found collection news")
+	CapacitiesCollection = client.Database(conf.Env.DB.Name).Collection("capacities")
+	if err != nil {
+		log.Fatalln(makeError(err))
+	}
+	log.Println("found collection capacities")
+
+	StatusCollection = client.Database(conf.Env.DB.Name).Collection("status")
+	if err != nil {
+		log.Fatalln(makeError(err))
+	}
+	log.Println("found collection status")
 }
 
 func Shutdown() {
@@ -48,7 +61,9 @@ func Shutdown() {
 		return fmt.Errorf("failed to shutdown database. details: %s", err)
 	}
 
-	NewsCollection = nil
+	StatsCollection = nil
+	CapacitiesCollection = nil
+	StatusCollection = nil
 
 	err := client.Disconnect(context.Background())
 	if err != nil {

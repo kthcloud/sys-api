@@ -5,6 +5,7 @@ import (
 	"landing-api/models"
 	"landing-api/pkg/app"
 	"landing-api/pkg/conf"
+	"landing-api/pkg/workers"
 	"landing-api/routers"
 	"log"
 	"net/http"
@@ -16,6 +17,7 @@ import (
 func setup(context *app.Context) {
 	conf.Setup()
 	models.Setup()
+	workers.Setup(context)
 }
 
 func shutdown() {
