@@ -117,7 +117,7 @@ func convertToGB(bytes int64) int {
 
 func CapacitiesWorker(ctx *app.Context) {
 	makeError := func(err error) error {
-		return fmt.Errorf("capacitity expereienced an issue: %s", err)
+		return fmt.Errorf("capacitity worker experienced an issue: %s", err)
 	}
 
 	for {

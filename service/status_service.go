@@ -1,59 +1,37 @@
 package service
 
 import (
+	"context"
 	"fmt"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo/options"
+	"landing-api/models"
 	"landing-api/models/dto"
-	"landing-api/pkg/conf"
-	"landing-api/utils/requestutils"
-	"log"
-	"sync"
 )
 
-func GetHostStatuses() ([]dto.HostStatus, error) {
-
-	outputs := make([]*dto.HostStatus, len(conf.Hosts))
-
-	wg := sync.WaitGroup{}
-
-	for idx, host := range conf.Hosts {
-
-		wg.Add(1)
-		go func(idx int, host conf.Host) {
-			makeError := func(err error) error {
-				return fmt.Errorf("failed to get  for host %s. details: %s", host.IP.String(), err)
-			}
-
-			result, err := requestutils.DoRequest("GET", host.ApiURL("/status"), nil, nil)
-			if err != nil {
-				log.Println(makeError(err))
-				wg.Done()
-				return
-			}
-
-			var hostStatus dto.HostStatus
-			err = requestutils.ParseBody(result.Body, &hostStatus)
-			if err != nil {
-				log.Println(makeError(err))
-				wg.Done()
-				return
-			}
-			hostStatus.Name = conf.Hosts[idx].Name
-
-			outputs[idx] = &hostStatus
-
-			wg.Done()
-		}(idx, host)
+func GetStatus(n int) ([]dto.StatusDB, error) {
+	makeError := func(err error) error {
+		return fmt.Errorf("failed to fetch status from db. details: %s", err)
 	}
 
-	wg.Wait()
+	result, err := models.StatusCollection.Find(context.TODO(), bson.M{}, &options.FindOptions{
+		Limit: intPtr(int64(n)),
+		Sort:  bson.M{"timestamp": -1},
+	})
 
-	var result []dto.HostStatus
+	if err != nil {
+		return nil, makeError(err)
+	}
 
-	for _, output := range outputs {
-		if output != nil {
-			result = append(result, *output)
+	var collected []dto.StatusDB
+	for result.Next(context.TODO()) {
+		var status dto.StatusDB
+		err := result.Decode(&status)
+		if err != nil {
+			return nil, makeError(err)
 		}
+		collected = append(collected, status)
 	}
 
-	return result, nil
+	return collected, nil
 }
