@@ -19,6 +19,7 @@ func GetK8sStats() (*stats.K8sStats, error) {
 	outputs := make(map[string]*dto.K8sStats)
 
 	wg := sync.WaitGroup{}
+	mu := sync.Mutex{}
 
 	for name, cluster := range conf.Env.K8s.Clients {
 		wg.Add(1)
@@ -34,9 +35,11 @@ func GetK8sStats() (*stats.K8sStats, error) {
 				return
 			}
 
+			mu.Lock()
 			outputs[name] = &dto.K8sStats{
 				PodCount: len(list.Items),
 			}
+			mu.Unlock()
 
 			wg.Done()
 

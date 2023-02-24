@@ -66,6 +66,7 @@ func GetHostCapacities() ([]dto.HostCapacities, error) {
 	outputs := make([]*dto.HostCapacities, len(conf.Hosts))
 
 	wg := sync.WaitGroup{}
+	mu := sync.Mutex{}
 
 	for idx, host := range conf.Hosts {
 		wg.Add(1)
@@ -92,7 +93,9 @@ func GetHostCapacities() ([]dto.HostCapacities, error) {
 
 			hostCapacities.Name = conf.Hosts[idx].Name
 
+			mu.Lock()
 			outputs[idx] = &hostCapacities
+			mu.Unlock()
 
 			wg.Done()
 		}(idx, host)

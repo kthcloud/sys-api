@@ -16,6 +16,7 @@ func GetHostStatuses() ([]dto.HostStatus, error) {
 	outputs := make([]*dto.HostStatus, len(conf.Hosts))
 
 	wg := sync.WaitGroup{}
+	mu := sync.Mutex{}
 
 	for idx, host := range conf.Hosts {
 
@@ -41,7 +42,9 @@ func GetHostStatuses() ([]dto.HostStatus, error) {
 			}
 			hostStatus.Name = conf.Hosts[idx].Name
 
+			mu.Lock()
 			outputs[idx] = &hostStatus
+			mu.Unlock()
 
 			wg.Done()
 		}(idx, host)
