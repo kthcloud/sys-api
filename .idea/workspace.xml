@@ -5,14 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ab0b9de4-f4f9-478b-a014-e2106a8cb43b" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/manifests/deployment.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manifests/namespace.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manifests/pv.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manifests/pvc.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manifests/service.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/dto/news_create.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/dto/news_read.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/news/news.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/routers/api/v2/v2_news/news.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/routers/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers/router.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/capacities_service.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/capacities_service.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/news_service.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,7 +63,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.lookFeel"
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
 }]]></component>
   <component name="RecentsManager">

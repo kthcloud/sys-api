@@ -34,5 +34,7 @@ EXPOSE 8080
 
 WORKDIR /go
 
+RUN mkdir -p /etc/landing/config
+
 # Run the Go Gin binary.
 ENTRYPOINT ["/go/main"]
