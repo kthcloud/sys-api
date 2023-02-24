@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ab0b9de4-f4f9-478b-a014-e2106a8cb43b" name="Changes" comment="" />
+    <list default="true" id="ab0b9de4-f4f9-478b-a014-e2106a8cb43b" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/dto/capacities.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/dto/capacities.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/dto/capacities_db.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/dto/capacities_db.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/dto/host_capacities.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/dto/host_capacities.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/workers/workers.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/workers/workers.go" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

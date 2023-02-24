@@ -1,15 +1,15 @@
 package dto
 
 type HostGpuCapacities struct {
-	Count int `json:"count"`
+	Count int `json:"count" bson:"count"`
 }
 
 type HostRamCapacities struct {
-	Total int `json:"total"`
+	Total int `json:"total" bson:"total"`
 }
 
 type HostCapacities struct {
-	Name string            `json:"name"`
-	GPU  HostGpuCapacities `json:"gpu"`
-	RAM  HostRamCapacities `json:"ram"`
+	Name string            `json:"name" bson:"name"`
+	GPU  HostGpuCapacities `json:"gpu" bson:"gpu"`
+	RAM  HostRamCapacities `json:"ram" bson:"ram"`
 }
