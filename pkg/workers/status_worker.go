@@ -1,7 +1,9 @@
 package workers
 
 import (
+	"context"
 	"fmt"
+	"landing-api/models"
 	"landing-api/models/dto"
 	"landing-api/pkg/conf"
 	"landing-api/utils/requestutils"
@@ -77,17 +79,17 @@ func StatusWorker() {
 			Hosts: hostsStatuses,
 		}
 
-		_ = dto.StatusDB{
+		statusDB := dto.StatusDB{
 			Status:    status,
 			Timestamp: time.Now(),
 		}
 
-		//_, err = models.StatusCollection.InsertOne(context.TODO(), statusDB)
-		//if err != nil {
-		//	log.Println(makeError(err))
-		//	return
-		//}
+		_, err = models.StatusCollection.InsertOne(context.TODO(), statusDB)
+		if err != nil {
+			log.Println(makeError(err))
+			return
+		}
 
-		time.Sleep(10)
+		time.Sleep(1 * time.Second)
 	}
 }
