@@ -31,7 +31,7 @@ func GetKeyCloakConfig() auth.KeycloakConfig {
 	var fullCertPath = fmt.Sprintf("realms/%s/protocol/openid-connect/certs", conf.Env.Keycloak.Realm)
 
 	return auth.KeycloakConfig{
-		Url:           conf.Env.Keycloak.Url,
+		Url:           conf.Env.Keycloak.URL,
 		Realm:         conf.Env.Keycloak.Realm,
 		FullCertsPath: &fullCertPath}
 }

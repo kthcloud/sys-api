@@ -1,18 +1,16 @@
 package conf
 
 import (
-	"context"
-	"encoding/base64"
 	"encoding/json"
+	"errors"
 	"fmt"
-	"github.com/Netflix/go-env"
-	"github.com/joho/godotenv"
-	"io"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"gopkg.in/yaml.v3"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
+	"landing-api/pkg/cloudstack"
 	"log"
 	"os"
+	"regexp"
 	"strings"
 )
 
@@ -21,60 +19,104 @@ func Setup() {
 		return fmt.Errorf("failed to setup environment. details: %s", err)
 	}
 
-	deployEnv, found := os.LookupEnv("LANDING_ENV_FILE")
-	if found {
-		log.Println("using env-file:", deployEnv)
-		err := godotenv.Load(deployEnv)
-		if err != nil {
-			log.Fatalln(makeError(err))
-		}
+	filepath, found := os.LookupEnv("LANDING_CONFIG_FILE")
+	if !found {
+		log.Fatalln(makeError(fmt.Errorf("config file not found. please set LANDING_CONFIG_FILE environment variable")))
 	}
 
-	_, err := env.UnmarshalFromEnviron(&Env)
+	log.Println("reading config from", filepath)
+	yamlFile, err := os.ReadFile(filepath)
+	if err != nil {
+		log.Fatalf(makeError(err).Error())
+	}
+
+	err = yaml.Unmarshal(yamlFile, &Env)
+	if err != nil {
+		log.Fatalf(makeError(err).Error())
+	}
+
+	log.Println("reading hosts from", Env.HostsPath)
+	hostsJson, err := os.ReadFile(Env.HostsPath)
 	if err != nil {
 		log.Fatalln(makeError(err))
 	}
 
-	hostsJson, err := os.Open(Env.HostsPath)
-	if err != nil {
-		log.Fatalln(makeError(err))
-	}
-	defer func(hostsJson *os.File) {
-		err := hostsJson.Close()
-		if err != nil {
-			log.Fatalln(makeError(err))
-		}
-	}(hostsJson)
-
-	byteValue, _ := io.ReadAll(hostsJson)
-
-	err = json.Unmarshal(byteValue, &Hosts)
+	err = json.Unmarshal(hostsJson, &Hosts)
 	if err != nil {
 		log.Fatalln(makeError(err))
 	}
 
 	log.Println("successfully loaded", len(Hosts), "hosts")
 
-	setupClient := func(name string, b64 string) {
-		client, err := createClient(b64)
-		if err != nil {
-			log.Println(makeError(fmt.Errorf("failed to connect to k8s cluster %s. Details: ", err)))
+	log.Println("fetching available k8s clusters")
+
+	csClient := cloudstack.NewAsyncClient(
+		Env.CS.URL,
+		Env.CS.ApiKey,
+		Env.CS.Secret,
+		true,
+	)
+	listClusterParams := csClient.Kubernetes.NewListKubernetesClustersParams()
+	listClusterParams.SetListall(true)
+	clusters, err := csClient.Kubernetes.ListKubernetesClusters(listClusterParams)
+	if err != nil {
+		log.Fatalln(makeError(err))
+	}
+
+	fetchConfig := func(name string, publicUrl string) string {
+
+		log.Println("fetching k8s cluster config for", name)
+
+		clusterIdx := -1
+		for idx, cluster := range clusters.KubernetesClusters {
+			if cluster.Name == name {
+				clusterIdx = idx
+				break
+			}
 		}
 
-		// if we can fetch namespaces, we assume cluster is ok
-		_, err = client.CoreV1().Namespaces().List(context.TODO(), v1.ListOptions{})
-		if err == nil {
-			Env.K8s.Clients[name] = client
-		} else {
-			log.Println(makeError(err))
+		if clusterIdx == -1 {
+			log.Println("cluster", name, "not found")
+			return ""
 		}
+
+		params := csClient.Kubernetes.NewGetKubernetesClusterConfigParams()
+		params.SetId(clusters.KubernetesClusters[clusterIdx].Id)
+
+		config, err := csClient.Kubernetes.GetKubernetesClusterConfig(params)
+		if err != nil {
+			log.Fatalln(makeError(err))
+		}
+
+		// use regex to replace the private ip in config.ConffigData 172.31.1.* with the public ip
+		regex := regexp.MustCompile(`https://172.31.1.[0-9]+:6443`)
+
+		config.ClusterConfig.Configdata = regex.ReplaceAllString(config.ClusterConfig.Configdata, publicUrl)
+
+		return config.ClusterConfig.Configdata
 	}
 
 	Env.K8s.Clients = make(map[string]*kubernetes.Clientset)
 
-	setupClient("sys", Env.K8s.Configs.Sys)
-	setupClient("prod", Env.K8s.Configs.Prod)
-	setupClient("dev", Env.K8s.Configs.Dev)
+	for _, cluster := range Env.K8s.Clusters {
+		// get the public ip of the cluster
+		publicURL := cluster.URL
+
+		// get the config data from cloudstack
+		configData := fetchConfig(cluster.Name, publicURL)
+		if configData == "" {
+			continue
+		}
+
+		// create the k8s client
+		client, err := createClient([]byte(configData))
+		if err != nil {
+			log.Println(makeError(errors.New("failed to connect to k8s cluster " + cluster.Name + ". details: " + err.Error())))
+			continue
+		}
+
+		Env.K8s.Clients[cluster.Name] = client
+	}
 
 	clusterNames := make([]string, len(Env.K8s.Clients))
 	i := 0
@@ -91,18 +133,11 @@ func Setup() {
 
 }
 
-func createConfigFromB64(b64Config string) []byte {
-	configB64 := b64Config
-	config, _ := base64.StdEncoding.DecodeString(configB64)
-	return config
-}
-
-func createClient(b64 string) (*kubernetes.Clientset, error) {
+func createClient(configData []byte) (*kubernetes.Clientset, error) {
 	makeError := func(err error) error {
 		return fmt.Errorf("failed to create k8s client. details: %s", err)
 	}
 
-	configData := createConfigFromB64(b64)
 	kubeConfig, err := clientcmd.RESTConfigFromKubeConfig(configData)
 	if err != nil {
 		return nil, makeError(err)

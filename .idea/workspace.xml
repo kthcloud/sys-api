@@ -5,11 +5,157 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ab0b9de4-f4f9-478b-a014-e2106a8cb43b" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/APIDiscoveryService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/APIDiscoveryService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/AccountService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/AccountService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/AddressService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/AddressService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/AffinityGroupService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/AffinityGroupService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/AlertService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/AlertService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/AnnotationService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/AnnotationService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/AsyncjobService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/AsyncjobService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/AuthenticationService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/AuthenticationService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/AutoScaleService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/AutoScaleService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/BaremetalService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/BaremetalService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/BigSwitchBCFService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/BigSwitchBCFService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/BrocadeVCSService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/BrocadeVCSService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/CertificateService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/CertificateService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/CloudIdentifierService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/CloudIdentifierService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/ClusterService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/ClusterService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/ConfigurationService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/ConfigurationService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/CustomService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/CustomService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/DiskOfferingService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/DiskOfferingService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/DomainService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/DomainService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/EventService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/EventService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/FirewallService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/FirewallService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/GuestOSService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/GuestOSService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/HostService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/HostService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/HypervisorService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/HypervisorService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/ISOService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/ISOService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/ImageStoreService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/ImageStoreService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/InfrastructureUsageService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/InfrastructureUsageService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/InternalLBService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/InternalLBService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/KubernetesService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/KubernetesService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/LDAPService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/LDAPService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/LimitService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/LimitService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/LoadBalancerService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/LoadBalancerService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/NATService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/NATService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/NetworkACLService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/NetworkACLService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/NetworkDeviceService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/NetworkDeviceService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/NetworkOfferingService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/NetworkOfferingService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/NetworkService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/NetworkService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/NicService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/NicService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/NiciraNVPService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/NiciraNVPService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/OutofbandManagementService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/OutofbandManagementService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/OvsElementService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/OvsElementService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/PodService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/PodService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/PoolService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/PoolService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/PortableIPService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/PortableIPService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/ProjectService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/ProjectService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/QuotaService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/QuotaService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/RegionService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/RegionService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/ResourcemetadataService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/ResourcemetadataService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/ResourcetagsService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/ResourcetagsService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/RoleService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/RoleService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/RouterService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/RouterService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/SSHService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/SSHService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/SecurityGroupService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/SecurityGroupService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/ServiceOfferingService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/ServiceOfferingService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/SnapshotService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/SnapshotService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/StoragePoolService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/StoragePoolService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/StratosphereSSPService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/StratosphereSSPService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/SwiftService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/SwiftService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/SystemCapacityService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/SystemCapacityService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/SystemVMService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/SystemVMService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/TemplateService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/TemplateService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/UCSService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/UCSService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/UsageService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/UsageService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/UserService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/UserService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/VLANService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/VLANService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/VMGroupService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/VMGroupService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/VPCService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/VPCService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/VPNService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/VPNService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/VirtualMachineService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/VirtualMachineService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/VolumeService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/VolumeService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/ZoneService.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/ZoneService_mock.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cloudstack/cloudstack.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/dto/capacities.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/dto/capacities.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/dto/capacities_db.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/dto/capacities_db.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/dto/host_capacities.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/dto/host_capacities.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/workers/workers.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/workers/workers.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/models.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/models.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/app/auth.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/app/auth.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/conf/conf.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/conf/conf.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/conf/environment.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/conf/environment.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/workers/capacities_worker.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/workers/capacities_worker.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,7 +201,7 @@
     &quot;configurable.GoLibrariesConfigurable.is.expanded&quot;: &quot;true&quot;,
     &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
     &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/emil/repos/work/landing-api-v2&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/emil/repos/cloudstack-go&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -78,16 +224,33 @@
     </key>
   </component>
   <component name="RunManager">
+    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
+      <module name="landing-api-v2" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
     <configuration name="run" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="landing-api-v2" />
       <working_directory value="$PROJECT_DIR$" />
       <envs>
-        <env name="LANDING_ENV_FILE" value="$PROJECT_DIR$/../admin/secrets/landing/v2/kthcloud.env" />
+        <env name="LANDING_CONFIG_FILE" value="$PROJECT_DIR$/../admin/secrets/landing/landing-config.yml" />
       </envs>
       <kind value="PACKAGE" />
       <package value="landing-api" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="landing-api-v2" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="DIRECTORY" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
       <method v="2" />
     </configuration>
   </component>
@@ -111,5 +274,16 @@
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$USER_HOME$/go/pkg/mod/github.com/apache/cloudstack-go/v2@v2.13.2/cloudstack/KubernetesService.go</url>
+          <line>875</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

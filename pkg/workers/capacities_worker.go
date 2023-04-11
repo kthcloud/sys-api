@@ -3,12 +3,12 @@ package workers
 import (
 	"context"
 	"fmt"
-	"github.com/apache/cloudstack-go/v2/cloudstack"
 	"landing-api/models"
 	"landing-api/models/capacities"
 	capacitiesModels "landing-api/models/capacities"
 	"landing-api/models/dto"
 	"landing-api/pkg/app"
+	"landing-api/pkg/cloudstack"
 	"landing-api/pkg/conf"
 	"landing-api/utils/requestutils"
 	"log"
@@ -25,7 +25,7 @@ func GetCsCapacites() (*capacitiesModels.CsCapacities, error) {
 	cs := conf.Env.CS
 
 	csClient := cloudstack.NewAsyncClient(
-		cs.Url,
+		cs.URL,
 		cs.ApiKey,
 		cs.Secret,
 		true,

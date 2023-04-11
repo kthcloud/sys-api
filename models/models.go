@@ -22,7 +22,7 @@ func Setup() {
 	}
 
 	// Connect to db
-	uri := conf.Env.DB.Url
+	uri := conf.Env.DB.URL
 	clientResult, err := mongo.NewClient(options.Client().ApplyURI(uri))
 	if err != nil {
 		log.Fatalln(makeError(err))
