@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"landing-api/models"
-	"landing-api/pkg/app"
 	"landing-api/pkg/conf"
 	"landing-api/routers"
 	"log"
@@ -13,7 +12,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func setup(context *app.Context) {
+func setup() {
 	conf.Setup()
 	models.Setup()
 }
@@ -23,9 +22,7 @@ func shutdown() {
 }
 
 func main() {
-	context := app.Context{}
-
-	setup(&context)
+	setup()
 	defer shutdown()
 
 	ginMode, exists := os.LookupEnv("GIN_MODE")
