@@ -3,7 +3,10 @@ package routers
 import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"landing-api/pkg/app"
+	"landing-api/pkg/auth"
 	"landing-api/routers/api/v2/v2_capacities"
+	"landing-api/routers/api/v2/v2_gpu_info"
 	"landing-api/routers/api/v2/v2_stats"
 	"landing-api/routers/api/v2/v2_status"
 )
@@ -22,6 +25,11 @@ func NewRouter() *gin.Engine {
 	setupStatsRoutes(apiv2)
 	setupStatusRoutes(apiv2)
 
+	internal := apiv2.Group("/internal")
+	internal.Use(auth.New(auth.Check(), app.GetKeyCloakConfig()))
+
+	setupGpuInfoRoutes(internal)
+
 	return router
 }
 
@@ -35,4 +43,8 @@ func setupStatsRoutes(base *gin.RouterGroup) {
 
 func setupStatusRoutes(base *gin.RouterGroup) {
 	base.GET("/status", v2_status.Get)
+}
+
+func setupGpuInfoRoutes(base *gin.RouterGroup) {
+	base.GET("/gpuInfo", v2_gpu_info.Get)
 }

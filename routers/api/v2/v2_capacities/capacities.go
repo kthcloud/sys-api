@@ -4,8 +4,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"landing-api/pkg/app"
 	"landing-api/pkg/validator"
+	v2 "landing-api/routers/api/v2"
 	"landing-api/service"
-	"strconv"
 )
 
 func Get(c *gin.Context) {
@@ -13,7 +13,6 @@ func Get(c *gin.Context) {
 
 	rules := validator.MapData{
 		"n": []string{
-			"required",
 			"integer",
 		},
 	}
@@ -24,10 +23,7 @@ func Get(c *gin.Context) {
 		return
 	}
 
-	n, err := strconv.Atoi(context.GinContext.Query("n"))
-	if err != nil {
-		context.JSONResponse(500, err)
-	}
+	n, err := v2.GetN(context)
 
 	capacities, err := service.GetCapacities(n)
 	if err != nil {

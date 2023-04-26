@@ -1,4 +1,4 @@
-package v2_status
+package v2_gpu_info
 
 import (
 	"github.com/gin-gonic/gin"
@@ -10,6 +10,12 @@ import (
 
 func Get(c *gin.Context) {
 	context := app.NewContext(c)
+
+	isAdmin := v2.IsAdmin(&context)
+	if !isAdmin {
+		context.Unauthorized()
+		return
+	}
 
 	rules := validator.MapData{
 		"n": []string{
@@ -25,11 +31,11 @@ func Get(c *gin.Context) {
 
 	n, err := v2.GetN(context)
 
-	status, err := service.GetStatus(n)
+	gpuInfo, err := service.GetGpuInfo(n)
 	if err != nil {
 		context.JSONResponse(200, make([]interface{}, 0))
 		return
 	}
-	
-	context.JSONResponse(200, status)
+
+	context.JSONResponse(200, gpuInfo)
 }
