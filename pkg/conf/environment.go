@@ -4,8 +4,9 @@ type Environment struct {
 	Port int `yaml:"port" default:"8080"`
 
 	Keycloak struct {
-		URL   string `yaml:"url"`
-		Realm string `yaml:"realm"`
+		URL        string `yaml:"url"`
+		Realm      string `yaml:"realm"`
+		AdminGroup string `yaml:"adminGroup"`
 	} `yaml:"keycloak"`
 
 	DB struct {

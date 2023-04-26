@@ -14,6 +14,7 @@ import (
 var StatsCollection *mongo.Collection
 var CapacitiesCollection *mongo.Collection
 var StatusCollection *mongo.Collection
+var GpuInfoCollection *mongo.Collection
 var client *mongo.Client
 
 func Setup() {
@@ -37,23 +38,17 @@ func Setup() {
 
 	log.Println("successfully connected to database")
 
-	StatsCollection = client.Database(conf.Env.DB.Name).Collection("stats")
-	if err != nil {
-		log.Fatalln(makeError(err))
-	}
-	log.Println("found collection stats")
+	// Find collections
+	StatsCollection = findCollection("stats")
+	CapacitiesCollection = findCollection("capacities")
+	StatusCollection = findCollection("status")
+	GpuInfoCollection = findCollection("gpuInfo")
+}
 
-	CapacitiesCollection = client.Database(conf.Env.DB.Name).Collection("capacities")
-	if err != nil {
-		log.Fatalln(makeError(err))
-	}
-	log.Println("found collection capacities")
-
-	StatusCollection = client.Database(conf.Env.DB.Name).Collection("status")
-	if err != nil {
-		log.Fatalln(makeError(err))
-	}
-	log.Println("found collection status")
+func findCollection(collectionName string) *mongo.Collection {
+	collection := client.Database(conf.Env.DB.Name).Collection(collectionName)
+	log.Println("found collection " + collectionName)
+	return collection
 }
 
 func Shutdown() {
