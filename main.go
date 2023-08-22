@@ -1,45 +1,56 @@
 package main
 
 import (
-	"fmt"
-	"landing-api/models"
-	"landing-api/pkg/conf"
-	"landing-api/routers"
+	"context"
+	"flag"
+	"landing-api/pkg/app"
 	"log"
-	"net/http"
 	"os"
-
-	"github.com/gin-gonic/gin"
 )
 
-func setup() {
-	conf.Setup()
-	models.Setup()
-}
-
-func shutdown() {
-	models.Shutdown()
+func isFlagPassed(name string) bool {
+	found := false
+	flag.Visit(func(f *flag.Flag) {
+		if f.Name == name {
+			found = true
+		}
+	})
+	return found
 }
 
 func main() {
-	setup()
-	defer shutdown()
+	_ = flag.Bool("api", false, "start api")
+	_ = flag.Bool("poller", false, "start poller")
+	flag.Parse()
 
-	ginMode, exists := os.LookupEnv("GIN_MODE")
-	if exists {
-		gin.SetMode(ginMode)
+	api := isFlagPassed("api")
+	poller := isFlagPassed("poller")
+
+	var options *app.StartOptions
+	if api || poller {
+		options = &app.StartOptions{
+			API:    api,
+			Poller: poller,
+		}
+
+		log.Println("api: ", options.API)
+		log.Println("poller: ", options.Poller)
 	} else {
-		gin.SetMode("debug")
+		log.Println("no workers specified, starting all")
 	}
 
-	server := &http.Server{
-		Addr:    fmt.Sprintf("0.0.0.0:%d", conf.Env.Port),
-		Handler: routers.NewRouter(),
+	ctx := context.Background()
+	ctx, cancel := context.WithCancel(ctx)
+	server := app.Start(ctx, options)
+	if server != nil {
+		defer func() {
+			cancel()
+			app.Stop(server)
+		}()
 	}
 
-	err := server.ListenAndServe()
-	if err != nil {
-		log.Fatalf("failed to start http server. details: %s\n", err)
-	}
+	quit := make(chan os.Signal)
+	<-quit
+	log.Println("received shutdown signal")
 
 }

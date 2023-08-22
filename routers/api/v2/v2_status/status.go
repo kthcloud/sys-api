@@ -2,14 +2,14 @@ package v2_status
 
 import (
 	"github.com/gin-gonic/gin"
-	"landing-api/pkg/app"
+	"landing-api/pkg/sys"
 	"landing-api/pkg/validator"
 	v2 "landing-api/routers/api/v2"
 	"landing-api/service"
 )
 
 func Get(c *gin.Context) {
-	context := app.NewContext(c)
+	context := sys.NewContext(c)
 
 	rules := validator.MapData{
 		"n": []string{
@@ -30,6 +30,6 @@ func Get(c *gin.Context) {
 		context.JSONResponse(200, make([]interface{}, 0))
 		return
 	}
-	
+
 	context.JSONResponse(200, status)
 }

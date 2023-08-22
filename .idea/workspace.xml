@@ -5,21 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ab0b9de4-f4f9-478b-a014-e2106a8cb43b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/models/dto/gpu_info.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/dto/gpu_info_db.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/dto/host_gpu_info.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/routers/api/v2/utils.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/routers/api/v2/v2_gpu_info/gpu_info.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service/gpu_info_service.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/models.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/models.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/auth/keycloak_token.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/auth/keycloak_token.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/conf/environment.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/conf/environment.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routers/api/v2/v2_capacities/capacities.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers/api/v2/v2_capacities/capacities.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routers/api/v2/v2_stats/stats.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers/api/v2/v2_stats/stats.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routers/api/v2/v2_status/status.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers/api/v2/v2_status/status.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routers/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers/router.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/status_service.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/status_service.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,7 +19,7 @@
       </list>
     </option>
   </component>
-  <component name="GOROOT" url="file://$PROJECT_DIR$/../../../Program Files/Go" />
+  <component name="GOROOT" url="file:///usr/lib/golang" />
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
@@ -75,7 +61,7 @@
     "go.import.settings.migrated": "true",
     "go.sdk.automatically.set": "true",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/repos/work/landing-api-v2",
+    "last_opened_file_path": "/home/emil/repos/work/landing-api",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",

@@ -1,12 +1,12 @@
 package v2
 
 import (
-	"landing-api/pkg/app"
 	"landing-api/pkg/conf"
+	"landing-api/pkg/sys"
 	"strconv"
 )
 
-func GetN(context app.ClientContext) (int, error) {
+func GetN(context sys.ClientContext) (int, error) {
 	nQuery := context.GinContext.Query("n")
 	var n int
 	var err error
@@ -27,7 +27,7 @@ func GetN(context app.ClientContext) (int, error) {
 	return n, err
 }
 
-func IsAdmin(context *app.ClientContext) bool {
+func IsAdmin(context *sys.ClientContext) bool {
 	token, err := context.GetKeycloakToken()
 	if err != nil {
 		return false
