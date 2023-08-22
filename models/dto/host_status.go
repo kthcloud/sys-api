@@ -1,8 +1,9 @@
 package dto
 
 type HostStatus struct {
-	Name string `json:"name"`
-	CPU  struct {
+	Name   string `json:"name"`
+	ZoneID string `json:"zoneId"`
+	CPU    struct {
 		Temp struct {
 			Main  int   `json:"main"`
 			Cores []int `json:"cores"`

@@ -10,6 +10,7 @@ type HostGPU struct {
 }
 
 type HostGPUInfo struct {
-	Name string    `bson:"name" json:"name,omitempty"`
-	GPUs []HostGPU `bson:"gpus" json:"gpus"`
+	Name   string    `bson:"name" json:"name,omitempty"`
+	ZoneID string    `bson:"zoneId" json:"zoneId,omitempty"`
+	GPUs   []HostGPU `bson:"gpus" json:"gpus"`
 }

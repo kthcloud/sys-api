@@ -14,15 +14,17 @@ import (
 
 func GetHostGpuInfo() ([]dto.HostGPUInfo, error) {
 
-	outputs := make([]*dto.HostGPUInfo, len(conf.Hosts))
+	allHosts := conf.GetAllHosts()
+
+	outputs := make([]*dto.HostGPUInfo, len(allHosts))
 
 	wg := sync.WaitGroup{}
 	mu := sync.Mutex{}
 
-	for idx, host := range conf.Hosts {
+	for idx, host := range allHosts {
 
 		wg.Add(1)
-		go func(idx int, host conf.Host) {
+		go func(idx int, host conf.ZoneHost) {
 			makeError := func(err error) error {
 				return fmt.Errorf("failed to get  for host %s. details: %s", host.IP.String(), err)
 			}
@@ -43,7 +45,7 @@ func GetHostGpuInfo() ([]dto.HostGPUInfo, error) {
 			}
 
 			hostGpuInfo := dto.HostGPUInfo{
-				Name: conf.Hosts[idx].Name,
+				Name: allHosts[idx].Name,
 				GPUs: hostGpus,
 			}
 

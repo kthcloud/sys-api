@@ -41,12 +41,14 @@ func Setup() {
 		log.Fatalln(makeError(err))
 	}
 
-	err = json.Unmarshal(hostsJson, &Hosts)
+	err = json.Unmarshal(hostsJson, &Zones)
 	if err != nil {
 		log.Fatalln(makeError(err))
 	}
 
-	log.Println("successfully loaded", len(Hosts), "hosts")
+	for _, zone := range Zones {
+		log.Println("successfully loaded", len(zone.Hosts), "hosts for zone", zone.Name)
+	}
 
 	log.Println("fetching available k8s clusters")
 

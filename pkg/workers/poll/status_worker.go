@@ -13,15 +13,17 @@ import (
 )
 
 func GetHostStatuses() ([]dto.HostStatus, error) {
-	outputs := make([]*dto.HostStatus, len(conf.Hosts))
+	allHosts := conf.GetAllHosts()
+
+	outputs := make([]*dto.HostStatus, len(allHosts))
 
 	wg := sync.WaitGroup{}
 	mu := sync.Mutex{}
 
-	for idx, host := range conf.Hosts {
+	for idx, host := range allHosts {
 
 		wg.Add(1)
-		go func(idx int, host conf.Host) {
+		go func(idx int, host conf.ZoneHost) {
 			makeError := func(err error) error {
 				return fmt.Errorf("failed to get  for host %s. details: %s", host.IP.String(), err)
 			}
@@ -40,7 +42,9 @@ func GetHostStatuses() ([]dto.HostStatus, error) {
 				wg.Done()
 				return
 			}
-			hostStatus.Name = conf.Hosts[idx].Name
+			
+			hostStatus.Name = allHosts[idx].Name
+			hostStatus.ZoneID = allHosts[idx].ZoneID
 
 			mu.Lock()
 			outputs[idx] = &hostStatus

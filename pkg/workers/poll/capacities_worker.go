@@ -90,14 +90,16 @@ func GetCsCapacities() (*capacitiesModels.CsCapacities, error) {
 
 func GetHostCapacities() ([]dto.HostCapacities, error) {
 
-	outputs := make([]*dto.HostCapacities, len(conf.Hosts))
+	allHosts := conf.GetAllHosts()
+
+	outputs := make([]*dto.HostCapacities, len(allHosts))
 
 	wg := sync.WaitGroup{}
 	mu := sync.Mutex{}
 
-	for idx, host := range conf.Hosts {
+	for idx, host := range allHosts {
 		wg.Add(1)
-		go func(idx int, host conf.Host) {
+		go func(idx int, host conf.ZoneHost) {
 			makeError := func(err error) error {
 				return fmt.Errorf("failed to get capacities for host %s. details: %s", host.IP.String(), err)
 			}
@@ -118,7 +120,8 @@ func GetHostCapacities() ([]dto.HostCapacities, error) {
 				return
 			}
 
-			hostCapacities.Name = conf.Hosts[idx].Name
+			hostCapacities.Name = allHosts[idx].Name
+			hostCapacities.ZoneID = allHosts[idx].ZoneID
 
 			mu.Lock()
 			outputs[idx] = &hostCapacities
