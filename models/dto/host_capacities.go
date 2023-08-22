@@ -9,7 +9,8 @@ type HostRamCapacities struct {
 }
 
 type HostCapacities struct {
-	Name string            `json:"name" bson:"name"`
-	GPU  HostGpuCapacities `json:"gpu" bson:"gpu"`
-	RAM  HostRamCapacities `json:"ram" bson:"ram"`
+	Name   string            `json:"name" bson:"name"`
+	GPU    HostGpuCapacities `json:"gpu" bson:"gpu"`
+	RAM    HostRamCapacities `json:"ram" bson:"ram"`
+	ZoneID string            `json:"zoneId" bson:"zoneId"`
 }

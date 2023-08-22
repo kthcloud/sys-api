@@ -1,0 +1,26 @@
+[
+  {
+    "id": "some-zone-id",
+    "name": "local-zone",
+    "hosts": [
+      {
+        "name": "localhost",
+        "ip": "127.0.0.1",
+        "port": 8081
+      }
+    ]
+  },
+  {
+    "id": "some-other-zone-id",
+    "name": "local-zone",
+    "hosts": [
+      {
+        "name": "localhost2",
+        "ip": "127.0.0.1",
+        "port": 8081
+      }
+    ]
+  }
+]
+
+
