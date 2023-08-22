@@ -45,8 +45,9 @@ func GetHostGpuInfo() ([]dto.HostGPUInfo, error) {
 			}
 
 			hostGpuInfo := dto.HostGPUInfo{
-				Name: allHosts[idx].Name,
-				GPUs: hostGpus,
+				Name:   allHosts[idx].Name,
+				ZoneID: allHosts[idx].ZoneID,
+				GPUs:   hostGpus,
 			}
 
 			mu.Lock()
