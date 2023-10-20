@@ -42,7 +42,7 @@ func GetHostStatuses() ([]dto.HostStatus, error) {
 				wg.Done()
 				return
 			}
-			
+
 			hostStatus.Name = allHosts[idx].Name
 			hostStatus.ZoneID = allHosts[idx].ZoneID
 
@@ -99,7 +99,9 @@ func StatusWorker(ctx context.Context) {
 				_, err = models.StatusCollection.InsertOne(context.TODO(), statusDB)
 				if err != nil {
 					log.Println(makeError(err))
-					return
+					log.Println("sleeping for an extra minute")
+					time.Sleep(60 * time.Second)
+					continue
 				}
 			}
 		case <-ctx.Done():
