@@ -206,7 +206,9 @@ func CapacitiesWorker(ctx context.Context) {
 			_, err = models.CapacitiesCollection.InsertOne(context.TODO(), capacitiesDB)
 			if err != nil {
 				log.Println(makeError(err))
-				return
+				log.Println("sleeping for an extra minute")
+				time.Sleep(60 * time.Second)
+				continue
 			}
 
 		case <-ctx.Done():

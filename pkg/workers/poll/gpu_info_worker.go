@@ -102,6 +102,8 @@ func GpuInfoWorker(ctx context.Context) {
 				_, err = models.GpuInfoCollection.InsertOne(context.TODO(), gpuInfoDB)
 				if err != nil {
 					log.Println(makeError(err))
+					log.Println("sleeping for an extra minute")
+					time.Sleep(60 * time.Second)
 					continue
 				}
 			}
