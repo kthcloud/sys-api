@@ -15,11 +15,9 @@ You can view the publically hosted documentation [here](https://api.cloud.cbh.kt
 
 Thank you for considering contributing!
 
-Right now we don't support running the API outside kthcloud,
-so you would need to set up a Kubernetes cluster, CloudStack environment, Harbor service and a GitLab instance.
-
-If you are part of the development team at kthcloud,
-you will find the current configuration file with the required secrets in our private admin repository.
+Right now we don't support running the API outside kthcloud.
+But if you are part of the development team at kthcloud,
+you can find the current configuration file with the required secrets in our private admin repository.
 
 ## 📝 License
 
