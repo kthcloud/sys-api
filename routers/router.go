@@ -3,13 +3,16 @@ package routers
 import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"landing-api/pkg/auth"
-	"landing-api/pkg/sys"
-	"landing-api/routers/api/v2/v2_capacities"
-	"landing-api/routers/api/v2/v2_gpu_info"
-	"landing-api/routers/api/v2/v2_host_info"
-	"landing-api/routers/api/v2/v2_stats"
-	"landing-api/routers/api/v2/v2_status"
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+	docs "sys-api/docs"
+	"sys-api/pkg/auth"
+	"sys-api/pkg/sys"
+	"sys-api/routers/api/v2/v2_capacities"
+	"sys-api/routers/api/v2/v2_gpu_info"
+	"sys-api/routers/api/v2/v2_host_info"
+	"sys-api/routers/api/v2/v2_stats"
+	"sys-api/routers/api/v2/v2_status"
 )
 
 func NewRouter() *gin.Engine {
@@ -20,7 +23,9 @@ func NewRouter() *gin.Engine {
 	router := gin.New()
 	router.Use(cors.New(corsConfig)).Use(gin.Logger()).Use(gin.Recovery())
 
+	docs.SwaggerInfo.BasePath = "/v2"
 	apiv2 := router.Group("/v2")
+	apiv2.GET("/docs/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
 	setupHostInfoRoutes(apiv2)
 	setupCapacitiesRoutes(apiv2)

@@ -5,12 +5,12 @@ import (
 	"fmt"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
-	"landing-api/models"
-	"landing-api/models/dto"
-	"landing-api/models/stats"
-	"landing-api/pkg/conf"
 	"log"
 	"sync"
+	"sys-api/models"
+	"sys-api/models/dto"
+	"sys-api/models/stats"
+	"sys-api/pkg/conf"
 	"time"
 )
 

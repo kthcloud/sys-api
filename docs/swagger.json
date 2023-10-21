@@ -1,0 +1,535 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/capacities": {
+            "get": {
+                "description": "Get Capacities",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Capacities"
+                ],
+                "summary": "Get Capacities",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "n",
+                        "name": "n",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dto.CapacitiesDB"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/sys.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/gpuInfo": {
+            "get": {
+                "description": "Get GPU info",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "GPU info"
+                ],
+                "summary": "Get GPU info",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "n",
+                        "name": "n",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dto.GpuInfoDB"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/sys.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/hostInfo": {
+            "get": {
+                "description": "Get Host Info",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Host Info"
+                ],
+                "summary": "Get Host Info",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dto.HostInfo"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/sys.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/stats": {
+            "get": {
+                "description": "Get Stats",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Stats"
+                ],
+                "summary": "Get Stats",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "n",
+                        "name": "n",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dto.StatsDB"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/sys.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/status": {
+            "get": {
+                "description": "Get Status",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Status"
+                ],
+                "summary": "Get Status",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "n",
+                        "name": "n",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dto.StatusDB"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/sys.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "dto.Capacities": {
+            "type": "object",
+            "properties": {
+                "cpuCore": {
+                    "$ref": "#/definitions/dto.CpuCoreCapacities"
+                },
+                "gpu": {
+                    "$ref": "#/definitions/dto.GpuCapacities"
+                },
+                "hosts": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.HostCapacities"
+                    }
+                },
+                "ram": {
+                    "$ref": "#/definitions/dto.RamCapacities"
+                }
+            }
+        },
+        "dto.CapacitiesDB": {
+            "type": "object",
+            "properties": {
+                "capacities": {
+                    "$ref": "#/definitions/dto.Capacities"
+                },
+                "timestamp": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.CpuCoreCapacities": {
+            "type": "object",
+            "properties": {
+                "total": {
+                    "type": "integer"
+                },
+                "used": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.GpuCapacities": {
+            "type": "object",
+            "properties": {
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.GpuInfo": {
+            "type": "object",
+            "properties": {
+                "hosts": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.HostGPUInfo"
+                    }
+                }
+            }
+        },
+        "dto.GpuInfoDB": {
+            "type": "object",
+            "properties": {
+                "gpuInfo": {
+                    "$ref": "#/definitions/dto.GpuInfo"
+                },
+                "timestamp": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.HostCapacities": {
+            "type": "object",
+            "properties": {
+                "gpu": {
+                    "$ref": "#/definitions/dto.HostGpuCapacities"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "ram": {
+                    "$ref": "#/definitions/dto.HostRamCapacities"
+                },
+                "zoneId": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.HostGPU": {
+            "type": "object",
+            "properties": {
+                "bus": {
+                    "type": "string"
+                },
+                "deviceId": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "slot": {
+                    "type": "string"
+                },
+                "vendor": {
+                    "type": "string"
+                },
+                "vendorId": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.HostGPUInfo": {
+            "type": "object",
+            "properties": {
+                "gpus": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.HostGPU"
+                    }
+                },
+                "name": {
+                    "type": "string"
+                },
+                "zoneId": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.HostGpuCapacities": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.HostInfo": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "zoneId": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.HostRamCapacities": {
+            "type": "object",
+            "properties": {
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.HostStatus": {
+            "type": "object",
+            "properties": {
+                "cpu": {
+                    "type": "object",
+                    "properties": {
+                        "load": {
+                            "type": "object",
+                            "properties": {
+                                "cores": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "main": {
+                                    "type": "integer"
+                                },
+                                "max": {
+                                    "type": "integer"
+                                }
+                            }
+                        },
+                        "temp": {
+                            "type": "object",
+                            "properties": {
+                                "cores": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "main": {
+                                    "type": "integer"
+                                },
+                                "max": {
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    }
+                },
+                "gpu": {
+                    "type": "object",
+                    "properties": {
+                        "temp": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "main": {
+                                        "type": "integer"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "name": {
+                    "type": "string"
+                },
+                "network": {
+                    "type": "object",
+                    "properties": {
+                        "usage": {
+                            "type": "object",
+                            "properties": {
+                                "receiveRate": {
+                                    "type": "integer"
+                                },
+                                "transmitRate": {
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    }
+                },
+                "ram": {
+                    "type": "object",
+                    "properties": {
+                        "load": {
+                            "type": "object",
+                            "properties": {
+                                "main": {
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    }
+                },
+                "zoneId": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.K8sStats": {
+            "type": "object",
+            "properties": {
+                "podCount": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.RamCapacities": {
+            "type": "object",
+            "properties": {
+                "total": {
+                    "type": "integer"
+                },
+                "used": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.Stats": {
+            "type": "object",
+            "properties": {
+                "k8s": {
+                    "$ref": "#/definitions/dto.K8sStats"
+                }
+            }
+        },
+        "dto.StatsDB": {
+            "type": "object",
+            "properties": {
+                "stats": {
+                    "$ref": "#/definitions/dto.Stats"
+                },
+                "timestamp": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.Status": {
+            "type": "object",
+            "properties": {
+                "hosts": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.HostStatus"
+                    }
+                }
+            }
+        },
+        "dto.StatusDB": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "$ref": "#/definitions/dto.Status"
+                },
+                "timestamp": {
+                    "type": "string"
+                }
+            }
+        },
+        "sys.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "errors": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/sys.errorPiece"
+                    }
+                }
+            }
+        },
+        "sys.errorPiece": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "msg": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

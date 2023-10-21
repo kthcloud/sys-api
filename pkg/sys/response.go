@@ -1,11 +1,11 @@
 package sys
 
 import (
-	"landing-api/pkg/status_codes"
 	"net/http"
+	"sys-api/pkg/status_codes"
 )
 
-type errorResponse struct {
+type ErrorResponse struct {
 	Errors []errorPiece `json:"errors"`
 }
 
@@ -23,12 +23,12 @@ func (context *ClientContext) ResponseValidationError(errors map[string][]string
 }
 
 func (context *ClientContext) MultiErrorResponse(httpCode int, errors []errorPiece) {
-	context.GinContext.JSON(httpCode, errorResponse{Errors: errors})
+	context.GinContext.JSON(httpCode, ErrorResponse{Errors: errors})
 }
 
 func (context *ClientContext) ErrorResponse(httpCode int, errCode int, message string) {
 	errors := []errorPiece{{Code: status_codes.GetMsg(errCode), Msg: message}}
-	context.GinContext.JSON(httpCode, errorResponse{Errors: errors})
+	context.GinContext.JSON(httpCode, ErrorResponse{Errors: errors})
 }
 
 func (context *ClientContext) JSONResponse(httpCode int, data interface{}) {

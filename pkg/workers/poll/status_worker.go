@@ -3,13 +3,13 @@ package poll
 import (
 	"context"
 	"fmt"
-	"landing-api/models"
-	"landing-api/models/dto"
-	"landing-api/models/enviroment"
-	"landing-api/pkg/conf"
-	"landing-api/utils/requestutils"
 	"log"
 	"sync"
+	"sys-api/models"
+	"sys-api/models/dto"
+	"sys-api/models/enviroment"
+	"sys-api/pkg/conf"
+	"sys-api/utils/requestutils"
 	"time"
 )
 

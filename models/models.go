@@ -3,8 +3,8 @@ package models
 import (
 	"context"
 	"fmt"
-	"landing-api/pkg/conf"
 	"log"
+	"sys-api/pkg/conf"
 	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"

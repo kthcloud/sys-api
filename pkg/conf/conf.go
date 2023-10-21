@@ -6,13 +6,13 @@ import (
 	"gopkg.in/yaml.v3"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
-	"landing-api/models/enviroment"
-	"landing-api/pkg/cloudstack"
 	"log"
 	"net"
 	"os"
 	"regexp"
 	"strings"
+	"sys-api/models/enviroment"
+	"sys-api/pkg/cloudstack"
 )
 
 var Env enviroment.Environment

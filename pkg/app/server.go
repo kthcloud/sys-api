@@ -4,13 +4,13 @@ import (
 	"context"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"landing-api/models"
-	"landing-api/pkg/conf"
-	"landing-api/pkg/workers/poll"
-	"landing-api/routers"
 	"log"
 	"net/http"
 	"os"
+	"sys-api/models"
+	"sys-api/pkg/conf"
+	"sys-api/pkg/workers/poll"
+	"sys-api/routers"
 	"time"
 )
 

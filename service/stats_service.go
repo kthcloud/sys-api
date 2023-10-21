@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"landing-api/models"
-	"landing-api/models/dto"
+	"sys-api/models"
+	"sys-api/models/dto"
 )
 
 func GetStats(n int) ([]dto.StatsDB, error) {

@@ -3,8 +3,8 @@ package sys
 import (
 	"encoding/json"
 	"fmt"
-	"landing-api/pkg/auth"
-	"landing-api/pkg/conf"
+	"sys-api/pkg/auth"
+	"sys-api/pkg/conf"
 )
 
 func (context *ClientContext) GetKeycloakToken() (*auth.KeycloakToken, error) {
