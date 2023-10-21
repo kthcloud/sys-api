@@ -5,16 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ab0b9de4-f4f9-478b-a014-e2106a8cb43b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/models/enviroment/environment.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/app/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/app/server.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/conf/conf.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/conf/conf.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/conf/environment.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/conf/hosts.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/workers/poll/capacities_worker.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/workers/poll/capacities_worker.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/workers/poll/gpu_info_worker.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/workers/poll/gpu_info_worker.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/workers/poll/status_worker.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/workers/poll/status_worker.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/host_service.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/host_service.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
