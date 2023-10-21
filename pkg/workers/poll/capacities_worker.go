@@ -91,7 +91,7 @@ func GetCsCapacities() (*capacitiesModels.CsCapacities, error) {
 
 func GetHostCapacities() ([]dto.HostCapacities, error) {
 
-	allHosts := conf.Env.GetEnabledHosts()
+	allHosts := conf.Env.GetAvailableHosts()
 
 	outputs := make([]*dto.HostCapacities, len(allHosts))
 
