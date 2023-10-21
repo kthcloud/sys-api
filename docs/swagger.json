@@ -44,46 +44,6 @@
                 }
             }
         },
-        "/gpuInfo": {
-            "get": {
-                "description": "Get GPU info",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "GPU info"
-                ],
-                "summary": "Get GPU info",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "n",
-                        "name": "n",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/dto.GpuInfoDB"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/sys.ErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
         "/hostInfo": {
             "get": {
                 "description": "Get Host Info",
@@ -104,6 +64,53 @@
                             "type": "array",
                             "items": {
                                 "$ref": "#/definitions/dto.HostInfo"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/sys.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/internal/gpuInfo": {
+            "get": {
+                "description": "Get GPU info",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "GPU info"
+                ],
+                "summary": "Get GPU info",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "n",
+                        "name": "n",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "With the bearer started",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dto.GpuInfoDB"
                             }
                         }
                     },
