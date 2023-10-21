@@ -14,7 +14,7 @@ import (
 )
 
 func GetHostStatuses() ([]dto.HostStatus, error) {
-	allHosts := conf.Env.GetEnabledHosts()
+	allHosts := conf.Env.GetAvailableHosts()
 
 	outputs := make([]*dto.HostStatus, len(allHosts))
 

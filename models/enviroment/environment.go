@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"k8s.io/client-go/kubernetes"
 	"net"
+	"sort"
 )
 
 type Host struct {
@@ -70,5 +71,23 @@ func (e *Environment) GetEnabledHosts() []Host {
 			hosts = append(hosts, host)
 		}
 	}
+
+	sort.Slice(hosts, func(i, j int) bool {
+		return hosts[i].Name < hosts[j].Name
+	})
+
+	return hosts
+}
+
+func (e *Environment) GetAvailableHosts() []Host {
+	hosts := make([]Host, 0, len(e.HostMap))
+	for _, host := range e.HostMap {
+		hosts = append(hosts, host)
+	}
+
+	sort.Slice(hosts, func(i, j int) bool {
+		return hosts[i].Name < hosts[j].Name
+	})
+
 	return hosts
 }
