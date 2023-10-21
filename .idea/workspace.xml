@@ -5,7 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ab0b9de4-f4f9-478b-a014-e2106a8cb43b" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/models/enviroment/environment.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/app/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/app/server.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/conf/conf.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/conf/conf.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/conf/environment.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/conf/hosts.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/workers/poll/capacities_worker.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/workers/poll/capacities_worker.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/workers/poll/gpu_info_worker.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/workers/poll/gpu_info_worker.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/workers/poll/status_worker.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/workers/poll/status_worker.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/host_service.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/host_service.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,7 +28,7 @@
       </list>
     </option>
   </component>
-  <component name="GOROOT" url="file:///usr/lib/golang" />
+  <component name="GOROOT" url="file://$PROJECT_DIR$/../../../sdk/go1.20.4" />
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
@@ -34,6 +43,9 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 7
+}]]></component>
   <component name="ProjectId" id="2L09GBF18dqy1gkkzUVmwJO6ONb" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -51,17 +63,18 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.go.formatter.settings.were.checked": "true",
     "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "RunOnceActivity.go.modules.automatic.dependencies.download": "true",
     "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
     "RunOnceActivity.go.watchers.conflict.with.on.save.actions.check.performed": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
     "configurable..is.expanded": "false",
     "configurable.GoLibrariesConfigurable.is.expanded": "true",
-    "git-widget-placeholder": "dev",
+    "git-widget-placeholder": "v2",
     "go.import.settings.migrated": "true",
     "go.sdk.automatically.set": "true",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "/home/emil/repos/work/landing-api",
+    "last_opened_file_path": "//wsl$/Ubuntu/home/emil/repos/work/landing-api",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -78,6 +91,7 @@
       <recent name="C:\repos\work\landing-api-v2\models" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="\\wsl$\Ubuntu\home\emil\repos\work\landing-api\models\enviroment" />
       <recent name="$PROJECT_DIR$/service" />
       <recent name="C:\repos\work\landing-api-v2\utils\requestutils" />
       <recent name="C:\repos\work\landing-api-v2\routers\api\v2" />
@@ -88,7 +102,7 @@
       <module name="landing-api-v2" />
       <working_directory value="$PROJECT_DIR$" />
       <envs>
-        <env name="LANDING_CONFIG_FILE" value="$PROJECT_DIR$/../admin/secrets/landing/landing-config.yml" />
+        <env name="LANDING_CONFIG_FILE" value="/home/emil/repos/work/admin/secrets/landing/landing-config.yml" />
       </envs>
       <kind value="PACKAGE" />
       <package value="landing-api" />
@@ -130,11 +144,6 @@
           <url>file://$USER_HOME$/go/pkg/mod/github.com/apache/cloudstack-go/v2@v2.13.2/cloudstack/KubernetesService.go</url>
           <line>875</line>
           <option name="timeStamp" value="13" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/routers/api/v2/utils.go</url>
-          <line>13</line>
-          <option name="timeStamp" value="20" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

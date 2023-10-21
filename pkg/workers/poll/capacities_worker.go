@@ -7,6 +7,7 @@ import (
 	"landing-api/models/capacities"
 	capacitiesModels "landing-api/models/capacities"
 	"landing-api/models/dto"
+	"landing-api/models/enviroment"
 	"landing-api/pkg/cloudstack"
 	"landing-api/pkg/conf"
 	"landing-api/utils/requestutils"
@@ -90,7 +91,7 @@ func GetCsCapacities() (*capacitiesModels.CsCapacities, error) {
 
 func GetHostCapacities() ([]dto.HostCapacities, error) {
 
-	allHosts := conf.GetAllHosts()
+	allHosts := conf.Env.GetEnabledHosts()
 
 	outputs := make([]*dto.HostCapacities, len(allHosts))
 
@@ -99,7 +100,7 @@ func GetHostCapacities() ([]dto.HostCapacities, error) {
 
 	for idx, host := range allHosts {
 		wg.Add(1)
-		go func(idx int, host conf.ZoneHost) {
+		go func(idx int, host enviroment.Host) {
 			makeError := func(err error) error {
 				return fmt.Errorf("failed to get capacities for host %s. details: %s", host.IP.String(), err)
 			}

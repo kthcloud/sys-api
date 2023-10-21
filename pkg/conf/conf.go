@@ -1,18 +1,21 @@
 package conf
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"gopkg.in/yaml.v3"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
+	"landing-api/models/enviroment"
 	"landing-api/pkg/cloudstack"
 	"log"
+	"net"
 	"os"
 	"regexp"
 	"strings"
 )
+
+var Env enviroment.Environment
 
 func Setup() {
 	makeError := func(err error) error {
@@ -35,29 +38,73 @@ func Setup() {
 		log.Fatalf(makeError(err).Error())
 	}
 
-	log.Println("reading hosts from", Env.HostsPath)
-	hostsJson, err := os.ReadFile(Env.HostsPath)
-	if err != nil {
-		log.Fatalln(makeError(err))
-	}
-
-	err = json.Unmarshal(hostsJson, &Zones)
-	if err != nil {
-		log.Fatalln(makeError(err))
-	}
-
-	for _, zone := range Zones {
-		log.Println("successfully loaded", len(zone.Hosts), "hosts for zone", zone.Name)
-	}
-
-	log.Println("fetching available k8s clusters")
-
 	csClient := cloudstack.NewAsyncClient(
 		Env.CS.URL,
 		Env.CS.ApiKey,
 		Env.CS.Secret,
 		true,
 	)
+
+	log.Println("fetching available hosts")
+
+	Env.HostMap = make(map[string]enviroment.Host)
+	Env.ZoneMap = make(map[string]enviroment.Zone)
+
+	// load hosts from cloudstack
+	for _, zone := range Env.CS.Zones {
+		// check if zone exists
+		listZonesParams := csClient.Zone.NewListZonesParams()
+		listZonesParams.SetId(zone.ID)
+		zones, err := csClient.Zone.ListZones(listZonesParams)
+		if err != nil {
+			log.Fatalln(makeError(err))
+		}
+
+		if len(zones.Zones) == 0 {
+			log.Fatalln(makeError(errors.New("zone " + zone.ID + " not found")))
+		}
+
+		listHostsParams := csClient.Host.NewListHostsParams()
+		listHostsParams.SetZoneid(zone.ID)
+		hosts, err := csClient.Host.ListHosts(listHostsParams)
+		if err != nil {
+			log.Fatalln(makeError(err))
+		}
+
+		for _, host := range hosts.Hosts {
+			if isGostHost(host) {
+				newHost := enviroment.Host{
+					Name:     host.Name,
+					IP:       net.ParseIP(host.Ipaddress),
+					Port:     8081, // TODO: make this configurable
+					Enabled:  isHostEnabled(host),
+					ZoneID:   zone.ID,
+					ZoneName: zone.Name,
+				}
+
+				Env.HostMap[newHost.Name] = newHost
+			}
+		}
+	}
+
+	for name, host := range Env.HostMap {
+		// add host to zone
+		zone, found := Env.ZoneMap[host.ZoneName]
+		if !found {
+			zone = enviroment.Zone{
+				ID:      host.ZoneID,
+				Name:    host.ZoneName,
+				HostMap: make(map[string]enviroment.Host),
+			}
+		}
+
+		zone.HostMap[name] = host
+		Env.ZoneMap[host.ZoneName] = zone
+	}
+
+	log.Println("fetching available k8s clusters")
+
+	// load Kubernetes clusters from cloudstack
 	listClusterParams := csClient.Kubernetes.NewListKubernetesClustersParams()
 	listClusterParams.SetListall(true)
 	clusters, err := csClient.Kubernetes.ListKubernetesClusters(listClusterParams)
@@ -151,4 +198,12 @@ func createClient(configData []byte) (*kubernetes.Clientset, error) {
 	}
 
 	return k8sClient, nil
+}
+
+func isGostHost(host *cloudstack.Host) bool {
+	return host.Type == "Routing" && host.State == "Up"
+}
+
+func isHostEnabled(host *cloudstack.Host) bool {
+	return host.Resourcestate == "Enabled"
 }

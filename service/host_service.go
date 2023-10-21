@@ -6,7 +6,7 @@ import (
 )
 
 func GetHostInfo() []dto.HostInfo {
-	allHosts := conf.GetAllHosts()
+	allHosts := conf.Env.GetEnabledHosts()
 
 	var result []dto.HostInfo
 	for _, host := range allHosts {

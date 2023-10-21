@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"landing-api/models"
 	"landing-api/models/dto"
+	"landing-api/models/enviroment"
 	"landing-api/pkg/conf"
 	"landing-api/utils/requestutils"
 	"log"
@@ -13,7 +14,7 @@ import (
 )
 
 func GetHostStatuses() ([]dto.HostStatus, error) {
-	allHosts := conf.GetAllHosts()
+	allHosts := conf.Env.GetEnabledHosts()
 
 	outputs := make([]*dto.HostStatus, len(allHosts))
 
@@ -23,7 +24,7 @@ func GetHostStatuses() ([]dto.HostStatus, error) {
 	for idx, host := range allHosts {
 
 		wg.Add(1)
-		go func(idx int, host conf.ZoneHost) {
+		go func(idx int, host enviroment.Host) {
 			makeError := func(err error) error {
 				return fmt.Errorf("failed to get  for host %s. details: %s", host.IP.String(), err)
 			}
