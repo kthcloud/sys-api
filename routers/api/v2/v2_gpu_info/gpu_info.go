@@ -15,9 +15,10 @@ import (
 // @Accept  json
 // @Produce  json
 // @Param n query int false "n"
+// @Param Authorization header string true "With the bearer started"
 // @Success 200 {array} dto.GpuInfoDB
 // @Failure 400 {object} sys.ErrorResponse
-// @Router /gpuInfo [get]
+// @Router /internal/gpuInfo [get]
 func Get(c *gin.Context) {
 	context := sys.NewContext(c)
 
