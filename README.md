@@ -13,9 +13,9 @@ You can view the publically hosted documentation [here](https://api.cloud.cbh.kt
 
 ## 🤝 Contributing
 
-Thank you for considering contributing to go-deploy!
+Thank you for considering contributing!
 
-Right now we don't support running go-deploy outside kthcloud,
+Right now we don't support running the API outside kthcloud,
 so you would need to set up a Kubernetes cluster, CloudStack environment, Harbor service and a GitLab instance.
 
 If you are part of the development team at kthcloud,
