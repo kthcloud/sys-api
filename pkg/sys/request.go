@@ -1,7 +1,7 @@
 package sys
 
 import (
-	"landing-api/pkg/validator"
+	"sys-api/pkg/validator"
 )
 
 func (context *ClientContext) ValidateJSON(rules *validator.MapData, output interface{}) map[string][]string {

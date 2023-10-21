@@ -2,12 +2,22 @@ package v2_capacities
 
 import (
 	"github.com/gin-gonic/gin"
-	"landing-api/pkg/sys"
-	"landing-api/pkg/validator"
-	v2 "landing-api/routers/api/v2"
-	"landing-api/service"
+	"sys-api/pkg/sys"
+	"sys-api/pkg/validator"
+	v2 "sys-api/routers/api/v2"
+	"sys-api/service"
 )
 
+// Get godoc
+// @Summary Get Capacities
+// @Description Get Capacities
+// @Tags Capacities
+// @Accept  json
+// @Produce  json
+// @Param n query int false "n"
+// @Success 200 {array} dto.CapacitiesDB
+// @Failure 400 {object} sys.ErrorResponse
+// @Router /capacities [get]
 func Get(c *gin.Context) {
 	context := sys.NewContext(c)
 

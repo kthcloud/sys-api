@@ -1,9 +1,9 @@
 package v2
 
 import (
-	"landing-api/pkg/conf"
-	"landing-api/pkg/sys"
 	"strconv"
+	"sys-api/pkg/conf"
+	"sys-api/pkg/sys"
 )
 
 func GetN(context sys.ClientContext) (int, error) {

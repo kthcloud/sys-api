@@ -2,12 +2,22 @@ package v2_status
 
 import (
 	"github.com/gin-gonic/gin"
-	"landing-api/pkg/sys"
-	"landing-api/pkg/validator"
-	v2 "landing-api/routers/api/v2"
-	"landing-api/service"
+	"sys-api/pkg/sys"
+	"sys-api/pkg/validator"
+	v2 "sys-api/routers/api/v2"
+	"sys-api/service"
 )
 
+// Get godoc
+// @Summary Get Status
+// @Description Get Status
+// @Tags Status
+// @Accept  json
+// @Produce  json
+// @Param n query int false "n"
+// @Success 200 {array} dto.StatusDB
+// @Failure 400 {object} sys.ErrorResponse
+// @Router /status [get]
 func Get(c *gin.Context) {
 	context := sys.NewContext(c)
 

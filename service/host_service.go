@@ -1,8 +1,8 @@
 package service
 
 import (
-	"landing-api/models/dto"
-	"landing-api/pkg/conf"
+	"sys-api/models/dto"
+	"sys-api/pkg/conf"
 )
 
 func GetHostInfo() []dto.HostInfo {

@@ -1,0 +1,342 @@
+definitions:
+  dto.Capacities:
+    properties:
+      cpuCore:
+        $ref: '#/definitions/dto.CpuCoreCapacities'
+      gpu:
+        $ref: '#/definitions/dto.GpuCapacities'
+      hosts:
+        items:
+          $ref: '#/definitions/dto.HostCapacities'
+        type: array
+      ram:
+        $ref: '#/definitions/dto.RamCapacities'
+    type: object
+  dto.CapacitiesDB:
+    properties:
+      capacities:
+        $ref: '#/definitions/dto.Capacities'
+      timestamp:
+        type: string
+    type: object
+  dto.CpuCoreCapacities:
+    properties:
+      total:
+        type: integer
+      used:
+        type: integer
+    type: object
+  dto.GpuCapacities:
+    properties:
+      total:
+        type: integer
+    type: object
+  dto.GpuInfo:
+    properties:
+      hosts:
+        items:
+          $ref: '#/definitions/dto.HostGPUInfo'
+        type: array
+    type: object
+  dto.GpuInfoDB:
+    properties:
+      gpuInfo:
+        $ref: '#/definitions/dto.GpuInfo'
+      timestamp:
+        type: string
+    type: object
+  dto.HostCapacities:
+    properties:
+      gpu:
+        $ref: '#/definitions/dto.HostGpuCapacities'
+      name:
+        type: string
+      ram:
+        $ref: '#/definitions/dto.HostRamCapacities'
+      zoneId:
+        type: string
+    type: object
+  dto.HostGPU:
+    properties:
+      bus:
+        type: string
+      deviceId:
+        type: string
+      name:
+        type: string
+      slot:
+        type: string
+      vendor:
+        type: string
+      vendorId:
+        type: string
+    type: object
+  dto.HostGPUInfo:
+    properties:
+      gpus:
+        items:
+          $ref: '#/definitions/dto.HostGPU'
+        type: array
+      name:
+        type: string
+      zoneId:
+        type: string
+    type: object
+  dto.HostGpuCapacities:
+    properties:
+      count:
+        type: integer
+    type: object
+  dto.HostInfo:
+    properties:
+      name:
+        type: string
+      zoneId:
+        type: string
+    type: object
+  dto.HostRamCapacities:
+    properties:
+      total:
+        type: integer
+    type: object
+  dto.HostStatus:
+    properties:
+      cpu:
+        properties:
+          load:
+            properties:
+              cores:
+                items:
+                  type: integer
+                type: array
+              main:
+                type: integer
+              max:
+                type: integer
+            type: object
+          temp:
+            properties:
+              cores:
+                items:
+                  type: integer
+                type: array
+              main:
+                type: integer
+              max:
+                type: integer
+            type: object
+        type: object
+      gpu:
+        properties:
+          temp:
+            items:
+              properties:
+                main:
+                  type: integer
+              type: object
+            type: array
+        type: object
+      name:
+        type: string
+      network:
+        properties:
+          usage:
+            properties:
+              receiveRate:
+                type: integer
+              transmitRate:
+                type: integer
+            type: object
+        type: object
+      ram:
+        properties:
+          load:
+            properties:
+              main:
+                type: integer
+            type: object
+        type: object
+      zoneId:
+        type: string
+    type: object
+  dto.K8sStats:
+    properties:
+      podCount:
+        type: integer
+    type: object
+  dto.RamCapacities:
+    properties:
+      total:
+        type: integer
+      used:
+        type: integer
+    type: object
+  dto.Stats:
+    properties:
+      k8s:
+        $ref: '#/definitions/dto.K8sStats'
+    type: object
+  dto.StatsDB:
+    properties:
+      stats:
+        $ref: '#/definitions/dto.Stats'
+      timestamp:
+        type: string
+    type: object
+  dto.Status:
+    properties:
+      hosts:
+        items:
+          $ref: '#/definitions/dto.HostStatus'
+        type: array
+    type: object
+  dto.StatusDB:
+    properties:
+      status:
+        $ref: '#/definitions/dto.Status'
+      timestamp:
+        type: string
+    type: object
+  sys.ErrorResponse:
+    properties:
+      errors:
+        items:
+          $ref: '#/definitions/sys.errorPiece'
+        type: array
+    type: object
+  sys.errorPiece:
+    properties:
+      code:
+        type: string
+      msg:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /capacities:
+    get:
+      consumes:
+      - application/json
+      description: Get Capacities
+      parameters:
+      - description: "n"
+        in: query
+        name: "n"
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dto.CapacitiesDB'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/sys.ErrorResponse'
+      summary: Get Capacities
+      tags:
+      - Capacities
+  /gpuInfo:
+    get:
+      consumes:
+      - application/json
+      description: Get GPU info
+      parameters:
+      - description: "n"
+        in: query
+        name: "n"
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dto.GpuInfoDB'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/sys.ErrorResponse'
+      summary: Get GPU info
+      tags:
+      - GPU info
+  /hostInfo:
+    get:
+      consumes:
+      - application/json
+      description: Get Host Info
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dto.HostInfo'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/sys.ErrorResponse'
+      summary: Get Host Info
+      tags:
+      - Host Info
+  /stats:
+    get:
+      consumes:
+      - application/json
+      description: Get Stats
+      parameters:
+      - description: "n"
+        in: query
+        name: "n"
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dto.StatsDB'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/sys.ErrorResponse'
+      summary: Get Stats
+      tags:
+      - Stats
+  /status:
+    get:
+      consumes:
+      - application/json
+      description: Get Status
+      parameters:
+      - description: "n"
+        in: query
+        name: "n"
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dto.StatusDB'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/sys.ErrorResponse'
+      summary: Get Status
+      tags:
+      - Status
+swagger: "2.0"

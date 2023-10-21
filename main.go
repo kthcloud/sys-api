@@ -3,9 +3,9 @@ package main
 import (
 	"context"
 	"flag"
-	"landing-api/pkg/app"
 	"log"
 	"os"
+	"sys-api/pkg/app"
 )
 
 func isFlagPassed(name string) bool {
