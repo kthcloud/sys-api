@@ -105,7 +105,7 @@ func GpuInfoWorker(ctx context.Context) {
 					continue
 				}
 
-				err = DeleteUntilNItemsLeft(models.GpuInfoCollection, 100)
+				err = DeleteUntilNItemsLeft(models.GpuInfoCollection, 1000)
 				if err != nil {
 					log.Println(makeError(err))
 					log.Println("sleeping for an extra minute")
