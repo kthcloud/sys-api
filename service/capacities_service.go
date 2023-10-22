@@ -14,6 +14,10 @@ func GetCapacities(n int) ([]body.TimestampedCapacities, error) {
 		return fmt.Errorf("failed to fetch capacities from db. details: %s", err)
 	}
 
+	if n == 0 {
+		n = 1
+	}
+
 	result, err := models.CapacitiesCollection.Find(context.TODO(), bson.M{}, &options.FindOptions{
 		Limit: intPtr(int64(n)),
 		Sort:  bson.M{"timestamp": -1},

@@ -199,7 +199,12 @@ func CapacitiesWorker(ctx context.Context) {
 				Hosts: hostCapacities,
 			}
 
-			_, err = models.CapacitiesCollection.InsertOne(context.TODO(), body.CreateTimestamped(collected))
+			timestamped := body.TimestampedCapacities{
+				Capacities: collected,
+				Timestamp:  time.Now(),
+			}
+
+			_, err = models.CapacitiesCollection.InsertOne(context.TODO(), timestamped)
 			if err != nil {
 				log.Println(makeError(err))
 				log.Println("sleeping for an extra minute")

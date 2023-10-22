@@ -85,7 +85,12 @@ func StatsWorker(ctx context.Context) {
 					},
 				}
 
-				_, err = models.StatsCollection.InsertOne(context.TODO(), body.CreateTimestamped(collected))
+				timestamped := body.TimestampedStats{
+					Stats:     collected,
+					Timestamp: time.Now(),
+				}
+
+				_, err = models.StatsCollection.InsertOne(context.TODO(), timestamped)
 				if err != nil {
 					log.Println(makeError(err))
 					log.Println("sleeping for an extra minute")

@@ -97,7 +97,12 @@ func GpuInfoWorker(ctx context.Context) {
 					HostGpuInfo: hostGpuInfo,
 				}
 
-				_, err = models.GpuInfoCollection.InsertOne(context.TODO(), body.CreateTimestamped(gpuInfo))
+				timestamped := body.TimestampedGpuInfo{
+					GpuInfo:   gpuInfo,
+					Timestamp: time.Now(),
+				}
+
+				_, err = models.GpuInfoCollection.InsertOne(context.TODO(), timestamped)
 				if err != nil {
 					log.Println(makeError(err))
 					log.Println("sleeping for an extra minute")

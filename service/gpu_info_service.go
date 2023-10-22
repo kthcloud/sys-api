@@ -14,6 +14,10 @@ func GetGpuInfo(n int) ([]body.TimestampedGpuInfo, error) {
 		return fmt.Errorf("failed to fetch status from db. details: %s", err)
 	}
 
+	if n == 0 {
+		n = 1
+	}
+
 	result, err := models.GpuInfoCollection.Find(context.TODO(), bson.M{}, &options.FindOptions{
 		Limit: intPtr(int64(n)),
 		Sort:  bson.M{"timestamp": -1},
