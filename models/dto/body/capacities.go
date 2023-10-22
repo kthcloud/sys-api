@@ -1,5 +1,7 @@
 package body
 
+import "time"
+
 type RamCapacities struct {
 	Used  int `json:"used" bson:"used"`
 	Total int `json:"total" bson:"total"`
@@ -21,4 +23,7 @@ type Capacities struct {
 	Hosts   []HostCapacities  `json:"hosts" bson:"hosts"`
 }
 
-type TimestampedCapacities Timestamped[Capacities]
+type TimestampedCapacities struct {
+	Capacities Capacities `json:"capacities" bson:"capacities"`
+	Timestamp  time.Time  `json:"timestamp" bson:"timestamp"`
+}

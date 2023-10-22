@@ -92,7 +92,12 @@ func StatusWorker(ctx context.Context) {
 					Hosts: hostsStatuses,
 				}
 
-				_, err = models.StatusCollection.InsertOne(context.TODO(), body.CreateTimestamped(status))
+				timestamped := body.TimestampedStatus{
+					Status:    status,
+					Timestamp: time.Now(),
+				}
+
+				_, err = models.StatusCollection.InsertOne(context.TODO(), timestamped)
 				if err != nil {
 					log.Println(makeError(err))
 					log.Println("sleeping for an extra minute")

@@ -14,6 +14,10 @@ func GetStats(n int) ([]body.TimestampedStats, error) {
 		return fmt.Errorf("failed to fetch stats from db. details: %s", err)
 	}
 
+	if n == 0 {
+		n = 1
+	}
+
 	result, err := models.StatsCollection.Find(context.TODO(), bson.M{}, &options.FindOptions{
 		Limit: intPtr(int64(n)),
 		Sort:  bson.M{"timestamp": -1},

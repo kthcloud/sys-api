@@ -38,7 +38,7 @@ func Get(c *gin.Context) {
 	}
 
 	var requestQuery query.N
-	if err := context.GinContext.Bind(&requestQuery); err != nil {
+	if err := context.GinContext.ShouldBind(&requestQuery); err != nil {
 		context.JSONResponse(http.StatusBadRequest, v2.CreateBindingError(err))
 		return
 	}
