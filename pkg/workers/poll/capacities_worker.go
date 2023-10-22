@@ -212,6 +212,14 @@ func CapacitiesWorker(ctx context.Context) {
 				continue
 			}
 
+			err = DeleteUntilNItemsLeft(models.CapacitiesCollection, 1000)
+			if err != nil {
+				log.Println(makeError(err))
+				log.Println("sleeping for an extra minute")
+				time.Sleep(60 * time.Second)
+				continue
+			}
+
 		case <-ctx.Done():
 			return
 		}

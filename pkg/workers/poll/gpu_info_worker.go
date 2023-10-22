@@ -107,6 +107,14 @@ func GpuInfoWorker(ctx context.Context) {
 					time.Sleep(60 * time.Second)
 					continue
 				}
+
+				err = DeleteUntilNItemsLeft(models.GpuInfoCollection, 100)
+				if err != nil {
+					log.Println(makeError(err))
+					log.Println("sleeping for an extra minute")
+					time.Sleep(60 * time.Second)
+					continue
+				}
 			}
 
 		case <-ctx.Done():
