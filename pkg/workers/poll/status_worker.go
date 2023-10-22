@@ -6,17 +6,17 @@ import (
 	"log"
 	"sync"
 	"sys-api/models"
-	"sys-api/models/dto"
+	"sys-api/models/dto/body"
 	"sys-api/models/enviroment"
 	"sys-api/pkg/conf"
 	"sys-api/utils/requestutils"
 	"time"
 )
 
-func GetHostStatuses() ([]dto.HostStatus, error) {
+func GetHostStatuses() ([]body.HostStatus, error) {
 	allHosts := conf.Env.GetAvailableHosts()
 
-	outputs := make([]*dto.HostStatus, len(allHosts))
+	outputs := make([]*body.HostStatus, len(allHosts))
 
 	wg := sync.WaitGroup{}
 	mu := sync.Mutex{}
@@ -36,7 +36,7 @@ func GetHostStatuses() ([]dto.HostStatus, error) {
 				return
 			}
 
-			var hostStatus dto.HostStatus
+			var hostStatus body.HostStatus
 			err = requestutils.ParseBody(result.Body, &hostStatus)
 			if err != nil {
 				log.Println(makeError(err))
@@ -57,7 +57,7 @@ func GetHostStatuses() ([]dto.HostStatus, error) {
 
 	wg.Wait()
 
-	var result []dto.HostStatus
+	var result []body.HostStatus
 
 	for _, output := range outputs {
 		if output != nil {
@@ -88,16 +88,19 @@ func StatusWorker(ctx context.Context) {
 			if len(hostsStatuses) == 0 {
 				log.Println(makeError(fmt.Errorf("no hosts statuses received")))
 			} else {
-				status := dto.Status{
+				status := body.Status{
 					Hosts: hostsStatuses,
 				}
 
-				statusDB := dto.StatusDB{
-					Status:    status,
-					Timestamp: time.Now(),
+				_, err = models.StatusCollection.InsertOne(context.TODO(), body.CreateTimestamped(status))
+				if err != nil {
+					log.Println(makeError(err))
+					log.Println("sleeping for an extra minute")
+					time.Sleep(60 * time.Second)
+					continue
 				}
 
-				_, err = models.StatusCollection.InsertOne(context.TODO(), statusDB)
+				err = DeleteUntilNItemsLeft(models.StatusCollection, 1000)
 				if err != nil {
 					log.Println(makeError(err))
 					log.Println("sleeping for an extra minute")

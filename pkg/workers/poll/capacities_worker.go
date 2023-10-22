@@ -9,7 +9,7 @@ import (
 	"sys-api/models"
 	"sys-api/models/capacities"
 	capacitiesModels "sys-api/models/capacities"
-	"sys-api/models/dto"
+	"sys-api/models/dto/body"
 	"sys-api/models/enviroment"
 	"sys-api/pkg/cloudstack"
 	"sys-api/pkg/conf"
@@ -89,11 +89,11 @@ func GetCsCapacities() (*capacitiesModels.CsCapacities, error) {
 	return parsedCapacities, nil
 }
 
-func GetHostCapacities() ([]dto.HostCapacities, error) {
+func GetHostCapacities() ([]body.HostCapacities, error) {
 
 	allHosts := conf.Env.GetAvailableHosts()
 
-	outputs := make([]*dto.HostCapacities, len(allHosts))
+	outputs := make([]*body.HostCapacities, len(allHosts))
 
 	wg := sync.WaitGroup{}
 	mu := sync.Mutex{}
@@ -113,7 +113,7 @@ func GetHostCapacities() ([]dto.HostCapacities, error) {
 				return
 			}
 
-			var hostCapacities dto.HostCapacities
+			var hostCapacities body.HostCapacities
 			err = requestutils.ParseBody(response.Body, &hostCapacities)
 			if err != nil {
 				log.Println(makeError(err))
@@ -134,7 +134,7 @@ func GetHostCapacities() ([]dto.HostCapacities, error) {
 
 	wg.Wait()
 
-	var result []dto.HostCapacities
+	var result []body.HostCapacities
 
 	for _, output := range outputs {
 		if output != nil {
@@ -177,34 +177,37 @@ func CapacitiesWorker(ctx context.Context) {
 
 			hostCapacities, err := GetHostCapacities()
 			if err != nil || hostCapacities == nil {
-				hostCapacities = make([]dto.HostCapacities, 0)
+				hostCapacities = make([]body.HostCapacities, 0)
 			}
 
 			for _, host := range hostCapacities {
 				gpuTotal += host.GPU.Count
 			}
 
-			collected := dto.Capacities{
-				RAM: dto.RamCapacities{
+			collected := body.Capacities{
+				RAM: body.RamCapacities{
 					Used:  csCapacities.RAM.Used,
 					Total: csCapacities.RAM.Total,
 				},
-				CpuCore: dto.CpuCoreCapacities{
+				CpuCore: body.CpuCoreCapacities{
 					Used:  csCapacities.CpuCore.Used,
 					Total: csCapacities.CpuCore.Total,
 				},
-				GPU: dto.GpuCapacities{
+				GPU: body.GpuCapacities{
 					Total: gpuTotal,
 				},
 				Hosts: hostCapacities,
 			}
 
-			capacitiesDB := dto.CapacitiesDB{
-				Capacities: collected,
-				Timestamp:  time.Now().UTC(),
+			_, err = models.CapacitiesCollection.InsertOne(context.TODO(), body.CreateTimestamped(collected))
+			if err != nil {
+				log.Println(makeError(err))
+				log.Println("sleeping for an extra minute")
+				time.Sleep(60 * time.Second)
+				continue
 			}
 
-			_, err = models.CapacitiesCollection.InsertOne(context.TODO(), capacitiesDB)
+			err = DeleteUntilNItemsLeft(models.CapacitiesCollection, 1000)
 			if err != nil {
 				log.Println(makeError(err))
 				log.Println("sleeping for an extra minute")

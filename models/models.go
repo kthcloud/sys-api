@@ -11,6 +11,10 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+type WithTimestamp struct {
+	Timestamp time.Time `json:"timestamp" bson:"timestamp"`
+}
+
 var StatsCollection *mongo.Collection
 var CapacitiesCollection *mongo.Collection
 var StatusCollection *mongo.Collection

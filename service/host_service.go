@@ -1,16 +1,16 @@
 package service
 
 import (
-	"sys-api/models/dto"
+	"sys-api/models/dto/body"
 	"sys-api/pkg/conf"
 )
 
-func GetHostInfo() []dto.HostInfo {
+func GetHostInfo() []body.HostInfo {
 	allHosts := conf.Env.GetEnabledHosts()
 
-	var result []dto.HostInfo
+	var result []body.HostInfo
 	for _, host := range allHosts {
-		hostInfo := dto.HostInfo{
+		hostInfo := body.HostInfo{
 			Name:   host.Name,
 			ZoneID: host.ZoneID,
 		}

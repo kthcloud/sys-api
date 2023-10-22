@@ -6,10 +6,10 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"sys-api/models"
-	"sys-api/models/dto"
+	"sys-api/models/dto/body"
 )
 
-func GetGpuInfo(n int) ([]dto.GpuInfoDB, error) {
+func GetGpuInfo(n int) ([]body.TimestampedGpuInfo, error) {
 	makeError := func(err error) error {
 		return fmt.Errorf("failed to fetch status from db. details: %s", err)
 	}
@@ -23,9 +23,9 @@ func GetGpuInfo(n int) ([]dto.GpuInfoDB, error) {
 		return nil, makeError(err)
 	}
 
-	var collected []dto.GpuInfoDB
+	var collected []body.TimestampedGpuInfo
 	for result.Next(context.TODO()) {
-		var status dto.GpuInfoDB
+		var status body.TimestampedGpuInfo
 		err := result.Decode(&status)
 		if err != nil {
 			return nil, makeError(err)

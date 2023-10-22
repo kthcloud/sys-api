@@ -6,10 +6,10 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"sys-api/models"
-	"sys-api/models/dto"
+	"sys-api/models/dto/body"
 )
 
-func GetStats(n int) ([]dto.StatsDB, error) {
+func GetStats(n int) ([]body.TimestampedStats, error) {
 	makeError := func(err error) error {
 		return fmt.Errorf("failed to fetch stats from db. details: %s", err)
 	}
@@ -23,9 +23,9 @@ func GetStats(n int) ([]dto.StatsDB, error) {
 		return nil, makeError(err)
 	}
 
-	var collected []dto.StatsDB
+	var collected []body.TimestampedStats
 	for result.Next(context.TODO()) {
-		var stats dto.StatsDB
+		var stats body.TimestampedStats
 		err := result.Decode(&stats)
 		if err != nil {
 			return nil, makeError(err)

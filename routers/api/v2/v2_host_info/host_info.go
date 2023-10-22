@@ -12,8 +12,7 @@ import (
 // @Tags Host Info
 // @Accept  json
 // @Produce  json
-// @Success 200 {array} dto.HostInfo
-// @Failure 400 {object} sys.ErrorResponse
+// @Success 200 {array} body.HostInfo
 // @Router /hostInfo [get]
 func Get(c *gin.Context) {
 	context := sys.NewContext(c)
