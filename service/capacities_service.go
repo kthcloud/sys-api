@@ -6,10 +6,10 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"sys-api/models"
-	"sys-api/models/dto"
+	"sys-api/models/dto/body"
 )
 
-func GetCapacities(n int) ([]dto.CapacitiesDB, error) {
+func GetCapacities(n int) ([]body.TimestampedCapacities, error) {
 	makeError := func(err error) error {
 		return fmt.Errorf("failed to fetch capacities from db. details: %s", err)
 	}
@@ -23,9 +23,9 @@ func GetCapacities(n int) ([]dto.CapacitiesDB, error) {
 		return nil, makeError(err)
 	}
 
-	var capacities []dto.CapacitiesDB
+	var capacities []body.TimestampedCapacities
 	for result.Next(context.TODO()) {
-		var capacity dto.CapacitiesDB
+		var capacity body.TimestampedCapacities
 		err := result.Decode(&capacity)
 		if err != nil {
 			return nil, makeError(err)

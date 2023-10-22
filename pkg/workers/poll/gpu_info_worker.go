@@ -6,18 +6,18 @@ import (
 	"log"
 	"sync"
 	"sys-api/models"
-	"sys-api/models/dto"
+	"sys-api/models/dto/body"
 	"sys-api/models/enviroment"
 	"sys-api/pkg/conf"
 	"sys-api/utils/requestutils"
 	"time"
 )
 
-func GetHostGpuInfo() ([]dto.HostGPUInfo, error) {
+func GetHostGpuInfo() ([]body.HostGpuInfo, error) {
 
 	allHosts := conf.Env.GetEnabledHosts()
 
-	outputs := make([]*dto.HostGPUInfo, len(allHosts))
+	outputs := make([]*body.HostGpuInfo, len(allHosts))
 
 	wg := sync.WaitGroup{}
 	mu := sync.Mutex{}
@@ -37,7 +37,7 @@ func GetHostGpuInfo() ([]dto.HostGPUInfo, error) {
 				return
 			}
 
-			var hostGpus []dto.HostGPU
+			var hostGpus []body.HostGPU
 			err = requestutils.ParseBody(result.Body, &hostGpus)
 			if err != nil {
 				log.Println(makeError(err))
@@ -45,7 +45,7 @@ func GetHostGpuInfo() ([]dto.HostGPUInfo, error) {
 				return
 			}
 
-			hostGpuInfo := dto.HostGPUInfo{
+			hostGpuInfo := body.HostGpuInfo{
 				Name:   allHosts[idx].Name,
 				ZoneID: allHosts[idx].ZoneID,
 				GPUs:   hostGpus,
@@ -61,7 +61,7 @@ func GetHostGpuInfo() ([]dto.HostGPUInfo, error) {
 
 	wg.Wait()
 
-	var result []dto.HostGPUInfo
+	var result []body.HostGpuInfo
 
 	for _, output := range outputs {
 		if output != nil {
@@ -93,14 +93,11 @@ func GpuInfoWorker(ctx context.Context) {
 			if len(hostGpuInfo) == 0 {
 				log.Println(makeError(fmt.Errorf("no host gpu info was found")))
 			} else {
-				gpuInfoDB := dto.GpuInfoDB{
-					GpuInfo: dto.GpuInfo{
-						HostGPUInfo: hostGpuInfo,
-					},
-					Timestamp: time.Now().UTC(),
+				gpuInfo := body.GpuInfo{
+					HostGpuInfo: hostGpuInfo,
 				}
 
-				_, err = models.GpuInfoCollection.InsertOne(context.TODO(), gpuInfoDB)
+				_, err = models.GpuInfoCollection.InsertOne(context.TODO(), body.CreateTimestamped(gpuInfo))
 				if err != nil {
 					log.Println(makeError(err))
 					log.Println("sleeping for an extra minute")

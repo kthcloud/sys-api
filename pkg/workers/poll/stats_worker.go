@@ -8,7 +8,7 @@ import (
 	"log"
 	"sync"
 	"sys-api/models"
-	"sys-api/models/dto"
+	"sys-api/models/dto/body"
 	"sys-api/models/stats"
 	"sys-api/pkg/conf"
 	"time"
@@ -16,7 +16,7 @@ import (
 
 func GetK8sStats() (*stats.K8sStats, error) {
 
-	outputs := make(map[string]*dto.K8sStats)
+	outputs := make(map[string]*body.K8sStats)
 
 	wg := sync.WaitGroup{}
 	mu := sync.Mutex{}
@@ -36,7 +36,7 @@ func GetK8sStats() (*stats.K8sStats, error) {
 			}
 
 			mu.Lock()
-			outputs[name] = &dto.K8sStats{
+			outputs[name] = &body.K8sStats{
 				PodCount: len(list.Items),
 			}
 			mu.Unlock()
@@ -79,18 +79,13 @@ func StatsWorker(ctx context.Context) {
 			if k8sStats == nil {
 				log.Println(makeError(fmt.Errorf("no k8s stats were found")))
 			} else {
-				collected := dto.Stats{
-					K8sStats: dto.K8sStats{
+				collected := body.Stats{
+					K8sStats: body.K8sStats{
 						PodCount: k8sStats.PodCount,
 					},
 				}
 
-				statsDB := dto.StatsDB{
-					Stats:     collected,
-					Timestamp: time.Now().UTC(),
-				}
-
-				_, err = models.StatsCollection.InsertOne(context.TODO(), statsDB)
+				_, err = models.StatsCollection.InsertOne(context.TODO(), body.CreateTimestamped(collected))
 				if err != nil {
 					log.Println(makeError(err))
 					log.Println("sleeping for an extra minute")

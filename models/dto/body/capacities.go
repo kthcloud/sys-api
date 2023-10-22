@@ -1,4 +1,4 @@
-package dto
+package body
 
 type RamCapacities struct {
 	Used  int `json:"used" bson:"used"`
@@ -20,3 +20,5 @@ type Capacities struct {
 	GPU     GpuCapacities     `json:"gpu" bson:"gpu"`
 	Hosts   []HostCapacities  `json:"hosts" bson:"hosts"`
 }
+
+type TimestampedCapacities Timestamped[Capacities]

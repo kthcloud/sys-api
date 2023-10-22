@@ -2,8 +2,9 @@ package v2_capacities
 
 import (
 	"github.com/gin-gonic/gin"
+	"net/http"
+	"sys-api/models/dto/query"
 	"sys-api/pkg/sys"
-	"sys-api/pkg/validator"
 	v2 "sys-api/routers/api/v2"
 	"sys-api/service"
 )
@@ -15,27 +16,19 @@ import (
 // @Accept  json
 // @Produce  json
 // @Param n query int false "n"
-// @Success 200 {array} dto.CapacitiesDB
-// @Failure 400 {object} sys.ErrorResponse
+// @Success 200 {array} body.TimestampedCapacities
+// @Failure 400 {object} body.BindingError
 // @Router /capacities [get]
 func Get(c *gin.Context) {
 	context := sys.NewContext(c)
 
-	rules := validator.MapData{
-		"n": []string{
-			"integer",
-		},
-	}
-
-	validationErrors := context.ValidateQueryParams(&rules)
-	if len(validationErrors) > 0 {
-		context.ResponseValidationError(validationErrors)
+	var requestQuery query.N
+	if err := context.GinContext.Bind(&requestQuery); err != nil {
+		context.JSONResponse(http.StatusBadRequest, v2.CreateBindingError(err))
 		return
 	}
 
-	n, err := v2.GetN(context)
-
-	capacities, err := service.GetCapacities(n)
+	capacities, err := service.GetCapacities(requestQuery.N)
 	if err != nil {
 		context.JSONResponse(200, make([]interface{}, 0))
 		return

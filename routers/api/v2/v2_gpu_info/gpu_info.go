@@ -1,9 +1,12 @@
 package v2_gpu_info
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"net/http"
+	"sys-api/models/dto/query"
+	"sys-api/pkg/status_codes"
 	"sys-api/pkg/sys"
-	"sys-api/pkg/validator"
 	v2 "sys-api/routers/api/v2"
 	"sys-api/service"
 )
@@ -16,33 +19,31 @@ import (
 // @Produce  json
 // @Param n query int false "n"
 // @Param Authorization header string true "With the bearer started"
-// @Success 200 {array} dto.GpuInfoDB
-// @Failure 400 {object} sys.ErrorResponse
+// @Success 200 {array} body.TimestampedGpuInfo
+// @Failure 400 {object} body.BindingError
+// @Failure 403 {object} sys.ErrorResponse
 // @Router /internal/gpuInfo [get]
 func Get(c *gin.Context) {
 	context := sys.NewContext(c)
 
-	isAdmin := v2.IsAdmin(&context)
-	if !isAdmin {
-		context.Unauthorized()
+	auth, err := v2.WithAuth(&context)
+	if err != nil {
+		context.ErrorResponse(http.StatusInternalServerError, status_codes.Error, fmt.Sprintf("Failed to get auth info: %s", err.Error()))
 		return
 	}
 
-	rules := validator.MapData{
-		"n": []string{
-			"integer",
-		},
-	}
-
-	validationErrors := context.ValidateQueryParams(&rules)
-	if len(validationErrors) > 0 {
-		context.ResponseValidationError(validationErrors)
+	if auth.IsAdmin == false {
+		context.ErrorResponse(http.StatusForbidden, status_codes.Error, "User is not allowed to access this resource")
 		return
 	}
 
-	n, err := v2.GetN(context)
+	var requestQuery query.N
+	if err := context.GinContext.Bind(&requestQuery); err != nil {
+		context.JSONResponse(http.StatusBadRequest, v2.CreateBindingError(err))
+		return
+	}
 
-	gpuInfo, err := service.GetGpuInfo(n)
+	gpuInfo, err := service.GetGpuInfo(requestQuery.N)
 	if err != nil {
 		context.JSONResponse(200, make([]interface{}, 0))
 		return
