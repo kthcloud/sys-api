@@ -5,6 +5,7 @@ import (
 	"k8s.io/client-go/kubernetes"
 	"net"
 	"sort"
+	"sync"
 )
 
 type Host struct {
@@ -28,10 +29,12 @@ func (host *Host) ApiURL(route string) string {
 	return fmt.Sprintf("http://%s:%d%s", host.IP.String(), host.Port, route)
 }
 
+var HostMutex sync.Mutex
+
 type Environment struct {
 	Port int `yaml:"port" default:"8080"`
 
-	HostMap map[string]Host
+	hostMap map[string]Host
 	ZoneMap map[string]Zone
 
 	Keycloak struct {
@@ -64,9 +67,48 @@ type Environment struct {
 	} `yaml:"db"`
 }
 
+func (e *Environment) GetHostMap() map[string]Host {
+	HostMutex.Lock()
+	defer HostMutex.Unlock()
+
+	if e.hostMap == nil {
+		e.hostMap = make(map[string]Host)
+	}
+
+	return e.hostMap
+}
+
+func (e *Environment) GetZoneMap() map[string]Zone {
+	HostMutex.Lock()
+	defer HostMutex.Unlock()
+
+	if e.ZoneMap == nil {
+		e.ZoneMap = make(map[string]Zone)
+	}
+
+	return e.ZoneMap
+}
+
+func (e *Environment) SetHostMap(hostMap map[string]Host) {
+	HostMutex.Lock()
+	defer HostMutex.Unlock()
+
+	e.hostMap = hostMap
+}
+
+func (e *Environment) SetZoneMap(zoneMap map[string]Zone) {
+	HostMutex.Lock()
+	defer HostMutex.Unlock()
+
+	e.ZoneMap = zoneMap
+}
+
 func (e *Environment) GetEnabledHosts() []Host {
-	hosts := make([]Host, 0, len(e.HostMap))
-	for _, host := range e.HostMap {
+	HostMutex.Lock()
+	defer HostMutex.Unlock()
+
+	hosts := make([]Host, 0, len(e.hostMap))
+	for _, host := range e.hostMap {
 		if host.Enabled {
 			hosts = append(hosts, host)
 		}
@@ -80,8 +122,11 @@ func (e *Environment) GetEnabledHosts() []Host {
 }
 
 func (e *Environment) GetAvailableHosts() []Host {
-	hosts := make([]Host, 0, len(e.HostMap))
-	for _, host := range e.HostMap {
+	HostMutex.Lock()
+	defer HostMutex.Unlock()
+
+	hosts := make([]Host, 0, len(e.hostMap))
+	for _, host := range e.hostMap {
 		hosts = append(hosts, host)
 	}
 
