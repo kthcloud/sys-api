@@ -130,7 +130,7 @@ func CapacitiesWorker(ctx context.Context) {
 
 	for {
 		select {
-		case <-time.After(1 * time.Second):
+		case <-time.After(CapacitiesSleep):
 			csCapacities, err := GetCsCapacities()
 			if err != nil || csCapacities == nil {
 				csCapacities = &capacities.CsCapacities{
