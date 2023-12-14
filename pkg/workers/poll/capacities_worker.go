@@ -31,30 +31,6 @@ func GetCsCapacities() (*capacitiesModels.CsCapacities, error) {
 		true,
 	)
 
-	// fetch correct zoneID
-	// zone.Name == "Flemingsberg"
-
-	zonesParams := csClient.Zone.NewListZonesParams()
-	zonesResponse, err := csClient.Zone.ListZones(zonesParams)
-	if err != nil {
-		err = makeError(err)
-		log.Println(err)
-		return nil, err
-	}
-
-	var zoneID string
-	for _, zone := range zonesResponse.Zones {
-		if zone.Name == "Flemingsberg" {
-			zoneID = zone.Id
-		}
-	}
-
-	if zoneID == "" {
-		err = makeError(fmt.Errorf("failed to find zone ID for zone 'Flemingsberg'"))
-		log.Println(err)
-		return nil, err
-	}
-
 	capacityParams := csClient.SystemCapacity.NewListCapacityParams()
 	capacityResponse, err := csClient.SystemCapacity.ListCapacity(capacityParams)
 
@@ -68,16 +44,12 @@ func GetCsCapacities() (*capacitiesModels.CsCapacities, error) {
 	var ram capacitiesModels.RamCapacities
 
 	for _, capacity := range capacityResponse.Capacity {
-		if capacity.Zoneid != zoneID {
-			continue
-		}
-
 		if capacity.Name == "CPU_CORE" {
-			cpuCore.Used = int(capacity.Capacityused)
-			cpuCore.Total = int(capacity.Capacitytotal)
+			cpuCore.Used += int(capacity.Capacityused)
+			cpuCore.Total += int(capacity.Capacitytotal)
 		} else if capacity.Name == "MEMORY" {
-			ram.Used = convertToGB(capacity.Capacityused)
-			ram.Total = convertToGB(capacity.Capacitytotal)
+			ram.Used += convertToGB(capacity.Capacityused)
+			ram.Total += convertToGB(capacity.Capacitytotal)
 		}
 	}
 
