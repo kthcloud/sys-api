@@ -157,10 +157,41 @@ func ReloadHosts() error {
 		}
 
 		for _, host := range hosts.Hosts {
+
+			name := host.Name
+			shouldSkip := false
+
+			if host.Hosttags != "" {
+				hostTags := strings.Split(host.Hosttags, ",")
+				for _, keyValue := range hostTags {
+					keyValueSplit := strings.Split(keyValue, "=")
+
+					if len(keyValueSplit) == 2 {
+						key := keyValueSplit[0]
+						value := keyValueSplit[1]
+
+						if key == "displayName" {
+							name = value
+						}
+					} else if len(keyValueSplit) == 1 {
+						key := keyValueSplit[0]
+
+						if key == "skipMetrics" {
+							shouldSkip = true
+						}
+					}
+
+				}
+
+				if shouldSkip {
+					continue
+				}
+			}
+
 			hostMap := Env.GetHostMap()
 			if isGostHost(host) {
 				newHost := enviroment.Host{
-					Name:     host.Name,
+					Name:     name,
 					IP:       net.ParseIP(host.Ipaddress),
 					Port:     8081, // TODO: make this configurable
 					Enabled:  isHostEnabled(host),
