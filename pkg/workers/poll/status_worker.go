@@ -44,7 +44,9 @@ func GetHostStatuses() ([]body.HostStatus, error) {
 				return
 			}
 
+			hostStatus.ID = allHosts[idx].ID
 			hostStatus.Name = allHosts[idx].Name
+			hostStatus.DisplayName = allHosts[idx].DisplayName
 			hostStatus.ZoneID = allHosts[idx].ZoneID
 
 			mu.Lock()

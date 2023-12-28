@@ -9,10 +9,12 @@ import (
 )
 
 type Host struct {
-	Name    string
-	IP      net.IP
-	Port    int
-	Enabled bool
+	ID          string
+	Name        string
+	DisplayName string
+	IP          net.IP
+	Port        int
+	Enabled     bool
 	// CloudStack zone ID
 	ZoneID   string
 	ZoneName string
