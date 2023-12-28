@@ -1,5 +1,12 @@
 package body
 
+type HostBase struct {
+	ID          string `json:"id"`
+	Name        string `json:"name"`
+	DisplayName string `json:"displayName"`
+	ZoneID      string `json:"zoneId"`
+}
+
 type HostGpuCapacities struct {
 	Count int `json:"count" bson:"count"`
 }
@@ -9,10 +16,10 @@ type HostRamCapacities struct {
 }
 
 type HostCapacities struct {
-	Name   string            `json:"name" bson:"name"`
-	GPU    HostGpuCapacities `json:"gpu" bson:"gpu"`
-	RAM    HostRamCapacities `json:"ram" bson:"ram"`
-	ZoneID string            `json:"zoneId" bson:"zoneId"`
+	HostBase
+
+	GPU HostGpuCapacities `json:"gpu" bson:"gpu"`
+	RAM HostRamCapacities `json:"ram" bson:"ram"`
 }
 
 type HostGPU struct {
@@ -25,20 +32,19 @@ type HostGPU struct {
 }
 
 type HostGpuInfo struct {
-	Name   string    `bson:"name" json:"name,omitempty"`
-	ZoneID string    `bson:"zoneId" json:"zoneId,omitempty"`
-	GPUs   []HostGPU `bson:"gpus" json:"gpus"`
+	HostBase
+
+	GPUs []HostGPU `bson:"gpus" json:"gpus"`
 }
 
 type HostInfo struct {
-	Name   string `bson:"name" json:"name"`
-	ZoneID string `bson:"zoneId" json:"zoneId"`
+	HostBase
 }
 
 type HostStatus struct {
-	Name   string `json:"name"`
-	ZoneID string `json:"zoneId"`
-	CPU    struct {
+	HostBase
+
+	CPU struct {
 		Temp struct {
 			Main  int   `json:"main"`
 			Cores []int `json:"cores"`

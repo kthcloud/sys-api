@@ -159,6 +159,7 @@ func ReloadHosts() error {
 		for _, host := range hosts.Hosts {
 
 			name := host.Name
+			displayName := host.Name
 			shouldSkip := false
 
 			if host.Hosttags != "" {
@@ -171,7 +172,7 @@ func ReloadHosts() error {
 						value := keyValueSplit[1]
 
 						if key == "displayName" {
-							name = value
+							displayName = value
 						}
 					} else if len(keyValueSplit) == 1 {
 						key := keyValueSplit[0]
@@ -189,14 +190,16 @@ func ReloadHosts() error {
 			}
 
 			hostMap := Env.GetHostMap()
-			if isGostHost(host) {
+			if isGoodHost(host) {
 				newHost := enviroment.Host{
-					Name:     name,
-					IP:       net.ParseIP(host.Ipaddress),
-					Port:     8081, // TODO: make this configurable
-					Enabled:  isHostEnabled(host),
-					ZoneID:   zone.ID,
-					ZoneName: zone.Name,
+					ID:          host.Id,
+					Name:        name,
+					DisplayName: displayName,
+					IP:          net.ParseIP(host.Ipaddress),
+					Port:        8081, // TODO: make this configurable
+					Enabled:     isHostEnabled(host),
+					ZoneID:      zone.ID,
+					ZoneName:    zone.Name,
 				}
 
 				hostMap[newHost.Name] = newHost
@@ -253,7 +256,7 @@ func createK8sClient(configData []byte) (*kubernetes.Clientset, error) {
 	return k8sClient, nil
 }
 
-func isGostHost(host *cloudstack.Host) bool {
+func isGoodHost(host *cloudstack.Host) bool {
 	return host.Type == "Routing" && host.State == "Up"
 }
 

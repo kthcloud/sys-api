@@ -93,7 +93,9 @@ func GetHostCapacities() ([]body.HostCapacities, error) {
 				return
 			}
 
+			hostCapacities.ID = allHosts[idx].ID
 			hostCapacities.Name = allHosts[idx].Name
+			hostCapacities.DisplayName = allHosts[idx].DisplayName
 			hostCapacities.ZoneID = allHosts[idx].ZoneID
 
 			mu.Lock()

@@ -46,9 +46,13 @@ func GetHostGpuInfo() ([]body.HostGpuInfo, error) {
 			}
 
 			hostGpuInfo := body.HostGpuInfo{
-				Name:   allHosts[idx].Name,
-				ZoneID: allHosts[idx].ZoneID,
-				GPUs:   hostGpus,
+				HostBase: body.HostBase{
+					ID:          allHosts[idx].ID,
+					Name:        allHosts[idx].Name,
+					DisplayName: allHosts[idx].DisplayName,
+					ZoneID:      allHosts[idx].ZoneID,
+				},
+				GPUs: hostGpus,
 			}
 
 			mu.Lock()

@@ -11,8 +11,12 @@ func GetHostInfo() []body.HostInfo {
 	var result []body.HostInfo
 	for _, host := range allHosts {
 		hostInfo := body.HostInfo{
-			Name:   host.Name,
-			ZoneID: host.ZoneID,
+			HostBase: body.HostBase{
+				ID:          host.ID,
+				Name:        host.Name,
+				DisplayName: host.DisplayName,
+				ZoneID:      host.ZoneID,
+			},
 		}
 		result = append(result, hostInfo)
 	}
