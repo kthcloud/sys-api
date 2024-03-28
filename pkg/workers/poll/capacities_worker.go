@@ -1,201 +1,123 @@
 package poll
 
 import (
-	"context"
 	"fmt"
 	"log"
-	"math"
 	"sync"
+	"sys-api/dto/body"
 	"sys-api/models"
-	"sys-api/models/capacities"
-	capacitiesModels "sys-api/models/capacities"
-	"sys-api/models/dto/body"
-	"sys-api/models/enviroment"
-	"sys-api/pkg/cloudstack"
-	"sys-api/pkg/conf"
-	"sys-api/utils/requestutils"
+	"sys-api/pkg/repository"
+	"sys-api/pkg/subsystems/cs"
+	"sys-api/pkg/subsystems/host_api"
+	"sys-api/pkg/timestamp_repository"
+	"sys-api/utils"
 	"time"
 )
 
-func GetCsCapacities() (*capacitiesModels.CsCapacities, error) {
+func GetCsCapacities() (*cs.Capacities, error) {
 	makeError := func(err error) error {
 		return fmt.Errorf("failed to get cs capacities. details: %s", err)
 	}
 
-	cs := conf.Env.CS
+	client := cs.NewClient(cs.ClientConfig{
+		URL:    models.Config.CS.URL,
+		ApiKey: models.Config.CS.ApiKey,
+		Secret: models.Config.CS.Secret,
+	})
 
-	csClient := cloudstack.NewAsyncClient(
-		cs.URL,
-		cs.ApiKey,
-		cs.Secret,
-		true,
-	)
-
-	capacityParams := csClient.SystemCapacity.NewListCapacityParams()
-	capacityResponse, err := csClient.SystemCapacity.ListCapacity(capacityParams)
-
+	capacities, err := client.GetCapacities()
 	if err != nil {
-		err = makeError(err)
-		log.Println(err)
-		return nil, err
+		return nil, makeError(err)
 	}
 
-	var cpuCore capacitiesModels.CpuCoreCapacities
-	var ram capacitiesModels.RamCapacities
-
-	for _, capacity := range capacityResponse.Capacity {
-		if capacity.Name == "CPU_CORE" {
-			cpuCore.Used += int(capacity.Capacityused)
-			cpuCore.Total += int(capacity.Capacitytotal)
-		} else if capacity.Name == "MEMORY" {
-			ram.Used += convertToGB(capacity.Capacityused)
-			ram.Total += convertToGB(capacity.Capacitytotal)
-		}
-	}
-
-	parsedCapacities := &capacitiesModels.CsCapacities{
-		CpuCore: cpuCore,
-		RAM:     ram,
-	}
-
-	return parsedCapacities, nil
+	return capacities, nil
 }
 
 func GetHostCapacities() ([]body.HostCapacities, error) {
-
-	allHosts := conf.Env.GetAvailableHosts()
+	allHosts, err := repository.NewClient().FetchHosts()
+	if err != nil {
+		return nil, fmt.Errorf("failed to fetch hosts. details: %s", err)
+	}
 
 	outputs := make([]*body.HostCapacities, len(allHosts))
+	mu := sync.RWMutex{}
 
-	wg := sync.WaitGroup{}
-	mu := sync.Mutex{}
-
-	for idx, host := range allHosts {
-		wg.Add(1)
-		go func(idx int, host enviroment.Host) {
-			makeError := func(err error) error {
-				return fmt.Errorf("failed to get capacities for host %s. details: %s", host.IP.String(), err)
-			}
-
-			url := host.ApiURL("/capacities")
-			response, err := requestutils.DoRequest("GET", url, nil, nil)
-			if err != nil {
-				log.Println(makeError(err))
-				wg.Done()
-				return
-			}
-
-			var hostCapacities body.HostCapacities
-			err = requestutils.ParseBody(response.Body, &hostCapacities)
-			if err != nil {
-				log.Println(makeError(err))
-				wg.Done()
-				return
-			}
-
-			hostCapacities.ID = allHosts[idx].ID
-			hostCapacities.Name = allHosts[idx].Name
-			hostCapacities.DisplayName = allHosts[idx].DisplayName
-			hostCapacities.ZoneID = allHosts[idx].ZoneID
-
-			mu.Lock()
-			outputs[idx] = &hostCapacities
-			mu.Unlock()
-
-			wg.Done()
-		}(idx, host)
-	}
-
-	wg.Wait()
-
-	var result []body.HostCapacities
-
-	for _, output := range outputs {
-		if output != nil {
-			result = append(result, *output)
+	ForEachHost("fetch-capacities", allHosts, func(idx int, host *models.Host) error {
+		makeError := func(err error) error {
+			return fmt.Errorf("failed to get capacities for host %s. details: %s", host.IP, err)
 		}
-	}
 
-	return result, nil
+		client := host_api.NewClient(host.ApiURL())
+
+		capacities, err := client.GetCapacities()
+		if err != nil {
+			return makeError(err)
+		}
+
+		hostCapacities := body.HostCapacities{
+			Capacities: *capacities,
+			HostBase: body.HostBase{
+				Name:        host.Name,
+				DisplayName: host.DisplayName,
+				Zone:        host.Zone,
+			},
+		}
+
+		mu.Lock()
+		outputs[idx] = &hostCapacities
+		mu.Unlock()
+
+		return nil
+	})
+
+	return utils.WithoutNils(outputs), nil
 }
 
-func convertToGB(bytes int64) int {
-	return int(math.Round(float64(bytes) / float64(1073741824)))
-}
-
-func CapacitiesWorker(ctx context.Context) {
-	defer log.Println("capacities worker stopped")
-
-	makeError := func(err error) error {
-		return fmt.Errorf("capacitity worker experienced an issue: %s", err)
+func CapacitiesWorker() error {
+	csCapacities, err := GetCsCapacities()
+	if err != nil || csCapacities == nil {
+		csCapacities = cs.ZeroCapacities()
 	}
 
-	for {
-		select {
-		case <-time.After(CapacitiesSleep):
-			csCapacities, err := GetCsCapacities()
-			if err != nil || csCapacities == nil {
-				csCapacities = &capacities.CsCapacities{
-					RAM: capacities.RamCapacities{
-						Used:  0,
-						Total: 0,
-					},
-					CpuCore: capacities.CpuCoreCapacities{
-						Used:  0,
-						Total: 0,
-					},
-				}
-			}
-
-			gpuTotal := 0
-
-			hostCapacities, err := GetHostCapacities()
-			if err != nil || hostCapacities == nil {
-				hostCapacities = make([]body.HostCapacities, 0)
-			}
-
-			for _, host := range hostCapacities {
-				gpuTotal += host.GPU.Count
-			}
-
-			collected := body.Capacities{
-				RAM: body.RamCapacities{
-					Used:  csCapacities.RAM.Used,
-					Total: csCapacities.RAM.Total,
-				},
-				CpuCore: body.CpuCoreCapacities{
-					Used:  csCapacities.CpuCore.Used,
-					Total: csCapacities.CpuCore.Total,
-				},
-				GPU: body.GpuCapacities{
-					Total: gpuTotal,
-				},
-				Hosts: hostCapacities,
-			}
-
-			timestamped := body.TimestampedCapacities{
-				Capacities: collected,
-				Timestamp:  time.Now(),
-			}
-
-			_, err = models.CapacitiesCollection.InsertOne(context.TODO(), timestamped)
-			if err != nil {
-				log.Println(makeError(err))
-				log.Println("sleeping for an extra minute")
-				time.Sleep(60 * time.Second)
-				continue
-			}
-
-			err = DeleteUntilNItemsLeft(models.CapacitiesCollection, 1000)
-			if err != nil {
-				log.Println(makeError(err))
-				log.Println("sleeping for an extra minute")
-				time.Sleep(60 * time.Second)
-				continue
-			}
-
-		case <-ctx.Done():
-			return
-		}
+	if csCapacities == nil {
+		log.Println("capacities worker could not get cloudstack capacities. this is likely due to cloudstack not being available")
 	}
+
+	hostCapacities, err := GetHostCapacities()
+	if err != nil {
+		return err
+	}
+
+	if len(hostCapacities) == 0 {
+		log.Println("capacities worker found no host capacities. this is likely due to no hosts being available")
+	}
+
+	if len(hostCapacities) == 0 && csCapacities == nil {
+		return fmt.Errorf("capacities worker found no capacities. this is likely due to no hosts or cloudstack being available")
+	}
+
+	gpuTotal := 0
+	for _, host := range hostCapacities {
+		gpuTotal += host.GPU.Count
+	}
+
+	collected := body.Capacities{
+		RAM: body.RamCapacities{
+			Used:  csCapacities.RAM.Used,
+			Total: csCapacities.RAM.Total,
+		},
+		CpuCore: body.CpuCoreCapacities{
+			Used:  csCapacities.CpuCore.Used,
+			Total: csCapacities.CpuCore.Total,
+		},
+		GPU: body.GpuCapacities{
+			Total: gpuTotal,
+		},
+		Hosts: hostCapacities,
+	}
+
+	return timestamp_repository.NewClient().SaveCapacities(&body.TimestampedCapacities{
+		Capacities: collected,
+		Timestamp:  time.Now(),
+	})
 }

@@ -1,115 +1,61 @@
 package poll
 
 import (
-	"context"
 	"fmt"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"log"
 	"sync"
+	"sys-api/dto/body"
 	"sys-api/models"
-	"sys-api/models/dto/body"
-	"sys-api/models/stats"
-	"sys-api/pkg/conf"
+	"sys-api/pkg/subsystems/k8s"
+	"sys-api/pkg/timestamp_repository"
+	"sys-api/utils"
 	"time"
 )
 
-func GetK8sStats() (*stats.K8sStats, error) {
-
-	outputs := make(map[string]*body.K8sStats)
-
-	wg := sync.WaitGroup{}
+func GetK8sStats() ([]body.K8sStats, error) {
+	clients := models.Config.K8s.Clients
+	outputs := make([]*body.K8sStats, len(clients))
 	mu := sync.Mutex{}
 
-	for name, cluster := range conf.Env.K8s.Clients {
-		wg.Add(1)
-		go func(name string, cluster *kubernetes.Clientset) {
-			makeError := func(err error) error {
-				return fmt.Errorf("failed to list pods from cluster %s. details: %s", name, err)
-			}
-
-			list, err := cluster.CoreV1().Pods("").List(context.TODO(), v1.ListOptions{})
-			if err != nil {
-				log.Println(makeError(err))
-				wg.Done()
-				return
-			}
-
-			mu.Lock()
-			outputs[name] = &body.K8sStats{
-				PodCount: len(list.Items),
-			}
-			mu.Unlock()
-
-			wg.Done()
-
-		}(name, cluster)
-	}
-
-	wg.Wait()
-
-	var result stats.K8sStats
-
-	for _, output := range outputs {
-		if output != nil {
-			result.PodCount += output.PodCount
+	ForEachCluster("fetch-k8s-stats", clients, func(worker int, name string, cluster *kubernetes.Clientset) error {
+		makeError := func(err error) error {
+			return fmt.Errorf("failed to list pods from cluster %s. details: %s", name, err)
 		}
-	}
 
-	return &result, nil
+		pods, err := k8s.NewClient(cluster).GetTotalPods()
+		if err != nil {
+			log.Println(makeError(err))
+			return nil
+		}
+
+		mu.Lock()
+		outputs[worker] = &body.K8sStats{Name: name, PodCount: pods}
+		mu.Unlock()
+
+		return nil
+	})
+
+	return utils.WithoutNils(outputs), nil
 }
 
-func StatsWorker(ctx context.Context) {
-	defer log.Println("stats worker stopped")
-
-	makeError := func(err error) error {
-		return fmt.Errorf("stats worker experienced an issue: %s", err)
+func StatsWorker() error {
+	k8sStats, err := GetK8sStats()
+	if err != nil {
+		return err
 	}
 
-	for {
-		select {
-		case <-time.After(StatsSleep):
-			k8sStats, err := GetK8sStats()
-			if err != nil {
-				log.Println(makeError(err))
-				time.Sleep(StatsSleep)
-				continue
-			}
-
-			if k8sStats == nil {
-				log.Println(makeError(fmt.Errorf("no k8s stats were found")))
-			} else {
-				collected := body.Stats{
-					K8sStats: body.K8sStats{
-						PodCount: k8sStats.PodCount,
-					},
-				}
-
-				timestamped := body.TimestampedStats{
-					Stats:     collected,
-					Timestamp: time.Now(),
-				}
-
-				_, err = models.StatsCollection.InsertOne(context.TODO(), timestamped)
-				if err != nil {
-					log.Println(makeError(err))
-					log.Println("sleeping for an extra minute")
-					time.Sleep(60 * time.Second)
-					continue
-				}
-
-				err = DeleteUntilNItemsLeft(models.StatsCollection, 1000)
-				if err != nil {
-					log.Println(makeError(err))
-					log.Println("sleeping for an extra minute")
-					time.Sleep(60 * time.Second)
-					continue
-				}
-			}
-
-		case <-ctx.Done():
-			return
-		}
-
+	if k8sStats == nil {
+		return fmt.Errorf("stats worker found no k8s stats. this is likely due to no k8s clusters being available")
 	}
+
+	collected := body.Stats{K8sStats: body.K8sStats{PodCount: 0}}
+	for _, stat := range k8sStats {
+		collected.K8sStats.PodCount += stat.PodCount
+	}
+
+	return timestamp_repository.NewClient().SaveStats(&body.TimestampedStats{
+		Stats:     collected,
+		Timestamp: time.Now(),
+	})
 }
