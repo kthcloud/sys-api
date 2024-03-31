@@ -7,13 +7,18 @@ import (
 )
 
 type Client struct {
-}
-
-type ClientConfig struct {
+	IncludeDeactivated bool
 }
 
 func NewClient() *Client {
-	return &Client{}
+	return &Client{
+		IncludeDeactivated: false,
+	}
+}
+
+func (c *Client) WithDeactivated() *Client {
+	c.IncludeDeactivated = true
+	return c
 }
 
 func parseList[T any](cursor *mongo.Cursor) ([]T, error) {

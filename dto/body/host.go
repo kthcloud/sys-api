@@ -9,5 +9,5 @@ type HostBase struct {
 }
 
 type HostInfo struct {
-	HostBase
+	HostBase `json:",inline" bson:",inline"`
 }

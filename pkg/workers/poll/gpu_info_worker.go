@@ -21,7 +21,7 @@ func GetHostGpuInfo() ([]body.HostGpuInfo, error) {
 	outputs := make([]*body.HostGpuInfo, len(allHosts))
 	mu := sync.RWMutex{}
 
-	ForEachHost("fetch-capacities", allHosts, func(idx int, host *models.Host) error {
+	err = ForEachHost("fetch-capacities", allHosts, func(idx int, host *models.Host) error {
 		makeError := func(err error) error {
 			return fmt.Errorf("failed to get capacities for host %s. details: %s", host.IP, err)
 		}
@@ -49,7 +49,7 @@ func GetHostGpuInfo() ([]body.HostGpuInfo, error) {
 		return nil
 	})
 
-	return utils.WithoutNils(outputs), nil
+	return utils.WithoutNils(outputs), err
 }
 
 func GpuInfoWorker() error {

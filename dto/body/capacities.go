@@ -26,8 +26,8 @@ type HostRamCapacities struct {
 }
 
 type HostCapacities struct {
-	HostBase
-	host_api.Capacities
+	HostBase            `json:",inline" bson:",inline"`
+	host_api.Capacities `json:",inline" bson:",inline"`
 }
 
 type RamCapacities struct {

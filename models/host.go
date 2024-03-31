@@ -16,8 +16,9 @@ type Host struct {
 
 	Enabled bool `json:"enabled" bson:"enabled"`
 
-	LastSeenAt   time.Time `json:"lastSeenAt" bson:"lastSeenAt"`
-	RegisteredAt time.Time `json:"registeredAt" bson:"registeredAt"`
+	DeactivatedUntil *time.Time `json:"deactivatedUntil,omitempty" bson:"deactivatedUntil,omitempty"`
+	LastSeenAt       time.Time  `json:"lastSeenAt" bson:"lastSeenAt"`
+	RegisteredAt     time.Time  `json:"registeredAt" bson:"registeredAt"`
 
 	// ID is the CloudStack host ID
 	// Deprecated: Use Name instead

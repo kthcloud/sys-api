@@ -42,7 +42,7 @@ func GetHostCapacities() ([]body.HostCapacities, error) {
 	outputs := make([]*body.HostCapacities, len(allHosts))
 	mu := sync.RWMutex{}
 
-	ForEachHost("fetch-capacities", allHosts, func(idx int, host *models.Host) error {
+	err = ForEachHost("fetch-capacities", allHosts, func(idx int, host *models.Host) error {
 		makeError := func(err error) error {
 			return fmt.Errorf("failed to get capacities for host %s. details: %s", host.IP, err)
 		}
@@ -70,7 +70,7 @@ func GetHostCapacities() ([]body.HostCapacities, error) {
 		return nil
 	})
 
-	return utils.WithoutNils(outputs), nil
+	return utils.WithoutNils(outputs), err
 }
 
 func CapacitiesWorker() error {
@@ -90,6 +90,7 @@ func CapacitiesWorker() error {
 
 	if len(hostCapacities) == 0 {
 		log.Println("capacities worker found no host capacities. this is likely due to no hosts being available")
+		hostCapacities = make([]body.HostCapacities, 0)
 	}
 
 	if len(hostCapacities) == 0 && csCapacities == nil {

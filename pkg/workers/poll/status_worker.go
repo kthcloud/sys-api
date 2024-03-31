@@ -21,9 +21,9 @@ func GetHostStatuses() ([]body.HostStatus, error) {
 	outputs := make([]*body.HostStatus, len(allHosts))
 	mu := sync.Mutex{}
 
-	ForEachHost("fetch-status", allHosts, func(idx int, host *models.Host) error {
+	err = ForEachHost("fetch-status", allHosts, func(idx int, host *models.Host) error {
 		makeError := func(err error) error {
-			return fmt.Errorf("failed to get  for host %s. details: %s", host.IP, err)
+			return fmt.Errorf("failed to get status for host %s. details: %s", host.IP, err)
 		}
 
 		client := host_api.NewClient(host.ApiURL())
@@ -49,7 +49,7 @@ func GetHostStatuses() ([]body.HostStatus, error) {
 		return nil
 	})
 
-	return utils.WithoutNils(outputs), nil
+	return utils.WithoutNils(outputs), err
 }
 
 func StatusWorker() error {

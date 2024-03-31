@@ -15,6 +15,6 @@ type TimestampedStatus struct {
 }
 
 type HostStatus struct {
-	HostBase
-	host_api.Status
+	HostBase        `json:",inline" bson:",inline"`
+	host_api.Status `json:",inline" bson:",inline"`
 }

@@ -1,10 +1,5 @@
 package body
 
-const (
-	NodeDiscoveryRegister    = "nodeDiscoveryRegister"
-	ClusterDiscoveryRegister = "clusterDiscoveryRegister"
-)
-
 type HostRegisterParams struct {
 	// Name is the host name of the node
 	Name string `json:"name" binding:"required,min=3"`
