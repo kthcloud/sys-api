@@ -33,7 +33,7 @@ func Poller(ctx context.Context, name string, sleep time.Duration, job func() er
 					continue
 				}
 
-				utils.PrettyPrintError(fmt.Errorf("%s failed (sleeping for extra %s). details: %s", name, failSleep.String(), err))
+				utils.PrettyPrintError(fmt.Errorf("%s failed (sleeping for extra %s). details: %w", name, failSleep.String(), err))
 				failSleep = failSleep * 2
 				time.Sleep(failSleep)
 				continue
