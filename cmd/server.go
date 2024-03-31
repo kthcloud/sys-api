@@ -33,7 +33,7 @@ func (it *InitTask) LogBegin(prefix string) {
 	reset := "\033[0m"
 	now := time.Now().Format("2006/01/02 15:04:05")
 	taskName := it.Name
-	fmt.Printf("[%s] %s %s%s%s %s...%s ", now, prefix, orange, taskName, reset, grey, reset)
+	fmt.Printf("%s %s %s%s%s %s...%s ", now, prefix, orange, taskName, reset, grey, reset)
 	if it.Composite {
 		lightBlue := "\033[38;5;39m"
 		fmt.Println(lightBlue)

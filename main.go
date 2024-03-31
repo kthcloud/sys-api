@@ -33,10 +33,10 @@ func main() {
 			Poller: poller,
 		}
 
-		log.Println("api: ", options.API)
-		log.Println("poller: ", options.Poller)
+		log.Println("API:", options.API)
+		log.Println("Poller:", options.Poller)
 	} else {
-		log.Println("no workers specified, starting all")
+		log.Println("No workers specified, starting all")
 	}
 
 	ctx := context.Background()
