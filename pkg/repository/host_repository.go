@@ -19,12 +19,12 @@ func (c *Client) RegisterHost(host *models.Host) error {
 	err := c.getCollection(db.ColHosts).FindOne(context.TODO(), bson.M{"name": host.Name}).Decode(&current)
 	if err != nil {
 		if !errors.Is(err, mongo.ErrNoDocuments) {
-			return fmt.Errorf("failed to find host %s. details: %s", host.Name, err)
+			return fmt.Errorf("failed to find host %s. details: %w", host.Name, err)
 		}
 
 		// Host does not exist, insert it
 		_, err = c.getCollection(db.ColHosts).InsertOne(context.TODO(), host)
-		return fmt.Errorf("failed to insert host %s. details: %s", host.Name, err)
+		return fmt.Errorf("failed to insert host %s. details: %w", host.Name, err)
 	}
 
 	// Host exists, update it
@@ -38,7 +38,7 @@ func (c *Client) RegisterHost(host *models.Host) error {
 		},
 	}
 	_, err = c.getCollection(db.ColHosts).UpdateOne(context.TODO(), bson.M{"name": host.Name}, update)
-	return fmt.Errorf("failed to update host %s. details: %s", host.Name, err)
+	return fmt.Errorf("failed to update host %s. details: %w", host.Name, err)
 }
 
 func (c *Client) FetchHosts() ([]models.Host, error) {
