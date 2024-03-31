@@ -96,6 +96,8 @@ func ForEachCluster(taskName string, clusters map[string]kubernetes.Clientset, j
 			}
 			wg.Done()
 		}()
+
+		idx++
 	}
 
 	wg.Wait()

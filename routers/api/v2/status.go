@@ -1,6 +1,7 @@
 package v2
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"sys-api/dto/query"
@@ -29,6 +30,11 @@ func GetStatus(c *gin.Context) {
 
 	status, err := service.GetStatus(requestQuery.N)
 	if err != nil {
+		context.ServerError(err, fmt.Errorf("failed to fetch status"))
+		return
+	}
+
+	if len(status) == 0 {
 		context.JSONResponse(200, make([]interface{}, 0))
 		return
 	}

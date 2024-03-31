@@ -1,6 +1,7 @@
 package v2
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"sys-api/dto/query"
@@ -29,6 +30,11 @@ func GetCapacities(c *gin.Context) {
 
 	capacities, err := service.GetCapacities(requestQuery.N)
 	if err != nil {
+		context.ServerError(err, fmt.Errorf("failed to fetch capacities"))
+		return
+	}
+
+	if capacities == nil {
 		context.JSONResponse(200, make([]interface{}, 0))
 		return
 	}

@@ -2,6 +2,7 @@ package timestamp_repository
 
 import (
 	"context"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"sys-api/dto/body"
 	"sys-api/pkg/db"
@@ -22,8 +23,9 @@ func (c *Client) SaveGpuInfo(gpuInfo *body.TimestampedGpuInfo) error {
 }
 
 func (c *Client) FetchGpuInfo() ([]body.TimestampedGpuInfo, error) {
-	res, err := c.getCollection(db.ColGpuInfo).Find(context.TODO(), nil, &options.FindOptions{
+	res, err := c.getCollection(db.ColGpuInfo).Find(context.TODO(), bson.D{}, &options.FindOptions{
 		Limit: intPtr(int64(c.MaxDocuments)),
+		Sort:  bson.M{"timestamp": -1},
 	})
 
 	if err != nil {

@@ -13,9 +13,9 @@ import (
 	"time"
 )
 
-func GetK8sStats() ([]body.K8sStats, error) {
+func GetClusterStats() ([]body.ClusterStats, error) {
 	clients := models.Config.K8s.Clients
-	outputs := make([]*body.K8sStats, len(clients))
+	outputs := make([]*body.ClusterStats, len(clients))
 	mu := sync.Mutex{}
 
 	ForEachCluster("fetch-k8s-stats", clients, func(worker int, name string, cluster *kubernetes.Clientset) error {
@@ -30,7 +30,7 @@ func GetK8sStats() ([]body.K8sStats, error) {
 		}
 
 		mu.Lock()
-		outputs[worker] = &body.K8sStats{Name: name, PodCount: pods}
+		outputs[worker] = &body.ClusterStats{Name: name, PodCount: pods}
 		mu.Unlock()
 
 		return nil
@@ -40,18 +40,18 @@ func GetK8sStats() ([]body.K8sStats, error) {
 }
 
 func StatsWorker() error {
-	k8sStats, err := GetK8sStats()
+	clusterStats, err := GetClusterStats()
 	if err != nil {
 		return err
 	}
 
-	if k8sStats == nil {
+	if clusterStats == nil {
 		return fmt.Errorf("stats worker found no k8s stats. this is likely due to no k8s clusters being available")
 	}
 
-	collected := body.Stats{K8sStats: body.K8sStats{PodCount: 0}}
-	for _, stat := range k8sStats {
-		collected.K8sStats.PodCount += stat.PodCount
+	collected := body.Stats{K8sStats: body.K8sStats{PodCount: 0, Clusters: clusterStats}}
+	for _, cluster := range clusterStats {
+		collected.K8sStats.PodCount += cluster.PodCount
 	}
 
 	return timestamp_repository.NewClient().SaveStats(&body.TimestampedStats{

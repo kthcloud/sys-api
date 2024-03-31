@@ -1,6 +1,7 @@
 package v2
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"sys-api/dto/query"
@@ -29,6 +30,10 @@ func GetStats(c *gin.Context) {
 
 	stats, err := service.GetStats(requestQuery.N)
 	if err != nil {
+		context.ServerError(err, fmt.Errorf("failed to fetch stats"))
+	}
+
+	if len(stats) == 0 {
 		context.JSONResponse(200, make([]interface{}, 0))
 		return
 	}

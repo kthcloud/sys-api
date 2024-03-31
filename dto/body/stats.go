@@ -12,6 +12,11 @@ type TimestampedStats struct {
 }
 
 type K8sStats struct {
+	PodCount int            `json:"podCount" bson:"podCount"`
+	Clusters []ClusterStats `json:"clusters" bson:"clusters"`
+}
+
+type ClusterStats struct {
 	Name     string `json:"cluster" bson:"cluster"`
 	PodCount int    `json:"podCount" bson:"podCount"`
 }

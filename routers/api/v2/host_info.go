@@ -23,5 +23,10 @@ func GetHostInfo(c *gin.Context) {
 		context.ServerError(err, fmt.Errorf("failed to get host info"))
 	}
 
+	if hostInfo == nil {
+		context.JSONResponse(200, make([]interface{}, 0))
+		return
+	}
+
 	context.JSONResponse(200, hostInfo)
 }
