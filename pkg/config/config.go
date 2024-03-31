@@ -125,8 +125,6 @@ func Setup() error {
 }
 
 func SyncCloudStackHosts() error {
-	zones := make(map[string]models.Zone)
-
 	// Register hosts
 	hosts, err := cs.NewClient(cs.ClientConfig{
 		URL:    models.Config.CS.URL,
@@ -134,16 +132,25 @@ func SyncCloudStackHosts() error {
 		Secret: models.Config.CS.Secret,
 	}).ListHosts()
 
-	for _, host := range hosts {
-		newHost := models.NewHost(host.Name, host.DisplayName, host.Zone, host.IP, host.Port, host.Enabled)
-		if err = repository.NewClient().RegisterHost(newHost); err != nil {
-			return err
-		}
+	if err != nil {
+		return fmt.Errorf("failed to fetch hosts from cloudstack. details: %s", err)
+	}
 
+	if len(hosts) == 0 {
+		return fmt.Errorf("no hosts found in cloudstack. this is likely due to no hosts being available")
+	}
+
+	zones := make(map[string]models.Zone)
+	for _, host := range hosts {
 		convertedName := convertCloudStackZone(host.Zone)
 		if convertedName == nil {
 			log.Printf("zone %s not found in cloudstack zone name conversion map. this is likely a unoffical zone\n", host.Zone)
 			continue
+		}
+
+		newHost := models.NewHost(host.Name, host.DisplayName, *convertedName, host.IP, host.Port, host.Enabled)
+		if err = repository.NewClient().RegisterHost(newHost); err != nil {
+			return err
 		}
 
 		if _, exists := zones[host.Zone]; !exists {

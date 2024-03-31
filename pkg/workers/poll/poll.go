@@ -7,7 +7,7 @@ import (
 )
 
 func Setup(ctx context.Context) {
-	log.Println("starting pollers")
+	log.Println("Starting pollers")
 
 	go Poller(ctx, "hostFetchWorker", models.Config.Timer.HostFetch, HostFetchWorker)
 	go Poller(ctx, "statsWorker", models.Config.Timer.Stats, StatsWorker)
