@@ -3,12 +3,14 @@ package poll
 import (
 	"context"
 	"errors"
+	"fmt"
 	"k8s.io/client-go/kubernetes"
 	"log"
 	"strings"
 	"sync"
 	"sys-api/models"
 	"sys-api/pkg/repository"
+	"sys-api/utils"
 	"time"
 )
 
@@ -22,7 +24,7 @@ func Poller(ctx context.Context, name string, sleep time.Duration, job func() er
 			if err != nil {
 				var failedTaskErr *FailedTaskErr
 				if errors.As(err, &failedTaskErr) {
-					log.Printf("%s failed for some hosts (%s). deactivating them temporarily\n", name, strings.Join(failedTaskErr.Hosts, ","))
+					utils.PrettyPrintError(fmt.Errorf("%s failed for some hosts (%s). deactivating them temporarily", name, strings.Join(failedTaskErr.Hosts, ",")))
 					for _, host := range failedTaskErr.Hosts {
 						_ = repository.NewClient().DeactiveHost(host, time.Now().Add(5*time.Minute))
 					}
@@ -31,7 +33,7 @@ func Poller(ctx context.Context, name string, sleep time.Duration, job func() er
 					continue
 				}
 
-				log.Printf("%s failed (sleeping for extra %s). details: %s\n", name, failSleep.String(), err)
+				utils.PrettyPrintError(fmt.Errorf("%s failed (sleeping for extra %s). details: %s", name, failSleep.String(), err))
 				failSleep = failSleep * 2
 				time.Sleep(failSleep)
 				continue
