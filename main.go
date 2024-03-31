@@ -5,7 +5,7 @@ import (
 	"flag"
 	"log"
 	"os"
-	"sys-api/pkg/app"
+	"sys-api/cmd"
 )
 
 func isFlagPassed(name string) bool {
@@ -26,9 +26,9 @@ func main() {
 	api := isFlagPassed("api")
 	poller := isFlagPassed("poller")
 
-	var options *app.StartOptions
+	var options *cmd.StartOptions
 	if api || poller {
-		options = &app.StartOptions{
+		options = &cmd.StartOptions{
 			API:    api,
 			Poller: poller,
 		}
@@ -41,11 +41,11 @@ func main() {
 
 	ctx := context.Background()
 	ctx, cancel := context.WithCancel(ctx)
-	server := app.Start(ctx, options)
+	server := cmd.Start(ctx, options)
 	if server != nil {
 		defer func() {
 			cancel()
-			app.Stop(server)
+			cmd.Stop(server)
 		}()
 	}
 

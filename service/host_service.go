@@ -1,25 +1,27 @@
 package service
 
 import (
-	"sys-api/models/dto/body"
-	"sys-api/pkg/conf"
+	"sys-api/dto/body"
+	"sys-api/pkg/repository"
 )
 
-func GetHostInfo() []body.HostInfo {
-	allHosts := conf.Env.GetEnabledHosts()
+func GetHostInfo() ([]body.HostInfo, error) {
+	allHosts, err := repository.NewClient().FetchHosts()
+	if err != nil {
+		return nil, err
+	}
 
 	var result []body.HostInfo
 	for _, host := range allHosts {
 		hostInfo := body.HostInfo{
 			HostBase: body.HostBase{
-				ID:          host.ID,
 				Name:        host.Name,
 				DisplayName: host.DisplayName,
-				ZoneID:      host.ZoneID,
+				Zone:        host.Zone,
 			},
 		}
 		result = append(result, hostInfo)
 	}
 
-	return result
+	return result, nil
 }

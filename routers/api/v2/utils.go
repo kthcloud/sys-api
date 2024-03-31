@@ -5,12 +5,12 @@ import (
 	"errors"
 	"github.com/go-playground/validator/v10"
 	"reflect"
-	"sys-api/models/dto/body"
-	"sys-api/pkg/sys"
+	"sys-api/dto/body"
+	"sys-api/pkg/app"
 	"sys-api/service"
 )
 
-func WithAuth(context *sys.ClientContext) (*service.AuthInfo, error) {
+func WithAuth(context *app.ClientContext) (*service.AuthInfo, error) {
 	token, err := context.GetKeycloakToken()
 	if err != nil {
 		return nil, err

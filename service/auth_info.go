@@ -1,8 +1,8 @@
 package service
 
 import (
+	"sys-api/models"
 	"sys-api/pkg/auth"
-	"sys-api/pkg/conf"
 )
 
 type AuthInfo struct {
@@ -14,7 +14,7 @@ type AuthInfo struct {
 func CreateAuthInfo(userID string, JwtToken *auth.KeycloakToken, iamGroups []string) *AuthInfo {
 	isAdmin := false
 	for _, iamGroup := range iamGroups {
-		if iamGroup == conf.Env.Keycloak.AdminGroup {
+		if iamGroup == models.Config.Keycloak.AdminGroup {
 			isAdmin = true
 		}
 	}

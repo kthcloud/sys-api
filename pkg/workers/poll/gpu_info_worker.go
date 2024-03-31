@@ -1,130 +1,71 @@
 package poll
 
 import (
-	"context"
 	"fmt"
-	"log"
 	"sync"
+	"sys-api/dto/body"
 	"sys-api/models"
-	"sys-api/models/dto/body"
-	"sys-api/models/enviroment"
-	"sys-api/pkg/conf"
-	"sys-api/utils/requestutils"
+	"sys-api/pkg/repository"
+	"sys-api/pkg/subsystems/host_api"
+	"sys-api/pkg/timestamp_repository"
+	"sys-api/utils"
 	"time"
 )
 
 func GetHostGpuInfo() ([]body.HostGpuInfo, error) {
-
-	allHosts := conf.Env.GetEnabledHosts()
+	allHosts, err := repository.NewClient().FetchHosts()
+	if err != nil {
+		return nil, fmt.Errorf("failed to fetch hosts. details: %s", err)
+	}
 
 	outputs := make([]*body.HostGpuInfo, len(allHosts))
+	mu := sync.RWMutex{}
 
-	wg := sync.WaitGroup{}
-	mu := sync.Mutex{}
-
-	for idx, host := range allHosts {
-
-		wg.Add(1)
-		go func(idx int, host enviroment.Host) {
-			makeError := func(err error) error {
-				return fmt.Errorf("failed to get  for host %s. details: %s", host.IP.String(), err)
-			}
-
-			result, err := requestutils.DoRequest("GET", host.ApiURL("/gpuInfo"), nil, nil)
-			if err != nil {
-				log.Println(makeError(err))
-				wg.Done()
-				return
-			}
-
-			var hostGpus []body.HostGPU
-			err = requestutils.ParseBody(result.Body, &hostGpus)
-			if err != nil {
-				log.Println(makeError(err))
-				wg.Done()
-				return
-			}
-
-			hostGpuInfo := body.HostGpuInfo{
-				HostBase: body.HostBase{
-					ID:          allHosts[idx].ID,
-					Name:        allHosts[idx].Name,
-					DisplayName: allHosts[idx].DisplayName,
-					ZoneID:      allHosts[idx].ZoneID,
-				},
-				GPUs: hostGpus,
-			}
-
-			mu.Lock()
-			outputs[idx] = &hostGpuInfo
-			mu.Unlock()
-
-			wg.Done()
-		}(idx, host)
-	}
-
-	wg.Wait()
-
-	var result []body.HostGpuInfo
-
-	for _, output := range outputs {
-		if output != nil {
-			result = append(result, *output)
+	err = ForEachHost("fetch-capacities", allHosts, func(idx int, host *models.Host) error {
+		makeError := func(err error) error {
+			return fmt.Errorf("failed to get capacities for host %s. details: %s", host.IP, err)
 		}
-	}
 
-	return result, nil
+		client := host_api.NewClient(host.ApiURL())
+
+		gpuInfo, err := client.GetGpuInfo()
+		if err != nil {
+			return makeError(err)
+		}
+
+		hostCapacities := body.HostGpuInfo{
+			GPUs: gpuInfo,
+			HostBase: body.HostBase{
+				Name:        host.Name,
+				DisplayName: host.DisplayName,
+				Zone:        host.Zone,
+			},
+		}
+
+		mu.Lock()
+		outputs[idx] = &hostCapacities
+		mu.Unlock()
+
+		return nil
+	})
+
+	return utils.WithoutNils(outputs), err
 }
 
-func GpuInfoWorker(ctx context.Context) {
-	defer log.Println("gpu info worker stopped")
-
-	makeError := func(err error) error {
-		return fmt.Errorf("gpu info worker experienced an issue: %s", err)
+func GpuInfoWorker() error {
+	hostGpuInfo, err := GetHostGpuInfo()
+	if err != nil {
+		return err
 	}
 
-	for {
-		select {
-		case <-time.After(GpuInfoSleep):
-
-			hostGpuInfo, err := GetHostGpuInfo()
-			if err != nil {
-				log.Println(makeError(err))
-				time.Sleep(GpuInfoSleep)
-				continue
-			}
-
-			if len(hostGpuInfo) == 0 {
-				log.Println(makeError(fmt.Errorf("no host gpu info was found")))
-			} else {
-				gpuInfo := body.GpuInfo{
-					HostGpuInfo: hostGpuInfo,
-				}
-
-				timestamped := body.TimestampedGpuInfo{
-					GpuInfo:   gpuInfo,
-					Timestamp: time.Now(),
-				}
-
-				_, err = models.GpuInfoCollection.InsertOne(context.TODO(), timestamped)
-				if err != nil {
-					log.Println(makeError(err))
-					log.Println("sleeping for an extra minute")
-					time.Sleep(60 * time.Second)
-					continue
-				}
-
-				err = DeleteUntilNItemsLeft(models.GpuInfoCollection, 1000)
-				if err != nil {
-					log.Println(makeError(err))
-					log.Println("sleeping for an extra minute")
-					time.Sleep(60 * time.Second)
-					continue
-				}
-			}
-
-		case <-ctx.Done():
-			return
-		}
+	if len(hostGpuInfo) == 0 {
+		return fmt.Errorf("gpu info worker found no gpu info. this is likealy due to no available hosts")
 	}
+
+	return timestamp_repository.NewClient().SaveGpuInfo(&body.TimestampedGpuInfo{
+		GpuInfo: body.GpuInfo{
+			HostGpuInfo: hostGpuInfo,
+		},
+		Timestamp: time.Now(),
+	})
 }
