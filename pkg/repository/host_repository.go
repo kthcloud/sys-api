@@ -24,7 +24,11 @@ func (c *Client) RegisterHost(host *models.Host) error {
 
 		// Host does not exist, insert it
 		_, err = c.getCollection(db.ColHosts).InsertOne(context.TODO(), host)
-		return fmt.Errorf("failed to insert host %s. details: %w", host.Name, err)
+		if err != nil {
+			return fmt.Errorf("failed to insert host %s. details: %w", host.Name, err)
+		}
+
+		return nil
 	}
 
 	// Host exists, update it
@@ -38,7 +42,11 @@ func (c *Client) RegisterHost(host *models.Host) error {
 		},
 	}
 	_, err = c.getCollection(db.ColHosts).UpdateOne(context.TODO(), bson.M{"name": host.Name}, update)
-	return fmt.Errorf("failed to update host %s. details: %w", host.Name, err)
+	if err != nil {
+		return fmt.Errorf("failed to update host %s. details: %w", host.Name, err)
+	}
+
+	return nil
 }
 
 func (c *Client) FetchHosts() ([]models.Host, error) {

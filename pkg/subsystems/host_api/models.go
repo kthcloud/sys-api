@@ -62,5 +62,4 @@ type GpuInfo struct {
 	VendorID string `bson:"vendorId" json:"vendorId"`
 	Bus      string `bson:"bus" json:"bus"`
 	DeviceID string `bson:"deviceId" json:"deviceId"`
-	Zone     string `bson:"zone" json:"zone"`
 }
