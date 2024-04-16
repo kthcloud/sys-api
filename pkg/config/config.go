@@ -23,7 +23,7 @@ func Setup() error {
 
 	filepath, found := os.LookupEnv("LANDING_CONFIG_FILE")
 	if !found {
-		log.Fatalln(makeError(fmt.Errorf("config file not found. please set LANDING_CONFIG_FILE environment variable")))
+		return makeError(fmt.Errorf("config file not found. please set LANDING_CONFIG_FILE environment variable"))
 	}
 
 	yamlFile, err := os.ReadFile(filepath)
@@ -48,7 +48,7 @@ func Setup() error {
 	listClusterParams.SetListall(true)
 	clusters, err := csClient.Kubernetes.ListKubernetesClusters(listClusterParams)
 	if err != nil {
-		log.Fatalln(makeError(err))
+		return makeError(err)
 	}
 
 	fetchConfig := func(name string, publicUrl string) string {
@@ -70,7 +70,8 @@ func Setup() error {
 
 		k8sConfig, err := csClient.Kubernetes.GetKubernetesClusterConfig(params)
 		if err != nil {
-			log.Fatalln(makeError(err))
+			log.Println("failed to fetch config for cluster", name, ". details:", err)
+			return ""
 		}
 
 		// use regex to replace the private ip in config.ConffigData 172.31.1.* with the public ip

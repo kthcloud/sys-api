@@ -56,7 +56,7 @@ func (it *InitTask) LogFailed() {
 	grey := "\033[90m"
 	reset := "\033[0m"
 	if it.Composite {
-		fmt.Printf("%s... failed %s✗%s\n", grey, red, reset)
+		fmt.Printf("%s...%s failed %s✗%s\n", grey, reset, red, reset)
 	} else {
 		fmt.Printf("%s✗%s\n", red, reset)
 	}
