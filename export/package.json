@@ -1,0 +1,19 @@
+{
+    "name": "@kthcloud/sys-api-types",
+    "version": "1.0.20",
+    "description": "Types for the sys API of kthcloud",
+    "main": "index.ts",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/kthcloud/sys-api.git"
+    },
+    "keywords": [
+        "kthcloud"
+    ],
+    "author": "kthcloud",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/kthcloud/sys-api/issues"
+    },
+    "homepage": "https://github.com/kthcloud/sys-api#readme"
+}
