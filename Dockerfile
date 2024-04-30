@@ -26,9 +26,6 @@ WORKDIR /go
 # Copy the binary from the builder stage
 COPY --from=builder /app/main .
 
-# Copy the "index" folder
-COPY --from=builder /app/index index
-
 # Copy the "docs" folder
 COPY --from=builder /app/docs docs
 
