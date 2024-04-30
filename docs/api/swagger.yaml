@@ -1,105 +1,117 @@
 definitions:
-  dto.Capacities:
+  app.ErrorResponse:
     properties:
-      cpuCore:
-        $ref: '#/definitions/dto.CpuCoreCapacities'
-      gpu:
-        $ref: '#/definitions/dto.GpuCapacities'
-      hosts:
+      errors:
         items:
-          $ref: '#/definitions/dto.HostCapacities'
+          $ref: '#/definitions/app.errorPiece'
         type: array
-      ram:
-        $ref: '#/definitions/dto.RamCapacities'
     type: object
-  dto.CapacitiesDB:
+  app.errorPiece:
     properties:
-      capacities:
-        $ref: '#/definitions/dto.Capacities'
-      timestamp:
+      code:
+        type: string
+      msg:
         type: string
     type: object
-  dto.CpuCoreCapacities:
+  body.BindingError:
+    properties:
+      validationErrors:
+        additionalProperties:
+          items:
+            type: string
+          type: array
+        type: object
+    type: object
+  body.Capacities:
+    properties:
+      cpuCore:
+        $ref: '#/definitions/body.CpuCoreCapacities'
+      gpu:
+        $ref: '#/definitions/body.GpuCapacities'
+      hosts:
+        items:
+          $ref: '#/definitions/body.HostCapacities'
+        type: array
+      ram:
+        $ref: '#/definitions/body.RamCapacities'
+    type: object
+  body.ClusterStats:
+    properties:
+      cluster:
+        type: string
+      podCount:
+        type: integer
+    type: object
+  body.CpuCoreCapacities:
     properties:
       total:
         type: integer
       used:
         type: integer
     type: object
-  dto.GpuCapacities:
+  body.GpuCapacities:
     properties:
       total:
         type: integer
     type: object
-  dto.GpuInfo:
+  body.GpuInfo:
     properties:
       hosts:
         items:
-          $ref: '#/definitions/dto.HostGPUInfo'
+          $ref: '#/definitions/body.HostGpuInfo'
         type: array
     type: object
-  dto.GpuInfoDB:
+  body.HostCapacities:
     properties:
-      gpuInfo:
-        $ref: '#/definitions/dto.GpuInfo'
-      timestamp:
+      displayName:
         type: string
-    type: object
-  dto.HostCapacities:
-    properties:
       gpu:
-        $ref: '#/definitions/dto.HostGpuCapacities'
+        properties:
+          count:
+            type: integer
+        type: object
       name:
         type: string
       ram:
-        $ref: '#/definitions/dto.HostRamCapacities'
-      zoneId:
+        properties:
+          total:
+            type: integer
+        type: object
+      zone:
+        description: |-
+          Zone is the name of the zone where the host is located.
+          This field might not yet be present in all responses, in which case ZoneID should be used.
         type: string
     type: object
-  dto.HostGPU:
+  body.HostGpuInfo:
     properties:
-      bus:
+      displayName:
         type: string
-      deviceId:
-        type: string
-      name:
-        type: string
-      slot:
-        type: string
-      vendor:
-        type: string
-      vendorId:
-        type: string
-    type: object
-  dto.HostGPUInfo:
-    properties:
       gpus:
         items:
-          $ref: '#/definitions/dto.HostGPU'
+          $ref: '#/definitions/host_api.GpuInfo'
         type: array
       name:
         type: string
-      zoneId:
+      zone:
+        description: |-
+          Zone is the name of the zone where the host is located.
+          This field might not yet be present in all responses, in which case ZoneID should be used.
         type: string
     type: object
-  dto.HostGpuCapacities:
+  body.HostInfo:
     properties:
-      count:
-        type: integer
-    type: object
-  dto.HostInfo:
-    properties:
+      displayName:
+        type: string
       name:
         type: string
-      zoneId:
+      zone:
+        description: |-
+          Zone is the name of the zone where the host is located.
+          This field might not yet be present in all responses, in which case ZoneID should be used.
         type: string
     type: object
-  dto.HostRamCapacities:
-    properties:
-      total:
-        type: integer
-    type: object
-  dto.HostStatus:
+  body.HostStatus:
     properties:
       cpu:
         properties:
@@ -110,9 +122,9 @@ definitions:
                   type: integer
                 type: array
               main:
-                type: integer
+                type: number
               max:
-                type: integer
+                type: number
             type: object
           temp:
             properties:
@@ -121,18 +133,20 @@ definitions:
                   type: integer
                 type: array
               main:
-                type: integer
+                type: number
               max:
-                type: integer
+                type: number
             type: object
         type: object
+      displayName:
+        type: string
       gpu:
         properties:
           temp:
             items:
               properties:
                 main:
-                  type: integer
+                  type: number
               type: object
             type: array
         type: object
@@ -153,62 +167,86 @@ definitions:
           load:
             properties:
               main:
-                type: integer
+                type: number
             type: object
         type: object
-      zoneId:
+      zone:
+        description: |-
+          Zone is the name of the zone where the host is located.
+          This field might not yet be present in all responses, in which case ZoneID should be used.
         type: string
     type: object
-  dto.K8sStats:
+  body.K8sStats:
     properties:
+      clusters:
+        items:
+          $ref: '#/definitions/body.ClusterStats'
+        type: array
       podCount:
         type: integer
     type: object
-  dto.RamCapacities:
+  body.RamCapacities:
     properties:
       total:
         type: integer
       used:
         type: integer
     type: object
-  dto.Stats:
+  body.Stats:
     properties:
       k8s:
-        $ref: '#/definitions/dto.K8sStats'
+        $ref: '#/definitions/body.K8sStats'
     type: object
-  dto.StatsDB:
-    properties:
-      stats:
-        $ref: '#/definitions/dto.Stats'
-      timestamp:
-        type: string
-    type: object
-  dto.Status:
+  body.Status:
     properties:
       hosts:
         items:
-          $ref: '#/definitions/dto.HostStatus'
+          $ref: '#/definitions/body.HostStatus'
         type: array
     type: object
-  dto.StatusDB:
+  body.TimestampedCapacities:
     properties:
-      status:
-        $ref: '#/definitions/dto.Status'
+      capacities:
+        $ref: '#/definitions/body.Capacities'
       timestamp:
         type: string
     type: object
-  sys.ErrorResponse:
+  body.TimestampedGpuInfo:
     properties:
-      errors:
-        items:
-          $ref: '#/definitions/sys.errorPiece'
-        type: array
-    type: object
-  sys.errorPiece:
-    properties:
-      code:
+      gpuInfo:
+        $ref: '#/definitions/body.GpuInfo'
+      timestamp:
         type: string
-      msg:
+    type: object
+  body.TimestampedStats:
+    properties:
+      stats:
+        $ref: '#/definitions/body.Stats'
+      timestamp:
+        type: string
+    type: object
+  body.TimestampedStatus:
+    properties:
+      status:
+        $ref: '#/definitions/body.Status'
+      timestamp:
+        type: string
+    type: object
+  host_api.GpuInfo:
+    properties:
+      bus:
+        type: string
+      deviceId:
+        type: string
+      name:
+        type: string
+      passthrough:
+        type: boolean
+      slot:
+        type: string
+      vendor:
+        type: string
+      vendorId:
         type: string
     type: object
 info:
@@ -218,7 +256,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: Get Capacities
+      description: GetCapacities Capacities
       parameters:
       - description: "n"
         in: query
@@ -231,41 +269,33 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/dto.CapacitiesDB'
+              $ref: '#/definitions/body.TimestampedCapacities'
             type: array
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/sys.ErrorResponse'
-      summary: Get Capacities
+            $ref: '#/definitions/body.BindingError'
+      summary: GetCapacities Capacities
       tags:
       - Capacities
   /hostInfo:
     get:
       consumes:
       - application/json
-      description: Get Host Info
+      description: Register resource
       produces:
       - application/json
       responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/dto.HostInfo'
-            type: array
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/sys.ErrorResponse'
-      summary: Get Host Info
+        "204":
+          description: No Content
+      summary: Register resource
       tags:
-      - Host Info
+      - Register
   /internal/gpuInfo:
     get:
       consumes:
       - application/json
-      description: Get GPU info
+      description: GetGpuInfo GPU info
       parameters:
       - description: "n"
         in: query
@@ -283,20 +313,24 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/dto.GpuInfoDB'
+              $ref: '#/definitions/body.TimestampedGpuInfo'
             type: array
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/sys.ErrorResponse'
-      summary: Get GPU info
+            $ref: '#/definitions/body.BindingError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/app.ErrorResponse'
+      summary: GetGpuInfo GPU info
       tags:
       - GPU info
   /stats:
     get:
       consumes:
       - application/json
-      description: Get Stats
+      description: GetStats Stats
       parameters:
       - description: "n"
         in: query
@@ -309,20 +343,20 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/dto.StatsDB'
+              $ref: '#/definitions/body.TimestampedStats'
             type: array
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/sys.ErrorResponse'
-      summary: Get Stats
+            $ref: '#/definitions/body.BindingError'
+      summary: GetStats Stats
       tags:
       - Stats
   /status:
     get:
       consumes:
       - application/json
-      description: Get Status
+      description: GetStatus Status
       parameters:
       - description: "n"
         in: query
@@ -335,13 +369,13 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/dto.StatusDB'
+              $ref: '#/definitions/body.TimestampedStatus'
             type: array
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/sys.ErrorResponse'
-      summary: Get Status
+            $ref: '#/definitions/body.BindingError'
+      summary: GetStatus Status
       tags:
       - Status
 swagger: "2.0"

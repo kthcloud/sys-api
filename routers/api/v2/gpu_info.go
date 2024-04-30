@@ -20,7 +20,7 @@ import (
 // @Param Authorization header string true "With the bearer started"
 // @Success 200 {array} body.TimestampedGpuInfo
 // @Failure 400 {object} body.BindingError
-// @Failure 403 {object} sys.ErrorResponse
+// @Failure 403 {object} app.ErrorResponse
 // @Router /internal/gpuInfo [get]
 func GetGpuInfo(c *gin.Context) {
 	context := app.NewContext(c)
