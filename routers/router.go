@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	docs "sys-api/docs"
+	docs "sys-api/docs/api"
 	"sys-api/pkg/app"
 	"sys-api/pkg/auth"
 	v2 "sys-api/routers/api/v2"
