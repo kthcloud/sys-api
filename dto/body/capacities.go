@@ -11,10 +11,16 @@ type TimestampedCapacities struct {
 }
 
 type Capacities struct {
-	RAM     RamCapacities     `json:"ram" bson:"ram"`
 	CpuCore CpuCoreCapacities `json:"cpuCore" bson:"cpuCore"`
+	RAM     RamCapacities     `json:"ram" bson:"ram"`
 	GPU     GpuCapacities     `json:"gpu" bson:"gpu"`
 	Hosts   []HostCapacities  `json:"hosts" bson:"hosts"`
+}
+
+type ClusterCapacities struct {
+	Name    string `json:"cluster" bson:"cluster"`
+	RAM     RamCapacities
+	CpuCore CpuCoreCapacities
 }
 
 type HostGpuCapacities struct {
@@ -31,12 +37,10 @@ type HostCapacities struct {
 }
 
 type RamCapacities struct {
-	Used  int `json:"used" bson:"used"`
 	Total int `json:"total" bson:"total"`
 }
 
 type CpuCoreCapacities struct {
-	Used  int `json:"used" bson:"used"`
 	Total int `json:"total" bson:"total"`
 }
 

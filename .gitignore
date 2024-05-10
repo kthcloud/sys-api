@@ -131,3 +131,6 @@ dist
 
 
 .idea/
+
+# KubeConfig directory
+kube/
