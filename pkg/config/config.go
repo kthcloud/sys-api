@@ -44,7 +44,8 @@ func Setup() error {
 			continue
 		}
 
-		clusterName := strings.TrimSuffix(file.Name(), filepath[strings.LastIndex(filepath, "."):])
+		filename := file.Name()
+		clusterName := strings.TrimSuffix(filename, filename[strings.LastIndex(filename, "."):])
 		configData, err := os.ReadFile(models.Config.K8s.ConfigDir + "/" + file.Name())
 		if err != nil {
 			fmt.Println(makeError(err))
