@@ -2,35 +2,54 @@ package poll
 
 import (
 	"fmt"
+	"k8s.io/client-go/kubernetes"
 	"log"
 	"sync"
 	"sys-api/dto/body"
 	"sys-api/models"
 	"sys-api/pkg/repository"
-	"sys-api/pkg/subsystems/cs"
 	"sys-api/pkg/subsystems/host_api"
+	"sys-api/pkg/subsystems/k8s"
 	"sys-api/pkg/timestamp_repository"
 	"sys-api/utils"
 	"time"
 )
 
-func GetCsCapacities() (*cs.Capacities, error) {
-	makeError := func(err error) error {
-		return fmt.Errorf("failed to get cs capacities. details: %s", err)
-	}
+func GetClusterCapacities() ([]body.ClusterCapacities, error) {
+	clients := models.Config.K8s.Clients
+	outputs := make([]*body.ClusterCapacities, len(clients))
+	mu := sync.Mutex{}
 
-	client := cs.NewClient(cs.ClientConfig{
-		URL:    models.Config.CS.URL,
-		ApiKey: models.Config.CS.ApiKey,
-		Secret: models.Config.CS.Secret,
+	ForEachCluster("fetch-k8s-stats", clients, func(worker int, name string, cluster *kubernetes.Clientset) error {
+		makeError := func(err error) error {
+			return fmt.Errorf("failed to list pods from cluster %s. details: %s", name, err)
+		}
+
+		nodes, err := k8s.NewClient(cluster).GetNodes()
+		if err != nil {
+			log.Println(makeError(err))
+			return nil
+		}
+
+		clusterCapacities := body.ClusterCapacities{
+			Name:    name,
+			RAM:     body.RamCapacities{},
+			CpuCore: body.CpuCoreCapacities{},
+		}
+
+		for _, node := range nodes {
+			clusterCapacities.RAM.Total += node.RAM.Total
+			clusterCapacities.CpuCore.Total += node.CPU.Total
+		}
+
+		mu.Lock()
+		outputs[worker] = &clusterCapacities
+		mu.Unlock()
+
+		return nil
 	})
 
-	capacities, err := client.GetCapacities()
-	if err != nil {
-		return nil, makeError(err)
-	}
-
-	return capacities, nil
+	return utils.WithoutNils(outputs), nil
 }
 
 func GetHostCapacities() ([]body.HostCapacities, error) {
@@ -74,12 +93,12 @@ func GetHostCapacities() ([]body.HostCapacities, error) {
 }
 
 func CapacitiesWorker() error {
-	csCapacities, err := GetCsCapacities()
-	if err != nil || csCapacities == nil {
-		csCapacities = cs.ZeroCapacities()
+	clusterCapacities, err := GetClusterCapacities()
+	if err != nil || clusterCapacities == nil {
+		clusterCapacities = make([]body.ClusterCapacities, 0)
 	}
 
-	if csCapacities == nil {
+	if clusterCapacities == nil {
 		log.Println("capacities worker could not get cloudstack capacities. this is likely due to cloudstack not being available")
 	}
 
@@ -93,7 +112,7 @@ func CapacitiesWorker() error {
 		hostCapacities = make([]body.HostCapacities, 0)
 	}
 
-	if len(hostCapacities) == 0 && csCapacities == nil {
+	if len(hostCapacities) == 0 && clusterCapacities == nil {
 		return fmt.Errorf("capacities worker found no capacities. this is likely due to no hosts or cloudstack being available")
 	}
 
@@ -103,18 +122,17 @@ func CapacitiesWorker() error {
 	}
 
 	collected := body.Capacities{
-		RAM: body.RamCapacities{
-			Used:  csCapacities.RAM.Used,
-			Total: csCapacities.RAM.Total,
-		},
-		CpuCore: body.CpuCoreCapacities{
-			Used:  csCapacities.CpuCore.Used,
-			Total: csCapacities.CpuCore.Total,
-		},
+		RAM:     body.RamCapacities{},
+		CpuCore: body.CpuCoreCapacities{},
 		GPU: body.GpuCapacities{
 			Total: gpuTotal,
 		},
 		Hosts: hostCapacities,
+	}
+
+	for _, cluster := range clusterCapacities {
+		collected.RAM.Total += cluster.RAM.Total
+		collected.CpuCore.Total += cluster.CpuCore.Total
 	}
 
 	return timestamp_repository.NewClient().SaveCapacities(&body.TimestampedCapacities{
