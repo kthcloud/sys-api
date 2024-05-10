@@ -282,9 +282,6 @@ const docTemplate = `{
             "properties": {
                 "total": {
                     "type": "integer"
-                },
-                "used": {
-                    "type": "integer"
                 }
             }
         },
@@ -491,9 +488,6 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "total": {
-                    "type": "integer"
-                },
-                "used": {
                     "type": "integer"
                 }
             }

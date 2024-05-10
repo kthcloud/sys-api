@@ -271,9 +271,6 @@
             "properties": {
                 "total": {
                     "type": "integer"
-                },
-                "used": {
-                    "type": "integer"
                 }
             }
         },
@@ -480,9 +477,6 @@
             "type": "object",
             "properties": {
                 "total": {
-                    "type": "integer"
-                },
-                "used": {
                     "type": "integer"
                 }
             }

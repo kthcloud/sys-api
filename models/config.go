@@ -21,11 +21,8 @@ type ConfigType struct {
 	} `yaml:"keycloak"`
 
 	K8s struct {
-		Clusters []struct {
-			Name string `yaml:"name"`
-			URL  string `yaml:"url"`
-		} `yaml:"clusters"`
-		Clients map[string]kubernetes.Clientset
+		ConfigDir string `yaml:"configDir"`
+		Clients   map[string]kubernetes.Clientset
 	} `yaml:"k8s"`
 
 	CS struct {

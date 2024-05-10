@@ -8,10 +8,15 @@ export interface TimestampedCapacities {
   timestamp: string;
 }
 export interface Capacities {
-  ram: RamCapacities;
   cpuCore: CpuCoreCapacities;
+  ram: RamCapacities;
   gpu: GpuCapacities;
   hosts: HostCapacities[];
+}
+export interface ClusterCapacities {
+  cluster: string;
+  RAM: RamCapacities;
+  CpuCore: CpuCoreCapacities;
 }
 export interface HostGpuCapacities {
   count: number /* int */;
@@ -24,11 +29,9 @@ export interface HostCapacities {
   Capacities: any /* host_api.Capacities */;
 }
 export interface RamCapacities {
-  used: number /* int */;
   total: number /* int */;
 }
 export interface CpuCoreCapacities {
-  used: number /* int */;
   total: number /* int */;
 }
 export interface GpuCapacities {

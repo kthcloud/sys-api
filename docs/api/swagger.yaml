@@ -46,8 +46,6 @@ definitions:
     properties:
       total:
         type: integer
-      used:
-        type: integer
     type: object
   body.GpuCapacities:
     properties:
@@ -188,8 +186,6 @@ definitions:
   body.RamCapacities:
     properties:
       total:
-        type: integer
-      used:
         type: integer
     type: object
   body.Stats:
