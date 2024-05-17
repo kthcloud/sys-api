@@ -15,9 +15,9 @@ func Setup() error {
 		return fmt.Errorf("failed to setup environment. details: %s", err)
 	}
 
-	filepath, found := os.LookupEnv("LANDING_CONFIG_FILE")
+	filepath, found := os.LookupEnv("SYS_API_CONFIG_FILE")
 	if !found {
-		return makeError(fmt.Errorf("config file not found. please set LANDING_CONFIG_FILE environment variable"))
+		return makeError(fmt.Errorf("config file not found. please set SYS_API_CONFIG_FILE environment variable"))
 	}
 
 	yamlFile, err := os.ReadFile(filepath)

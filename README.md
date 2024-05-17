@@ -9,7 +9,7 @@ It does this by fetching information from every host
 ## 📚 Docs
 This API is documented using Swagger.
 
-You can view the publically hosted documentation [here](https://api.cloud.cbh.kth.se/landing/v2/docs/index.html).
+You can view the publically hosted documentation [here](https://api.cloud.cbh.kth.se/sys/v2/docs/index.html).
 
 ## 🤝 Contributing
 
