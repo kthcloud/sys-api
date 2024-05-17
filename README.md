@@ -1,5 +1,4 @@
 # 💻 kthcloud/sys-api
-[![ci](https://github.com/kthcloud/sys-api/actions/workflows/docker-image.yml/badge.svg)](https://github.com/kthcloud/sys-api/actions/workflows/docker-image.yml)
 
 This API is used to fetch capacities, usage and other information about the kthcloud system.
 
