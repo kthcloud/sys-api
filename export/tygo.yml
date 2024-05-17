@@ -1,0 +1,13 @@
+packages:
+  - path: sys-api/dto/body
+    output_path: types/body
+    type_mappings:
+      time.Time: "string"
+  - path: sys-api/dto/query
+    output_path: types/query
+    type_mappings:
+      time.Time: "string"
+  # - path: sys-api/dto/uri
+  #   output_path: types/uri
+  #   type_mappings:
+  #     time.Time: "string"
