@@ -1,6 +1,6 @@
 {
     "name": "@kthcloud/sys-api-types",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "description": "Types for the sys API of kthcloud",
     "main": "index.ts",
     "repository": {
