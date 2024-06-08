@@ -1,3 +1,9 @@
+>
+># Repo and below information preseved for archive purposes only.
+># sys-api has been merged into [go-deploy](https://github.com/kthcloud/go-deploy).
+
+---
+
 # 💻 kthcloud/sys-api
 
 This API is used to fetch capacities, usage and other information about the kthcloud system.
